@@ -857,47 +857,284 @@ img { max-width: 100%; display: block; }
   font-weight: 300;
 }
 
-/* ── CTA Banner ────────────────────────────────────────────────────────────── */
-.cta-section {
-  text-align: center;
-  padding: 120px 24px;
+/* ── Get Started Section ───────────────────────────────────────────────────── */
+.start-section {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
   position: relative;
   overflow: hidden;
 }
-.cta-section::before {
+.start-section::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-  background: radial-gradient(ellipse at center, rgba(0,229,255,0.06) 0%, transparent 60%);
+  background: radial-gradient(ellipse at center top, rgba(0,229,255,0.05) 0%, transparent 50%);
 }
-.cta-content {
+.start-inner {
   position: relative;
   z-index: 1;
 }
-.cta-section h2 {
+.start-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.start-header h2 {
   font-family: var(--font-display);
-  font-size: clamp(36px, 5vw, 56px);
+  font-size: clamp(36px, 5vw, 52px);
   line-height: 1.1;
   font-weight: 400;
   letter-spacing: -1px;
   margin-bottom: 16px;
 }
-.cta-section h2 em {
+.start-header h2 em {
   font-style: italic;
   background: var(--gradient-1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.cta-section p {
+.start-header p {
   font-size: 18px;
   color: var(--text-dim);
-  margin-bottom: 32px;
   font-weight: 300;
 }
+.start-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+.start-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+  transition: all 0.4s var(--ease);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.start-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+.start-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+.start-card:nth-child(1) .start-card-icon {
+  background: var(--accent-glow);
+  border: 1px solid rgba(0,229,255,0.15);
+}
+.start-card:nth-child(2) .start-card-icon {
+  background: rgba(0,136,255,0.12);
+  border: 1px solid rgba(0,136,255,0.2);
+}
+.start-card:nth-child(3) .start-card-icon {
+  background: var(--gold-glow);
+  border: 1px solid rgba(255,184,0,0.2);
+}
+.start-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+.start-card p {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-weight: 300;
+  margin-bottom: 24px;
+  flex: 1;
+}
+.start-card .btn-primary,
+.start-card .btn-secondary {
+  width: 100%;
+  justify-content: center;
+  padding: 14px 24px;
+  font-size: 15px;
+}
+.btn-telegram {
+  background: #0088cc;
+  color: #fff;
+  box-shadow: 0 0 24px rgba(0,136,204,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-telegram:hover {
+  box-shadow: 0 0 40px rgba(0,136,204,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+.btn-gold {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid rgba(255,184,0,0.3);
+}
+.btn-gold:hover {
+  background: rgba(255,184,0,0.08);
+  border-color: rgba(255,184,0,0.5);
+  transform: translateY(-2px);
+}
+
+/* Signup collapsible */
+.signup-collapse {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s var(--ease), margin-top 0.5s var(--ease);
+  width: 100%;
+  margin-top: 0;
+}
+.signup-collapse.open {
+  max-height: 500px;
+  margin-top: 16px;
+}
+
+/* Signup form */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: auto;
+}
+.signup-form input,
+.signup-form select {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-bright);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  transition: border-color 0.3s;
+  outline: none;
+}
+.signup-form input::placeholder { color: var(--text-muted); }
+.signup-form select { color: var(--text-dim); cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2355556a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+.signup-form select option { background: var(--bg-card); color: var(--text); }
+.signup-form input:focus,
+.signup-form select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.signup-form button {
+  margin-top: 4px;
+}
+.form-msg {
+  font-size: 13px;
+  text-align: center;
+  min-height: 20px;
+}
+.form-msg.success { color: #00ffa3; }
+.form-msg.error { color: #ff6b6b; }
+.form-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ── Contact Section ───────────────────────────────────────────────────────── */
+.contact-section {
+  background: var(--bg-raised);
+  border-top: 1px solid var(--border);
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+.contact-info h3 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+.contact-info > p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact-detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+.contact-detail-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(0,229,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.contact-detail a {
+  color: var(--accent);
+  transition: opacity 0.3s;
+}
+.contact-detail a:hover { opacity: 0.8; }
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border-bright);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  transition: border-color 0.3s;
+  outline: none;
+}
+.contact-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: var(--text-muted); }
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.contact-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.contact-form button { align-self: flex-start; }
 
 /* ── Footer ────────────────────────────────────────────────────────────────── */
 .footer {
@@ -963,7 +1200,11 @@ img { max-width: 100%; display: block; }
   .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
   .hero-metric { gap: 32px; }
   .demo-campaign { grid-template-columns: repeat(2, 1fr); }
+  .start-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .contact-form-row { grid-template-columns: 1fr; }
   .footer-inner { flex-direction: column; text-align: center; }
+  .footer-bottom { flex-direction: column; gap: 8px; }
 }
 </style>
 </head>
@@ -978,6 +1219,7 @@ img { max-width: 100%; display: block; }
       <li><a href="#features">Features</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
       <li><a href="#start" class="nav-cta">Start Free Trial</a></li>
     </ul>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -1170,7 +1412,7 @@ img { max-width: 100%; display: block; }
       <div class="feature-card reveal reveal-delay-2">
         <span class="feature-icon">&#128101;</span>
         <h3>Brand Portal</h3>
-        <p>Give each client their own portal — they see their campaigns, today's post, and settings. You manage everything from the admin dashboard.</p>
+        <p>Give each client their own branded portal — they see their campaigns, today's post, and settings. Clean, professional, white-labelled.</p>
       </div>
       <div class="feature-card reveal reveal-delay-3">
         <span class="feature-icon">&#128274;</span>
@@ -1250,7 +1492,7 @@ img { max-width: 100%; display: block; }
           <li>Slack + Telegram bot</li>
           <li>Visual review editor</li>
           <li>Brand portal for clients</li>
-          <li>Admin dashboard</li>
+          <li>Priority support</li>
         </ul>
         <a href="#start" class="pricing-btn pricing-btn-outline">Get Started</a>
       </div>
@@ -1348,12 +1590,103 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
-<!-- ── CTA ──────────────────────────────────────────────────────────────────── -->
-<section class="cta-section" id="start">
-  <div class="cta-content">
-    <h2 class="reveal">Stop overthinking your<br>social media. <em>Just gen8r.</em></h2>
-    <p class="reveal reveal-delay-1">One campaign. Fifteen days of content. Under a minute.</p>
-    <a href="#" class="btn-primary reveal reveal-delay-2">Start Your Free Campaign &rarr;</a>
+<!-- ── Get Started ──────────────────────────────────────────────────────────── -->
+<section class="section start-section" id="start">
+  <div class="container start-inner">
+    <div class="start-header reveal">
+      <div class="section-label">Get Started</div>
+      <h2>Stop overthinking your<br>social media. <em>Just gen8r.</em></h2>
+      <p>Choose how you'd like to begin.</p>
+    </div>
+    <div class="start-grid">
+      <!-- Sign Up Form -->
+      <div class="start-card reveal reveal-delay-1">
+        <div class="start-card-icon">&#9998;</div>
+        <h3>Sign Up</h3>
+        <p>Create your account and get one free campaign to try gen8r out. No payment required.</p>
+        <button class="btn-primary" id="signupToggle" style="width:100%;justify-content:center;">Start Free Trial &rarr;</button>
+        <div class="signup-collapse" id="signupCollapse">
+          <form class="signup-form" id="signupForm">
+            <input type="text" name="name" placeholder="Your name" required>
+            <input type="email" name="email" placeholder="Email address" required>
+            <input type="tel" name="phone" placeholder="Phone (optional)">
+            <select name="business_type" required>
+              <option value="" disabled selected>Business type</option>
+              <option value="travel_agency">Travel Agency</option>
+              <option value="restaurant">Restaurant / Cafe</option>
+              <option value="retail">Retail Store</option>
+              <option value="salon_spa">Salon / Spa</option>
+              <option value="real_estate">Real Estate</option>
+              <option value="fitness">Gym / Fitness</option>
+              <option value="hotel">Hotel / Hospitality</option>
+              <option value="professional">Professional Services</option>
+              <option value="other">Other</option>
+            </select>
+            <button type="submit" class="btn-primary">Submit &rarr;</button>
+            <div class="form-msg" id="signupMsg"></div>
+            <div class="form-note">1 free campaign &middot; Card validated later, not charged</div>
+          </form>
+        </div>
+      </div>
+      <!-- Telegram -->
+      <div class="start-card reveal reveal-delay-2">
+        <div class="start-card-icon">&#9992;</div>
+        <h3>Try on Telegram</h3>
+        <p>Skip the form. Open our Telegram bot and send a <strong>hello</strong> message to get started with your first campaign.</p>
+        <a href="https://t.me/gen8r_bot" target="_blank" class="btn-primary btn-telegram" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+          Open Telegram Bot
+        </a>
+        <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">Available 24/7 &middot; No account needed to try</div>
+      </div>
+      <!-- Book a Demo -->
+      <div class="start-card reveal reveal-delay-3">
+        <div class="start-card-icon">&#128197;</div>
+        <h3>Book a Demo</h3>
+        <p>Want a walkthrough before committing? Book a free 30-minute call and we'll show you exactly how gen8r works for your business.</p>
+        <a href="https://calendly.com/liftlogic/30min" target="_blank" class="btn-primary btn-gold" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+          Book 30-Min Call &rarr;
+        </a>
+        <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">Free &middot; No obligation &middot; We'll set everything up</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ─────────────────────────────────────────────────────────────── -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="section-label">Contact</div>
+        <h3>Have questions? Let's talk.</h3>
+        <p>Whether you're curious about features, pricing, or want help setting up &mdash; we're here for you.</p>
+        <div class="contact-details">
+          <div class="contact-detail">
+            <div class="contact-detail-icon">&#9993;</div>
+            <span>Email us at <a href="mailto:hello@liftlogic.dev">hello@liftlogic.dev</a></span>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">&#9992;</div>
+            <span>Message us on <a href="https://t.me/gen8r_bot" target="_blank">Telegram</a></span>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">&#128197;</div>
+            <span><a href="https://calendly.com/liftlogic/30min" target="_blank">Book a free 30-min call</a></span>
+          </div>
+        </div>
+      </div>
+      <form class="contact-form reveal reveal-delay-1" id="contactForm">
+        <div class="contact-form-row">
+          <input type="text" name="name" placeholder="Your name" required>
+          <input type="email" name="email" placeholder="Email address" required>
+        </div>
+        <input type="tel" name="phone" placeholder="Phone (optional)">
+        <textarea name="message" placeholder="How can we help?" required></textarea>
+        <button type="submit" class="btn-primary">Send Message &rarr;</button>
+        <div class="form-msg" id="contactMsg"></div>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -1366,11 +1699,15 @@ img { max-width: 100%; display: block; }
         <div class="footer-copy">&copy; 2026 gen8r. All rights reserved.</div>
       </div>
       <ul class="footer-links">
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
         <li><a href="#">Privacy</a></li>
         <li><a href="#">Terms</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Twitter</a></li>
       </ul>
+    </div>
+    <div style="text-align:center;margin-top:32px;padding-top:24px;border-top:1px solid var(--border);">
+      <span style="font-size:13px;color:var(--text-muted);">Built by <a href="https://liftlogic.dev" target="_blank" style="color:var(--text-dim);text-decoration:underline;text-underline-offset:3px;transition:color 0.3s;">LiftLogic AI</a></span>
     </div>
   </div>
 </footer>
@@ -1415,6 +1752,91 @@ document.querySelectorAll('.faq-question').forEach(btn => {
     // Toggle current
     if (!isOpen) item.classList.add('open');
   });
+});
+
+// ── Sign Up Toggle ───────────────────────────────────────────────────────────
+const signupToggle = document.getElementById('signupToggle');
+const signupCollapse = document.getElementById('signupCollapse');
+signupToggle.addEventListener('click', () => {
+  signupCollapse.classList.toggle('open');
+  if (signupCollapse.classList.contains('open')) {
+    signupToggle.style.display = 'none';
+    // Focus first input after animation
+    setTimeout(() => signupCollapse.querySelector('input')?.focus(), 300);
+  }
+});
+
+// ── Sign Up Form ─────────────────────────────────────────────────────────────
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const msg = document.getElementById('signupMsg');
+  const btn = form.querySelector('button[type="submit"]');
+  const origText = btn.textContent;
+
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+  msg.textContent = '';
+  msg.className = 'form-msg';
+
+  const data = {
+    name: form.name.value,
+    email: form.email.value,
+    phone: form.phone.value,
+    business_type: form.business_type.value,
+    source: 'gen8r-website-signup'
+  };
+
+  try {
+    // TODO: Replace with your actual API endpoint (Airtable, backend, etc.)
+    // For now, simulate success — wire this up when backend is ready
+    await new Promise(resolve => setTimeout(resolve, 800));
+    msg.textContent = "You're in! Check your email for next steps.";
+    msg.className = 'form-msg success';
+    form.reset();
+  } catch (err) {
+    msg.textContent = 'Something went wrong. Please try again.';
+    msg.className = 'form-msg error';
+  } finally {
+    btn.textContent = origText;
+    btn.disabled = false;
+  }
+});
+
+// ── Contact Form ─────────────────────────────────────────────────────────────
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const msg = document.getElementById('contactMsg');
+  const btn = form.querySelector('button[type="submit"]');
+  const origText = btn.textContent;
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  msg.textContent = '';
+  msg.className = 'form-msg';
+
+  const data = {
+    name: form.name.value,
+    email: form.email.value,
+    phone: form.phone.value,
+    message: form.message.value,
+    source: 'gen8r-website-contact'
+  };
+
+  try {
+    // TODO: Replace with your actual API endpoint (Airtable, backend, etc.)
+    await new Promise(resolve => setTimeout(resolve, 800));
+    msg.textContent = "Message sent! We'll get back to you soon.";
+    msg.className = 'form-msg success';
+    form.reset();
+  } catch (err) {
+    msg.textContent = 'Something went wrong. Please try again.';
+    msg.className = 'form-msg error';
+  } finally {
+    btn.textContent = origText;
+    btn.disabled = false;
+  }
 });
 
 // ── Smooth Scroll for anchor links ────────────────────────────────────────────
