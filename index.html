@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gen8r — AI-Powered Social Media Campaigns</title>
+<meta name="description" content="Describe your business. Get a full 15-day social media campaign — captions, images, hashtags, reels — published on autopilot. From $29/mo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ──────────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #06060b;
+  --bg-raised: #0c0c14;
+  --bg-card: #10101c;
+  --bg-card-hover: #161628;
+  --border: rgba(255,255,255,0.06);
+  --border-bright: rgba(255,255,255,0.12);
+  --text: #e8e8ed;
+  --text-dim: #8888a0;
+  --text-muted: #55556a;
+  --accent: #00e5ff;
+  --accent-glow: rgba(0,229,255,0.15);
+  --accent-deep: #0090a8;
+  --gold: #ffb800;
+  --gold-glow: rgba(255,184,0,0.12);
+  --gradient-1: linear-gradient(135deg, #00e5ff 0%, #7b61ff 50%, #ff6ec7 100%);
+  --gradient-2: linear-gradient(135deg, #00e5ff 0%, #00ffa3 100%);
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+img { max-width: 100%; display: block; }
+
+/* ── Utility ───────────────────────────────────────────────────────────────── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 120px 0; position: relative; }
+
+/* ── Reveal Animation ──────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ── Navigation ────────────────────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 0;
+  transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(6,6,11,0.82);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom-color: var(--border);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.logo {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.logo-eight {
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-size: 26px;
+  filter: drop-shadow(0 0 8px rgba(0,229,255,0.4));
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(0,229,255,0.4)); }
+  50% { filter: drop-shadow(0 0 16px rgba(0,229,255,0.6)); }
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 14px;
+  color: var(--text-dim);
+  transition: color 0.3s;
+  font-weight: 400;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-cta {
+  font-size: 14px !important;
+  color: var(--accent) !important;
+  padding: 8px 20px;
+  border: 1px solid rgba(0,229,255,0.3);
+  border-radius: 8px;
+  transition: all 0.3s !important;
+}
+.nav-cta:hover {
+  background: rgba(0,229,255,0.08) !important;
+  border-color: rgba(0,229,255,0.6) !important;
+}
+
+/* Mobile menu */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+}
+.nav-toggle span {
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 140px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mesh gradient background */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  top: -200px;
+  right: -200px;
+  background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+  animation: float-orb 15s ease-in-out infinite;
+}
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  bottom: -100px;
+  left: -150px;
+  background: radial-gradient(circle, rgba(123,97,255,0.06) 0%, transparent 70%);
+  animation: float-orb 18s ease-in-out infinite reverse;
+}
+@keyframes float-orb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* Grid overlay */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 820px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--border-bright);
+  background: var(--bg-raised);
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+  font-weight: 400;
+}
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 7vw, 80px);
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
+.hero h1 em {
+  font-style: italic;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: clamp(17px, 2vw, 20px);
+  color: var(--text-dim);
+  max-width: 580px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 32px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s var(--ease);
+  box-shadow: 0 0 24px rgba(0,229,255,0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 40px rgba(0,229,255,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 32px;
+  border: 1px solid var(--border-bright);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+.btn-secondary:hover {
+  border-color: var(--text-muted);
+  background: rgba(255,255,255,0.03);
+}
+
+.hero-metric {
+  margin-top: 56px;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.hero-metric-item {
+  text-align: center;
+}
+.hero-metric-value {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  background: var(--gradient-2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-metric-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── Section Headers ───────────────────────────────────────────────────────── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 52px);
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.section-subtitle {
+  font-size: 18px;
+  color: var(--text-dim);
+  max-width: 560px;
+  line-height: 1.6;
+  font-weight: 300;
+}
+.section-header-center {
+  text-align: center;
+}
+.section-header-center .section-subtitle {
+  margin: 0 auto;
+}
+
+/* ── How It Works ──────────────────────────────────────────────────────────── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-top: 64px;
+  background: var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.step-card {
+  background: var(--bg-card);
+  padding: 40px 32px;
+  position: relative;
+  transition: background 0.4s;
+}
+.step-card:hover {
+  background: var(--bg-card-hover);
+}
+.step-number {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.step-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(0,229,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+.step-card h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+.step-card p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ── Demo Preview ──────────────────────────────────────────────────────────── */
+.demo-section { padding-bottom: 80px; }
+.demo-window {
+  margin-top: 64px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+}
+.demo-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--border);
+}
+.demo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.demo-dot:nth-child(1) { background: #ff5f57; }
+.demo-dot:nth-child(2) { background: #ffbd2e; }
+.demo-dot:nth-child(3) { background: #28ca42; }
+.demo-titlebar-text {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.demo-body {
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  min-height: 360px;
+}
+
+/* Demo left - chat simulation */
+.demo-chat {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid var(--border);
+}
+.demo-chat-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.chat-msg {
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 90%;
+  animation: msg-in 0.5s var(--ease) both;
+}
+.chat-user {
+  background: rgba(0,229,255,0.1);
+  border: 1px solid rgba(0,229,255,0.15);
+  color: var(--text);
+  align-self: flex-end;
+}
+.chat-bot {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  align-self: flex-start;
+}
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Demo right - campaign cards */
+.demo-campaign {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  align-content: start;
+}
+.demo-post {
+  background: var(--bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.demo-post:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-2px);
+}
+.demo-post-img {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  position: relative;
+}
+.demo-post-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, var(--bg) 100%);
+}
+.demo-post:nth-child(1) .demo-post-img { background: linear-gradient(135deg, #1a3a4a, #0d2833); }
+.demo-post:nth-child(2) .demo-post-img { background: linear-gradient(135deg, #3a1a4a, #200d33); }
+.demo-post:nth-child(3) .demo-post-img { background: linear-gradient(135deg, #4a3a1a, #33280d); }
+.demo-post:nth-child(4) .demo-post-img { background: linear-gradient(135deg, #1a4a2a, #0d3318); }
+.demo-post:nth-child(5) .demo-post-img { background: linear-gradient(135deg, #4a1a1a, #330d0d); }
+.demo-post:nth-child(6) .demo-post-img { background: linear-gradient(135deg, #1a2a4a, #0d1833); }
+.demo-post-body {
+  padding: 10px 12px;
+}
+.demo-post-day {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.demo-post-caption {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.demo-post-tags {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.demo-tag {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0,229,255,0.08);
+  color: var(--accent-deep);
+}
+
+/* ── Features ──────────────────────────────────────────────────────────────── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 64px;
+  background: var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.feature-card {
+  background: var(--bg-card);
+  padding: 40px 32px;
+  transition: background 0.4s;
+  position: relative;
+}
+.feature-card:hover { background: var(--bg-card-hover); }
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gradient-1);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.feature-card:hover::before { opacity: 1; }
+.feature-icon {
+  font-size: 28px;
+  margin-bottom: 20px;
+  display: block;
+}
+.feature-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: -0.3px;
+}
+.feature-card p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ── Pricing ───────────────────────────────────────────────────────────────── */
+.pricing-section {
+  background: var(--bg-raised);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 64px;
+}
+.pricing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px 32px;
+  position: relative;
+  transition: all 0.4s var(--ease);
+}
+.pricing-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+.pricing-card.featured {
+  border-color: rgba(0,229,255,0.3);
+  background: linear-gradient(180deg, rgba(0,229,255,0.04) 0%, var(--bg-card) 40%);
+}
+.pricing-card.featured:hover {
+  border-color: rgba(0,229,255,0.5);
+}
+.pricing-popular {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 16px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 100px;
+}
+.pricing-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+.pricing-price {
+  margin: 16px 0 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.pricing-currency {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-dim);
+}
+.pricing-amount {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.pricing-period {
+  font-size: 16px;
+  color: var(--text-muted);
+}
+.pricing-per-post {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  margin-bottom: 24px;
+  padding: 6px 12px;
+  background: var(--accent-glow);
+  border-radius: 6px;
+  display: inline-block;
+}
+.pricing-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+.pricing-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.pricing-features li {
+  font-size: 14px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 300;
+}
+.pricing-features li::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0,229,255,0.1);
+  border: 1px solid rgba(0,229,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%2300e5ff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.pricing-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s;
+  display: block;
+}
+.pricing-btn-outline {
+  border: 1px solid var(--border-bright);
+  color: var(--text);
+}
+.pricing-btn-outline:hover {
+  border-color: var(--text-muted);
+  background: rgba(255,255,255,0.03);
+}
+.pricing-btn-fill {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 20px rgba(0,229,255,0.2);
+}
+.pricing-btn-fill:hover {
+  box-shadow: 0 0 32px rgba(0,229,255,0.35);
+  transform: translateY(-1px);
+}
+.pricing-inaugural {
+  text-align: center;
+  margin-top: 32px;
+  font-size: 14px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.pricing-inaugural span {
+  color: var(--gold);
+}
+.pricing-trial-note {
+  text-align: center;
+  margin-top: 48px;
+  padding: 24px;
+  border: 1px dashed var(--border-bright);
+  border-radius: 16px;
+  background: rgba(255,184,0,0.03);
+}
+.pricing-trial-note h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--gold);
+}
+.pricing-trial-note p {
+  font-size: 14px;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+
+
+/* ── FAQ ───────────────────────────────────────────────────────────────────── */
+.faq-list {
+  max-width: 720px;
+  margin: 64px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.faq-item {
+  background: var(--bg-card);
+}
+.faq-question {
+  width: 100%;
+  text-align: left;
+  padding: 24px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
+}
+.faq-question:hover {
+  background: var(--bg-card-hover);
+}
+.faq-icon {
+  font-size: 20px;
+  color: var(--text-muted);
+  transition: transform 0.3s var(--ease);
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+  color: var(--accent);
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s var(--ease), padding 0.4s var(--ease);
+}
+.faq-item.open .faq-answer {
+  max-height: 300px;
+}
+.faq-answer-inner {
+  padding: 0 32px 24px;
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── CTA Banner ────────────────────────────────────────────────────────────── */
+.cta-section {
+  text-align: center;
+  padding: 120px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(ellipse at center, rgba(0,229,255,0.06) 0%, transparent 60%);
+}
+.cta-content {
+  position: relative;
+  z-index: 1;
+}
+.cta-section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.cta-section h2 em {
+  font-style: italic;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cta-section p {
+  font-size: 18px;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+  font-weight: 300;
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 0;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-copy {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+.footer-links a {
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--text); }
+
+/* ── Mobile ────────────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid { grid-template-columns: repeat(3, 1fr); }
+  .demo-body { grid-template-columns: 1fr; }
+  .demo-chat { max-width: 400px; }
+}
+
+@media (max-width: 768px) {
+  .section { padding: 80px 0; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(6,6,11,0.95);
+    backdrop-filter: blur(20px);
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-toggle { display: flex; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .hero-metric { gap: 32px; }
+  .demo-campaign { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Navigation ──────────────────────────────────────────────────────────── -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">gen<span class="logo-eight">8</span>r</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#start" class="nav-cta">Start Free Trial</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge reveal">
+      <span class="hero-badge-dot"></span>
+      Now in early access
+    </div>
+    <h1 class="reveal reveal-delay-1">Your social media<br>on <em>autopilot</em></h1>
+    <p class="hero-sub reveal reveal-delay-2">
+      Describe what you want to promote. gen8r creates a full 15-day campaign
+      &mdash; captions, images, hashtags, reels &mdash; and publishes it for you.
+    </p>
+    <div class="hero-actions reveal reveal-delay-3">
+      <a href="#start" class="btn-primary">Start Free Trial &rarr;</a>
+      <a href="#how-it-works" class="btn-secondary">See how it works</a>
+    </div>
+    <div class="hero-metric reveal reveal-delay-4">
+      <div class="hero-metric-item">
+        <div class="hero-metric-value">15</div>
+        <div class="hero-metric-label">posts per campaign</div>
+      </div>
+      <div class="hero-metric-item">
+        <div class="hero-metric-value">&lt;30s</div>
+        <div class="hero-metric-label">generation time</div>
+      </div>
+      <div class="hero-metric-item">
+        <div class="hero-metric-value">$0.73</div>
+        <div class="hero-metric-label">per post from</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ─────────────────────────────────────────────────────────── -->
+<section class="section" id="how-it-works">
+  <div class="container">
+    <div class="section-header-center reveal">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">Four steps. Fifteen days of content.</h2>
+      <p class="section-subtitle">From a one-line description to a fully published campaign in under a minute.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal reveal-delay-1">
+        <div class="step-number">Step 01</div>
+        <div class="step-icon">&#9998;</div>
+        <h3>Describe</h3>
+        <p>Tell gen8r what you're promoting via Slack or Telegram. A new tour, a sale, a product launch &mdash; anything.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-2">
+        <div class="step-number">Step 02</div>
+        <div class="step-icon">&#9889;</div>
+        <h3>Generate</h3>
+        <p>AI crafts 15 days of captions, hashtags, CTAs, reel scripts, and sources matching images. In under 30 seconds.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-3">
+        <div class="step-number">Step 03</div>
+        <div class="step-icon">&#9881;</div>
+        <h3>Review</h3>
+        <p>Open the web editor. Pick your favourite images, tweak captions if you want, approve or reject each post.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-4">
+        <div class="step-number">Step 04</div>
+        <div class="step-icon">&#9889;</div>
+        <h3>Publish</h3>
+        <p>Set a start date. Each day you get a prompt &mdash; tap to publish to Instagram &amp; Facebook, or skip. You stay in control.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Demo Preview ─────────────────────────────────────────────────────────── -->
+<section class="section demo-section">
+  <div class="container">
+    <div class="section-header-center reveal">
+      <div class="section-label">See it in action</div>
+      <h2 class="section-title">From chat to campaign</h2>
+      <p class="section-subtitle">One message in Slack. A full campaign in your browser.</p>
+    </div>
+    <div class="demo-window reveal reveal-delay-1">
+      <div class="demo-titlebar">
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <span class="demo-titlebar-text">gen8r &mdash; Campaign Review</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-chat">
+          <div class="demo-chat-label">Slack</div>
+          <div class="chat-msg chat-user">/newtour Bali wellness retreat, 7 nights, luxury villas, yoga &amp; spa included</div>
+          <div class="chat-msg chat-bot">Got it! Let me ask a few things to nail the vibe...</div>
+          <div class="chat-msg chat-bot">Who's the ideal customer for this tour?</div>
+          <div class="chat-msg chat-user">Couples 30-50, wellness enthusiasts, mid-high budget</div>
+          <div class="chat-msg chat-bot">Generating your 15-day campaign... done! Review it here:</div>
+          <div class="chat-msg chat-bot" style="color:var(--accent);">gen8r.ai/review/a8f3c2</div>
+        </div>
+        <div class="demo-campaign">
+          <div class="demo-post">
+            <div class="demo-post-img">&#127796;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 1 &middot; Instagram</div>
+              <div class="demo-post-caption">Imagine waking up to the sound of waves and the scent of frangipani...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#BaliRetreat</span><span class="demo-tag">#Wellness</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#128524;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 3 &middot; Facebook</div>
+              <div class="demo-post-caption">Your mornings here: sunrise yoga overlooking rice terraces...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#YogaLife</span><span class="demo-tag">#Bali</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#127860;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 5 &middot; Reel</div>
+              <div class="demo-post-caption">HOOK: "What if your next holiday actually healed you?"</div>
+              <div class="demo-post-tags"><span class="demo-tag">#ReelScript</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#128150;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 7 &middot; Instagram</div>
+              <div class="demo-post-caption">Couples spa day: his &amp; hers treatments with ocean views...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#CouplesGoals</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#127754;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 10 &middot; Facebook</div>
+              <div class="demo-post-caption">Only 5 spots left for our November departure...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#LimitedSpots</span><span class="demo-tag">#FOMO</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#9989;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 15 &middot; Instagram</div>
+              <div class="demo-post-caption">Your transformation awaits. Book now and save 15%...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#BookNow</span><span class="demo-tag">#CTA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ─────────────────────────────────────────────────────────────── -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header-center reveal">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+      <p class="section-subtitle">Built for businesses that need results, not another tool to learn.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <span class="feature-icon">&#129302;</span>
+        <h3>AI Content Generation</h3>
+        <p>Captions, hashtags, CTAs, reel scripts, and WhatsApp messages — all generated from your description, tuned to your brand voice.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <span class="feature-icon">&#128247;</span>
+        <h3>Auto Image Sourcing</h3>
+        <p>Pulls high-quality, royalty-free images from three sources. Pick your favourites in the visual editor — no stock photo subscriptions needed.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <span class="feature-icon">&#128197;</span>
+        <h3>Smart Scheduling</h3>
+        <p>Set a start date and preferred posting time. gen8r schedules every post across the 15-day campaign, timezone-aware.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <span class="feature-icon">&#128241;</span>
+        <h3>Multi-Platform Publishing</h3>
+        <p>One-tap publishing to Instagram and Facebook. Each post gets a confirmation prompt in Slack or Telegram before going live.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <span class="feature-icon">&#128101;</span>
+        <h3>Brand Portal</h3>
+        <p>Give each client their own portal — they see their campaigns, today's post, and settings. You manage everything from the admin dashboard.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <span class="feature-icon">&#128274;</span>
+        <h3>You Stay in Control</h3>
+        <p>Nothing publishes without your approval. Edit any caption, swap any image, skip any day. AI proposes, you decide.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pricing ──────────────────────────────────────────────────────────────── -->
+<section class="section pricing-section" id="pricing">
+  <div class="container">
+    <div class="section-header-center reveal">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title">Less than a coffee per post</h2>
+      <p class="section-subtitle">No hidden fees. No contracts. Cancel anytime.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- Starter -->
+      <div class="pricing-card reveal reveal-delay-1">
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">$</span>
+          <span class="pricing-amount">29</span>
+          <span class="pricing-period">/mo</span>
+        </div>
+        <div class="pricing-per-post">~$2 per post</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>1 campaign per month</li>
+          <li>~15 posts generated</li>
+          <li>1 brand</li>
+          <li>Instagram + Facebook publishing</li>
+          <li>Slack or Telegram bot</li>
+          <li>Visual review editor</li>
+        </ul>
+        <a href="#start" class="pricing-btn pricing-btn-outline">Get Started</a>
+      </div>
+      <!-- Growth -->
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <div class="pricing-popular">Most Popular</div>
+        <div class="pricing-name">Growth</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">$</span>
+          <span class="pricing-amount">49</span>
+          <span class="pricing-period">/mo</span>
+        </div>
+        <div class="pricing-per-post">~$1 per post</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>3 campaigns per month</li>
+          <li>~45 posts generated</li>
+          <li>3 brands</li>
+          <li>Instagram + Facebook publishing</li>
+          <li>Slack + Telegram bot</li>
+          <li>Visual review editor</li>
+          <li>Brand portal for clients</li>
+        </ul>
+        <a href="#start" class="pricing-btn pricing-btn-fill">Get Started</a>
+      </div>
+      <!-- Pro -->
+      <div class="pricing-card reveal reveal-delay-3">
+        <div class="pricing-name">Pro</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">$</span>
+          <span class="pricing-amount">99</span>
+          <span class="pricing-period">/mo</span>
+        </div>
+        <div class="pricing-per-post">~$0.73 per post</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>9 campaigns per month</li>
+          <li>~135 posts generated</li>
+          <li>10 brands</li>
+          <li>Instagram + Facebook publishing</li>
+          <li>Slack + Telegram bot</li>
+          <li>Visual review editor</li>
+          <li>Brand portal for clients</li>
+          <li>Admin dashboard</li>
+        </ul>
+        <a href="#start" class="pricing-btn pricing-btn-outline">Get Started</a>
+      </div>
+    </div>
+    <p class="pricing-inaugural reveal"><span>&#9733; Inaugural pricing</span> &mdash; locked in for early adopters. Prices will increase as we add features.</p>
+    <div class="pricing-trial-note reveal">
+      <h4>Free Trial &mdash; 1 Full Campaign</h4>
+      <p>Try gen8r with one complete 15-day campaign. Card required for validation &mdash; you won't be charged until you pick a plan.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── FAQ ──────────────────────────────────────────────────────────────────── -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-header-center reveal">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title">Questions? Answered.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question">
+          What kind of businesses is gen8r for?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Any business that needs social media presence &mdash; travel agencies, restaurants, retail stores, salons, gyms, real estate agents, and more. If you promote things on Instagram or Facebook, gen8r can help.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Does it post automatically to my accounts?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Not without your approval. Each day, you get a notification on Slack or Telegram asking you to confirm. Tap "Post it!" and it publishes to Instagram and Facebook. You can also skip any day. You're always in control.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          How good is the AI-generated content?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">gen8r uses multiple specialised AI models &mdash; the best storytelling model for reel scripts, the best copy model for captions, and so on. The content is tailored to your brand voice, audience, and goals. You can edit anything before it goes live.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          What's included in a "campaign"?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Each campaign generates approximately 15 posts spread across 15 days, including Instagram posts, Facebook posts, reel scripts, hashtag sets, calls-to-action, and WhatsApp messages. Each post comes with multiple sourced images to choose from.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I edit the posts before they go live?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Absolutely. The visual review editor lets you edit captions, swap images, change hashtags, approve or reject individual posts, and set your preferred posting schedule &mdash; all before anything goes live.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Do I need Slack or Telegram?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">You need at least one &mdash; it's how you create campaigns and receive daily approval prompts. Most small business owners prefer Telegram for its simplicity. Slack works great if your team already uses it.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          What happens after the free trial?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Your trial includes one full 15-day campaign. When it finishes, you can pick a plan. Your card is validated upfront but never charged during the trial. No surprise bills.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I cancel anytime?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Yes. No contracts, no lock-in. Cancel anytime from your dashboard. Active campaigns will continue publishing until they finish, but you won't be billed again.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────────────────────────── -->
+<section class="cta-section" id="start">
+  <div class="cta-content">
+    <h2 class="reveal">Stop overthinking your<br>social media. <em>Just gen8r.</em></h2>
+    <p class="reveal reveal-delay-1">One campaign. Fifteen days of content. Under a minute.</p>
+    <a href="#" class="btn-primary reveal reveal-delay-2">Start Your Free Campaign &rarr;</a>
+  </div>
+</section>
+
+<!-- ── Footer ──────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <div class="logo">gen<span class="logo-eight">8</span>r</div>
+        <div class="footer-copy">&copy; 2026 gen8r. All rights reserved.</div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Twitter</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Scroll Reveal ─────────────────────────────────────────────────────────────
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// ── Nav Scroll ────────────────────────────────────────────────────────────────
+const nav = document.getElementById('nav');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+// ── Mobile Menu ───────────────────────────────────────────────────────────────
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+// Close on link click
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// ── FAQ Accordion ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    // Toggle current
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// ── Smooth Scroll for anchor links ────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', (e) => {
+    const target = document.querySelector(anchor.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
