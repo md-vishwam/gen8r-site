@@ -5,9 +5,89 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>gen8r — AI-Powered Social Media Campaigns</title>
 <meta name="description" content="Describe your business. Get a full 15-day social media campaign — captions, images, hashtags, reels — published on autopilot. From $29/mo.">
+<meta name="keywords" content="AI social media marketing, automated social media campaigns, Instagram automation, Facebook marketing, social media content generator, AI marketing tool, small business marketing">
+<link rel="canonical" href="https://gen8r.ai/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gen8r.ai/">
+<meta property="og:title" content="gen8r — AI-Powered Social Media Campaigns">
+<meta property="og:description" content="Describe your business. Get a full 15-day social media campaign — captions, images, hashtags, reels — published on autopilot. From $29/mo.">
+<meta property="og:site_name" content="gen8r">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="gen8r — AI-Powered Social Media Campaigns">
+<meta name="twitter:description" content="Describe your business. Get a full 15-day social media campaign — captions, images, hashtags, reels — published on autopilot. From $29/mo.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "gen8r",
+  "url": "https://gen8r.ai",
+  "applicationCategory": "BusinessApplication",
+  "description": "AI-powered social media campaign generator. Describe your business and get a full 15-day campaign with captions, images, hashtags, and reels — published on autopilot.",
+  "offers": {
+    "@type": "AggregateOffer",
+    "lowPrice": "29",
+    "highPrice": "149",
+    "priceCurrency": "USD",
+    "offerCount": "3"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "LiftLogic AI",
+    "url": "https://liftlogic.dev"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does gen8r post without my approval?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not without your approval. Each day, you get a notification on Slack or Telegram asking you to confirm. Tap 'Post it!' and it publishes to Instagram and Facebook. You can also skip any day."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What platforms does gen8r publish to?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Instagram and Facebook right now. TikTok, LinkedIn, and X (Twitter) are on the roadmap."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need Slack or Telegram?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You need at least one — it's how you create campaigns and receive daily approval prompts. Most small business owners prefer Telegram for its simplicity. Slack works great if your team already uses it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I cancel anytime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. No contracts, no lock-in. Cancel anytime from your dashboard. Active campaigns will continue publishing until they finish, but you won't be billed again."
+      }
+    }
+  ]
+}
+</script>
+
 <style>
 /* ── Reset & Base ──────────────────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -956,7 +1036,13 @@ img { max-width: 100%; display: block; }
   line-height: 1.6;
   font-weight: 300;
   margin-bottom: 24px;
-  flex: 1;
+}
+.start-card-footer {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .start-card .btn-primary,
 .start-card .btn-secondary {
@@ -1216,11 +1302,12 @@ img { max-width: 100%; display: block; }
     <a href="#" class="logo">gen<span class="logo-eight">8</span>r</a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#start">Get Started</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><a href="#start" class="nav-cta">Start Free Trial</a></li>
+      <li><a href="#start" class="nav-cta">Sign Up Free</a></li>
     </ul>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
@@ -1228,6 +1315,7 @@ img { max-width: 100%; display: block; }
   </div>
 </nav>
 
+<main>
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-bg"></div>
@@ -1243,7 +1331,7 @@ img { max-width: 100%; display: block; }
       &mdash; captions, images, hashtags, reels &mdash; and publishes it for you.
     </p>
     <div class="hero-actions reveal reveal-delay-3">
-      <a href="#start" class="btn-primary">Start Free Trial &rarr;</a>
+      <a href="#start" class="btn-primary">Sign Up Free &rarr;</a>
       <a href="#how-it-works" class="btn-secondary">See how it works</a>
     </div>
     <div class="hero-metric reveal reveal-delay-4">
@@ -1380,6 +1468,76 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
+<!-- ── Get Started ──────────────────────────────────────────────────────────── -->
+<section class="section start-section" id="start">
+  <div class="container start-inner">
+    <div class="start-header reveal">
+      <div class="section-label">Get Started</div>
+      <h2>Stop overthinking your<br>social media. <em>Just gen8r.</em></h2>
+      <p>Choose how you'd like to begin.</p>
+    </div>
+    <div class="start-grid">
+      <!-- Sign Up Form -->
+      <div class="start-card reveal reveal-delay-1">
+        <div class="start-card-icon">&#9998;</div>
+        <h3>Sign Up</h3>
+        <p>Create your account and get one free campaign to try gen8r out. No payment required.</p>
+        <div class="start-card-footer">
+        <button class="btn-primary" id="signupToggle" style="width:100%;justify-content:center;">Sign Up &rarr;</button>
+        <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">1 free campaign &middot; No payment required</div>
+        <div class="signup-collapse" id="signupCollapse">
+          <form class="signup-form" id="signupForm">
+            <input type="text" name="name" placeholder="Your name" required>
+            <input type="email" name="email" placeholder="Email address" required>
+            <input type="tel" name="phone" placeholder="Phone (optional)">
+            <select name="business_type" required>
+              <option value="" disabled selected>Business type</option>
+              <option value="travel_agency">Travel Agency</option>
+              <option value="restaurant">Restaurant / Cafe</option>
+              <option value="retail">Retail Store</option>
+              <option value="salon_spa">Salon / Spa</option>
+              <option value="real_estate">Real Estate</option>
+              <option value="fitness">Gym / Fitness</option>
+              <option value="hotel">Hotel / Hospitality</option>
+              <option value="professional">Professional Services</option>
+              <option value="other">Other</option>
+            </select>
+            <button type="submit" class="btn-primary">Submit &rarr;</button>
+            <div class="form-msg" id="signupMsg"></div>
+            <div class="form-note">1 free campaign &middot; Card validated later, not charged</div>
+          </form>
+        </div>
+        </div>
+      </div>
+      <!-- Telegram -->
+      <div class="start-card reveal reveal-delay-2">
+        <div class="start-card-icon">&#9992;</div>
+        <h3>Try on Telegram</h3>
+        <p>Skip the form. Open our Telegram bot and send a <strong>hello</strong> message to get started with your first campaign.</p>
+        <div class="start-card-footer">
+        <a href="https://t.me/travelcampaign_bot" target="_blank" class="btn-primary btn-telegram" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+          Open Telegram Bot
+        </a>
+        <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">Available 24/7 &middot; No account needed to try</div>
+        </div>
+      </div>
+      <!-- Book a Demo -->
+      <div class="start-card reveal reveal-delay-3">
+        <div class="start-card-icon">&#128197;</div>
+        <h3>Book a Demo</h3>
+        <p>Want a walkthrough before committing? Book a free 30-minute call and we'll show you exactly how gen8r works for your business.</p>
+        <div class="start-card-footer">
+        <a href="https://calendly.com/liftlogic/30min" target="_blank" class="btn-primary btn-gold" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+          Book 30-Min Call &rarr;
+        </a>
+        <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">Free &middot; No obligation &middot; We'll set everything up</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── Features ─────────────────────────────────────────────────────────────── -->
 <section class="section" id="features">
   <div class="container">
@@ -1505,7 +1663,6 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
-
 <!-- ── FAQ ──────────────────────────────────────────────────────────────────── -->
 <section class="section" id="faq">
   <div class="container">
@@ -1590,69 +1747,6 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
-<!-- ── Get Started ──────────────────────────────────────────────────────────── -->
-<section class="section start-section" id="start">
-  <div class="container start-inner">
-    <div class="start-header reveal">
-      <div class="section-label">Get Started</div>
-      <h2>Stop overthinking your<br>social media. <em>Just gen8r.</em></h2>
-      <p>Choose how you'd like to begin.</p>
-    </div>
-    <div class="start-grid">
-      <!-- Sign Up Form -->
-      <div class="start-card reveal reveal-delay-1">
-        <div class="start-card-icon">&#9998;</div>
-        <h3>Sign Up</h3>
-        <p>Create your account and get one free campaign to try gen8r out. No payment required.</p>
-        <button class="btn-primary" id="signupToggle" style="width:100%;justify-content:center;">Start Free Trial &rarr;</button>
-        <div class="signup-collapse" id="signupCollapse">
-          <form class="signup-form" id="signupForm">
-            <input type="text" name="name" placeholder="Your name" required>
-            <input type="email" name="email" placeholder="Email address" required>
-            <input type="tel" name="phone" placeholder="Phone (optional)">
-            <select name="business_type" required>
-              <option value="" disabled selected>Business type</option>
-              <option value="travel_agency">Travel Agency</option>
-              <option value="restaurant">Restaurant / Cafe</option>
-              <option value="retail">Retail Store</option>
-              <option value="salon_spa">Salon / Spa</option>
-              <option value="real_estate">Real Estate</option>
-              <option value="fitness">Gym / Fitness</option>
-              <option value="hotel">Hotel / Hospitality</option>
-              <option value="professional">Professional Services</option>
-              <option value="other">Other</option>
-            </select>
-            <button type="submit" class="btn-primary">Submit &rarr;</button>
-            <div class="form-msg" id="signupMsg"></div>
-            <div class="form-note">1 free campaign &middot; Card validated later, not charged</div>
-          </form>
-        </div>
-      </div>
-      <!-- Telegram -->
-      <div class="start-card reveal reveal-delay-2">
-        <div class="start-card-icon">&#9992;</div>
-        <h3>Try on Telegram</h3>
-        <p>Skip the form. Open our Telegram bot and send a <strong>hello</strong> message to get started with your first campaign.</p>
-        <a href="https://t.me/gen8r_bot" target="_blank" class="btn-primary btn-telegram" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
-          Open Telegram Bot
-        </a>
-        <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">Available 24/7 &middot; No account needed to try</div>
-      </div>
-      <!-- Book a Demo -->
-      <div class="start-card reveal reveal-delay-3">
-        <div class="start-card-icon">&#128197;</div>
-        <h3>Book a Demo</h3>
-        <p>Want a walkthrough before committing? Book a free 30-minute call and we'll show you exactly how gen8r works for your business.</p>
-        <a href="https://calendly.com/liftlogic/30min" target="_blank" class="btn-primary btn-gold" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
-          Book 30-Min Call &rarr;
-        </a>
-        <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">Free &middot; No obligation &middot; We'll set everything up</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── Contact ─────────────────────────────────────────────────────────────── -->
 <section class="section contact-section" id="contact">
   <div class="container">
@@ -1668,7 +1762,7 @@ img { max-width: 100%; display: block; }
           </div>
           <div class="contact-detail">
             <div class="contact-detail-icon">&#9992;</div>
-            <span>Message us on <a href="https://t.me/gen8r_bot" target="_blank">Telegram</a></span>
+            <span>Message us on <a href="https://t.me/travelcampaign_bot" target="_blank">Telegram</a></span>
           </div>
           <div class="contact-detail">
             <div class="contact-detail-icon">&#128197;</div>
@@ -1690,6 +1784,7 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
+</main>
 <!-- ── Footer ──────────────────────────────────────────────────────────────── -->
 <footer class="footer">
   <div class="container">
