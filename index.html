@@ -1883,9 +1883,12 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
   };
 
   try {
-    // TODO: Replace with your actual API endpoint (Airtable, backend, etc.)
-    // For now, simulate success — wire this up when backend is ready
-    await new Promise(resolve => setTimeout(resolve, 800));
+    const resp = await fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!resp.ok) throw new Error('Request failed');
     msg.textContent = "You're in! Check your email for next steps.";
     msg.className = 'form-msg success';
     form.reset();
@@ -1920,8 +1923,12 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
   };
 
   try {
-    // TODO: Replace with your actual API endpoint (Airtable, backend, etc.)
-    await new Promise(resolve => setTimeout(resolve, 800));
+    const resp = await fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!resp.ok) throw new Error('Request failed');
     msg.textContent = "Message sent! We'll get back to you soon.";
     msg.className = 'form-msg success';
     form.reset();
