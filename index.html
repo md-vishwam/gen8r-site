@@ -1889,9 +1889,12 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
       body: JSON.stringify(data),
     });
     if (!resp.ok) throw new Error('Request failed');
-    msg.textContent = "You're in! Check your email for next steps.";
-    msg.className = 'form-msg success';
     form.reset();
+    signupCollapse.classList.remove('open');
+    signupToggle.style.display = '';
+    signupToggle.textContent = "You're in! Check your email for next steps.";
+    signupToggle.disabled = true;
+    signupToggle.style.opacity = '0.8';
   } catch (err) {
     msg.textContent = 'Something went wrong. Please try again.';
     msg.className = 'form-msg error';
