@@ -15,13 +15,14 @@ This is a **single-file static site** — everything lives in `index.html` (~195
 
 No build tools, frameworks, bundlers, or package managers. To develop, open `index.html` in a browser.
 
-## Important: Form Handlers Are Stubs
+## Form Submission Flow
 
-Both `signupForm` and `contactForm` submit handlers currently simulate success with `setTimeout` — they are **not wired to a real backend**. Look for `// TODO: Replace with your actual API endpoint` comments (~lines 886 and 916). When integrating, the data payloads include a `source` field (`gen8r-website-signup` / `gen8r-website-contact`).
+Both `signupForm` and `contactForm` POST to `/api/notify` (a Vercel serverless function at `api/notify.js`). The function forwards submissions to a Telegram bot (`@gen8r_notify_bot`) via the Telegram Bot API. Bot token and chat ID are stored as Vercel environment variables (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`). The data payloads include a `source` field (`gen8r-website-signup` / `gen8r-website-contact`) to distinguish notification types.
 
 ## Key External Integrations
 
-- **Telegram bot**: `https://t.me/travelcampaign_bot`
+- **Telegram bot (customer-facing)**: `https://t.me/travelcampaign_bot` — used by customers to create campaigns
+- **Telegram bot (internal notifications)**: `@gen8r_notify_bot` — receives form submission alerts via `api/notify.js`
 - **Calendly**: `https://calendly.com/liftlogic/30min`
 - **Google Fonts**: Instrument Serif, DM Sans, JetBrains Mono
 - **SEO**: Open Graph, Twitter Card meta tags, and JSON-LD structured data (SoftwareApplication + FAQPage schemas) are in `<head>`
