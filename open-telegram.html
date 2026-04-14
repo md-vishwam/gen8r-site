@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Open Gen8r on Telegram</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #06060b;
+      --surface: #0e0e15;
+      --surface-2: #151520;
+      --border: #23232e;
+      --text: #f2f2f5;
+      --text-muted: #9a9aab;
+      --accent: #00e5ff;
+      --gold: #ffb800;
+      --font-display: 'Instrument Serif', serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      line-height: 1.55;
+    }
+    .wrap { max-width: 520px; width: 100%; text-align: center; }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 400;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    h1 em { color: var(--accent); font-style: italic; }
+    .lede {
+      color: var(--text-muted);
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      margin-bottom: 20px;
+    }
+    .status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .qr-wrap {
+      background: #fff;
+      padding: 16px;
+      border-radius: 14px;
+      display: inline-block;
+      margin: 8px 0 20px;
+    }
+    .qr-wrap img { display: block; width: 200px; height: 200px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: var(--surface-2);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); background: #1e1e2c; }
+    .btn-primary {
+      background: var(--accent);
+      color: #06060b;
+      border-color: var(--accent);
+    }
+    .btn-primary:hover { background: #33eaff; }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 8px;
+    }
+    .hint {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 14px;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin: 20px 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .alt {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .alt a { color: var(--accent); text-decoration: none; }
+    .alt a:hover { text-decoration: underline; }
+    .back {
+      margin-top: 24px;
+      font-size: 13px;
+    }
+    .back a { color: var(--text-muted); text-decoration: none; }
+    .back a:hover { color: var(--text); }
+    /* Panels are hidden by default; JS reveals the right one */
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Opening <em>Gen8r</em> on Telegram</h1>
+    <p class="lede">One-tap access to our campaign bot. Pick the option that matches your setup.</p>
+
+    <!-- Mobile: app attempted automatically -->
+    <div id="panel-mobile" class="panel card">
+      <div class="spinner"></div>
+      <div class="status">Launching Telegram…</div>
+      <p style="margin-bottom: 20px;">If the app doesn't open in a moment, tap below.</p>
+      <div class="btn-row">
+        <a id="mobile-fallback" class="btn btn-primary" href="https://t.me/travelcampaign_bot?start=web">Open in Telegram</a>
+      </div>
+      <p class="hint">No Telegram yet? The button above will offer to install it.</p>
+    </div>
+
+    <!-- Desktop: QR + web.telegram.org + install -->
+    <div id="panel-desktop" class="panel">
+      <div class="card">
+        <div class="status">Scan with your phone</div>
+        <div class="qr-wrap">
+          <img id="qr"
+               src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=https%3A%2F%2Ft.me%2Ftravelcampaign_bot%3Fstart%3Dweb"
+               alt="QR code — scan to open Gen8r on Telegram" />
+        </div>
+        <p class="alt">Scan with your phone camera &mdash; it opens the bot in Telegram instantly.</p>
+      </div>
+
+      <div class="divider">or</div>
+
+      <div class="card">
+        <div class="status">Have Telegram Desktop?</div>
+        <p style="margin-bottom: 16px;">Launch the app directly.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="tg://resolve?domain=travelcampaign_bot&start=web">Open Telegram Desktop</a>
+          <a class="btn" href="https://web.telegram.org/k/#@travelcampaign_bot" target="_blank" rel="noopener">Use Telegram Web</a>
+        </div>
+        <p class="hint">Telegram Web will ask you to sign in if you haven't already.</p>
+      </div>
+
+      <div class="divider">prefer Slack?</div>
+
+      <div class="card">
+        <p class="alt" style="margin-bottom: 16px;">Gen8r works just as well in Slack. <a href="/#get-started">Request access &rarr;</a></p>
+      </div>
+    </div>
+
+    <div class="back"><a href="/">&larr; Back to gen8r.ai</a></div>
+  </div>
+
+  <script>
+    (function () {
+      var BOT = 'travelcampaign_bot';
+      var PAYLOAD = 'web';
+      var deep = 'tg://resolve?domain=' + BOT + '&start=' + PAYLOAD;
+      var httpFallback = 'https://t.me/' + BOT + '?start=' + PAYLOAD;
+
+      var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        document.getElementById('panel-mobile').classList.add('active');
+        document.getElementById('mobile-fallback').href = httpFallback;
+
+        // Try the app first — if it's installed, the page unloads immediately.
+        // If nothing happens after ~1.2s, send them to t.me which offers "Install Telegram".
+        var redirected = false;
+        var t0 = Date.now();
+        // visibilitychange fires when the app takes over
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) redirected = true;
+        });
+        window.location.href = deep;
+        setTimeout(function () {
+          if (!redirected && Date.now() - t0 < 2500) {
+            window.location.href = httpFallback;
+          }
+        }, 1200);
+      } else {
+        document.getElementById('panel-desktop').classList.add('active');
+      }
+    })();
+  </script>
+</body>
+</html>
