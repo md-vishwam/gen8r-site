@@ -21,7 +21,7 @@ Both `signupForm` and `contactForm` POST to `/api/notify` (a Vercel serverless f
 
 ## Key External Integrations
 
-- **Telegram bot (customer-facing)**: `https://t.me/travelcampaign_bot` — used by customers to create campaigns
+- **Telegram bot (customer-facing)**: `https://t.me/Gen8rBot` — used by customers to create campaigns
 - **Telegram bot (internal notifications)**: `@gen8r_notify_bot` — receives form submission alerts via `api/notify.js`
 - **Calendly**: `https://calendly.com/liftlogic/30min`
 - **Google Fonts**: Instrument Serif, DM Sans, JetBrains Mono
