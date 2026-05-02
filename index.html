@@ -78,7 +78,7 @@
       "name": "Do I need Slack or Telegram?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "You need at least one — it's how you create campaigns and receive daily approval prompts. Most small business owners prefer Telegram for its simplicity. Slack works great if your team already uses it."
+        "text": "Not anymore. You can also use the brand portal — a web dashboard where you create campaigns, review content, and track analytics. Telegram and Slack are great for daily approval prompts and quick commands, but the portal works on its own too."
       }
     },
     {
@@ -661,6 +661,36 @@ img { max-width: 100%; display: block; }
   background: rgba(0,229,255,0.08);
   color: var(--accent-deep);
 }
+
+/* ── Industry Tabs ────────────────────────────────────────────────────────── */
+.demo-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.demo-tab {
+  padding: 10px 24px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  background: transparent;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.demo-tab:hover {
+  border-color: var(--border-bright);
+  color: var(--text);
+}
+.demo-tab.active {
+  background: rgba(0,229,255,0.1);
+  border-color: rgba(0,229,255,0.3);
+  color: var(--accent);
+}
+.demo-panel { display: none; }
+.demo-panel.active { display: block; }
 
 /* ── Features ──────────────────────────────────────────────────────────────── */
 .features-grid {
@@ -1290,6 +1320,9 @@ img { max-width: 100%; display: block; }
   .features-grid { grid-template-columns: 1fr; }
   .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
   .hero-metric { gap: 32px; }
+  .demo-tabs { flex-wrap: wrap; }
+  .demo-tab { padding: 8px 16px; font-size: 13px; }
+  .demo-body { grid-template-columns: 1fr; }
   .demo-campaign { grid-template-columns: repeat(2, 1fr); }
   .start-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
   .contact-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -1379,7 +1412,7 @@ img { max-width: 100%; display: block; }
         <div class="step-number">Step 01</div>
         <div class="step-icon">&#9998;</div>
         <h3>Describe</h3>
-        <p>Tell gen8r what you're promoting via Slack or Telegram. A new tour, a sale, a product launch &mdash; anything. Set your event date and gen8r schedules backwards from it.</p>
+        <p>Tell gen8r what you're promoting &mdash; a wellness retreat, a new home listing, a restaurant opening, a yoga workshop. Set your event date and gen8r schedules backwards from it.</p>
       </div>
       <div class="step-card reveal reveal-delay-2">
         <div class="step-number">Step 02</div>
@@ -1411,6 +1444,14 @@ img { max-width: 100%; display: block; }
       <h2 class="section-title">From chat to campaign</h2>
       <p class="section-subtitle">One message in Slack. A full campaign in your browser.</p>
     </div>
+    <div class="demo-tabs reveal reveal-delay-1">
+      <button class="demo-tab active" data-demo="travel">Travel</button>
+      <button class="demo-tab" data-demo="yoga">Yoga &amp; Wellness</button>
+      <button class="demo-tab" data-demo="realestate">Real Estate</button>
+    </div>
+
+    <!-- Travel Demo -->
+    <div class="demo-panel active" id="demo-travel">
     <div class="demo-window reveal reveal-delay-1">
       <div class="demo-titlebar">
         <div class="demo-dot"></div>
@@ -1480,6 +1521,153 @@ img { max-width: 100%; display: block; }
         </div>
       </div>
     </div>
+    </div>
+
+    <!-- Yoga & Wellness Demo -->
+    <div class="demo-panel" id="demo-yoga">
+    <div class="demo-window">
+      <div class="demo-titlebar">
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <span class="demo-titlebar-text">gen8r &mdash; Campaign Review</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-chat">
+          <div class="demo-chat-label">Telegram</div>
+          <div class="chat-msg chat-user">/new campaign Weekend yoga &amp; meditation retreat, Byron Bay, breathwork and sound healing</div>
+          <div class="chat-msg chat-bot">Got it! A few quick questions to build the best campaign.</div>
+          <div class="chat-msg chat-bot">Question 1/5: What type of yoga or practice is featured?</div>
+          <div class="chat-msg chat-user">Vinyasa flow, breathwork, sound healing, plant-based meals</div>
+          <div class="chat-msg chat-bot">Generating your 10-piece campaign... done! Review it here:</div>
+          <div class="chat-msg chat-bot" style="color:var(--accent);">gen8r.ai/review/b4e7d1</div>
+        </div>
+        <div class="demo-campaign">
+          <div class="demo-post">
+            <div class="demo-post-img">&#128444;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 1 &middot; Flyer &middot; Instagram</div>
+              <div class="demo-post-caption">Branded teaser: "Byron Bay Yoga Retreat &mdash; Breathe. Move. Heal."</div>
+              <div class="demo-post-tags"><span class="demo-tag">Teaser</span><span class="demo-tag">AI Flyer</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#129495;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 2 &middot; Post &middot; Instagram</div>
+              <div class="demo-post-caption">Sunrise vinyasa overlooking the ocean. Plant-based brunch after...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#YogaRetreat</span><span class="demo-tag">#ByronBay</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#127916;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 4 &middot; Reel &middot; Instagram</div>
+              <div class="demo-post-caption">HOOK: "2 days that reset your entire nervous system" + AI video</div>
+              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#Wellness</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#127774;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 6 &middot; Post &middot; Facebook</div>
+              <div class="demo-post-caption">"I came for the yoga, stayed for the community." Past attendees share...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#SoundHealing</span><span class="demo-tag">#Mindfulness</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#127916;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 7 &middot; Reel &middot; Instagram</div>
+              <div class="demo-post-caption">HOOK: "From stressed to centred in one weekend" + AI video</div>
+              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#Breathwork</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#9989;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 10 &middot; Flyer &middot; Facebook</div>
+              <div class="demo-post-caption">Last call flyer: "3 mats left &mdash; June 14 retreat"</div>
+              <div class="demo-post-tags"><span class="demo-tag">Last Call</span><span class="demo-tag">AI Flyer</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Real Estate Demo -->
+    <div class="demo-panel" id="demo-realestate">
+    <div class="demo-window">
+      <div class="demo-titlebar">
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <span class="demo-titlebar-text">gen8r &mdash; Campaign Review</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-chat">
+          <div class="demo-chat-label">Telegram</div>
+          <div class="chat-msg chat-user">/new campaign New listing: 4-bed harbour view home, Mosman, open home Saturday</div>
+          <div class="chat-msg chat-bot">Got it! A few quick questions to build the best campaign.</div>
+          <div class="chat-msg chat-bot">Question 1/5: What's the key selling point of this property?</div>
+          <div class="chat-msg chat-user">Unobstructed harbour views, renovated kitchen, north-facing garden</div>
+          <div class="chat-msg chat-bot">Generating your 10-piece campaign... done! Review it here:</div>
+          <div class="chat-msg chat-bot" style="color:var(--accent);">gen8r.ai/review/c9a2f5</div>
+        </div>
+        <div class="demo-campaign">
+          <div class="demo-post">
+            <div class="demo-post-img">&#128444;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 1 &middot; Flyer &middot; Instagram</div>
+              <div class="demo-post-caption">Branded teaser: "Just Listed &mdash; Harbour Views, Mosman"</div>
+              <div class="demo-post-tags"><span class="demo-tag">Just Listed</span><span class="demo-tag">AI Flyer</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#127969;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 2 &middot; Post &middot; Instagram</div>
+              <div class="demo-post-caption">Wake up to harbour views every morning. 4 bedrooms, north-facing garden...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#MosmanProperty</span><span class="demo-tag">#HarbourViews</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#127916;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 4 &middot; Reel &middot; Instagram</div>
+              <div class="demo-post-caption">HOOK: "This is what $3.2M looks like in Mosman" + AI video</div>
+              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#PropertyTour</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#128227;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 6 &middot; Post &middot; Facebook</div>
+              <div class="demo-post-caption">Open home this Saturday 10am&ndash;10:45am. North-facing garden, renovated throughout...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#OpenHome</span><span class="demo-tag">#SydneyProperty</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#127916;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 7 &middot; Reel &middot; Instagram</div>
+              <div class="demo-post-caption">HOOK: "The kitchen renovation alone is worth the visit" + AI video</div>
+              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#DreamHome</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#9989;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 10 &middot; Flyer &middot; Facebook</div>
+              <div class="demo-post-caption">Final open home flyer: "Last chance &mdash; Offers closing Tuesday"</div>
+              <div class="demo-post-tags"><span class="demo-tag">Closing Soon</span><span class="demo-tag">AI Flyer</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
     <div style="text-align:center;margin-top:32px" class="reveal reveal-delay-2">
       <a href="https://app.gen8r.ai/review/demo" target="_blank" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">Browse a real campaign &rarr;</a>
       <p style="margin-top:12px;font-size:13px;color:var(--text-muted);">See all 10 pieces &mdash; posts, flyers, and reel scripts</p>
@@ -1515,6 +1703,7 @@ img { max-width: 100%; display: block; }
               <option value="restaurant">Restaurant / Cafe</option>
               <option value="retail">Retail Store</option>
               <option value="salon_spa">Salon / Spa</option>
+              <option value="yoga">Yoga / Wellness</option>
               <option value="real_estate">Real Estate</option>
               <option value="fitness">Gym / Fitness</option>
               <option value="hotel">Hotel / Hospitality</option>
@@ -1587,9 +1776,9 @@ img { max-width: 100%; display: block; }
         <p>Publication-ready flyers generated automatically. AI writes the copy and creates the hero image. Your brand colours, logo, and fonts applied instantly.</p>
       </div>
       <div class="feature-card reveal reveal-delay-2">
-        <span class="feature-icon">&#127912;</span>
-        <h3>Brand Kit Auto-Extract</h3>
-        <p>Share your website &mdash; gen8r auto-extracts your logo, brand colours, fonts, and tone of voice. Every piece of content stays on-brand, automatically.</p>
+        <span class="feature-icon">&#128187;</span>
+        <h3>Brand Portal</h3>
+        <p>Your own dashboard to create campaigns, track usage, view engagement analytics, and manage settings &mdash; no Slack or Telegram required.</p>
       </div>
       <div class="feature-card reveal reveal-delay-3">
         <span class="feature-icon">&#128197;</span>
@@ -1609,7 +1798,7 @@ img { max-width: 100%; display: block; }
       <div class="feature-card reveal reveal-delay-3">
         <span class="feature-icon">&#128274;</span>
         <h3>You Stay in Control</h3>
-        <p>Nothing publishes without your approval. Edit any caption, swap any image, skip any day. Published posts are locked &mdash; no accidental edits.</p>
+        <p>Nothing publishes without your approval. Edit captions, upload your own photos, swap images, skip any day. Engagement analytics track how each post performs.</p>
       </div>
     </div>
   </div>
@@ -1624,9 +1813,9 @@ img { max-width: 100%; display: block; }
       <p class="section-subtitle">No more brainstorming meetings, freelancer deadlines, or posting spreadsheets.</p>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:800px;margin:0 auto" class="reveal reveal-delay-1">
-      <div style="background:var(--white);border:1.5px solid var(--sand);border-radius:var(--radius);padding:20px 24px">
-        <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-bottom:12px">Without gen8r</div>
-        <ul style="list-style:none;font-size:14px;color:var(--slate);line-height:2">
+      <div style="background:var(--bg-card);border:1.5px solid rgba(255,100,100,0.2);border-radius:16px;padding:20px 24px">
+        <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#ff6b6b;margin-bottom:12px">Without gen8r</div>
+        <ul style="list-style:none;font-size:14px;color:var(--text-dim);line-height:2">
           <li>Content brainstorming meetings</li>
           <li>Copywriting or waiting on a freelancer</li>
           <li>Searching for stock photos</li>
@@ -1636,9 +1825,9 @@ img { max-width: 100%; display: block; }
           <li>Logging in to post manually every day</li>
         </ul>
       </div>
-      <div style="background:var(--white);border:1.5px solid var(--teal);border-radius:var(--radius);padding:20px 24px">
-        <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:12px">With gen8r</div>
-        <ul style="list-style:none;font-size:14px;color:var(--charcoal);line-height:2">
+      <div style="background:var(--bg-card);border:1.5px solid rgba(0,229,255,0.2);border-radius:16px;padding:20px 24px">
+        <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:12px">With gen8r</div>
+        <ul style="list-style:none;font-size:14px;color:var(--text);line-height:2">
           <li>AI builds a cohesive 10-piece campaign story</li>
           <li>Captions, flyer copy, and reel scripts in 30 seconds</li>
           <li>Images sourced and matched automatically</li>
@@ -1649,7 +1838,7 @@ img { max-width: 100%; display: block; }
         </ul>
       </div>
     </div>
-    <p style="text-align:center;margin-top:24px;font-size:14px;color:var(--slate)" class="reveal reveal-delay-2">
+    <p style="text-align:center;margin-top:24px;font-size:14px;color:var(--text-dim)" class="reveal reveal-delay-2">
       <em>And it keeps getting smarter.</em> We use the best AI models for each task &mdash; not locked into one provider. As better models launch, your campaigns improve automatically.
     </p>
   </div>
@@ -1682,9 +1871,9 @@ img { max-width: 100%; display: block; }
           <li>20 AI images / month</li>
           <li>1 brand</li>
           <li>Instagram + Facebook publishing</li>
-          <li>Brand kit auto-extract</li>
+          <li>Brand portal + review editor</li>
+          <li>Engagement analytics</li>
           <li>Slack or Telegram bot</li>
-          <li>Visual review editor</li>
         </ul>
         <a href="#start" class="pricing-btn pricing-btn-outline">Get Started</a>
       </div>
@@ -1707,11 +1896,10 @@ img { max-width: 100%; display: block; }
           <li>50 AI images / month</li>
           <li>3 brands</li>
           <li>Instagram + Facebook + WhatsApp</li>
-          <li>Brand kit auto-extract</li>
+          <li>Brand portal + review editor</li>
+          <li>Engagement analytics</li>
           <li>Team collaboration</li>
           <li>Slack + Telegram bot</li>
-          <li>Visual review editor</li>
-          <li>Brand portal for clients</li>
         </ul>
         <a href="#start" class="pricing-btn pricing-btn-fill">Get Started</a>
       </div>
@@ -1733,12 +1921,11 @@ img { max-width: 100%; display: block; }
           <li>150 AI images / month</li>
           <li>10 brands</li>
           <li>Instagram + Facebook + WhatsApp</li>
-          <li>Brand kit auto-extract</li>
+          <li>Brand portal + review editor</li>
+          <li>Engagement analytics</li>
           <li>Team collaboration</li>
           <li>Multi-photo carousels</li>
           <li>Slack + Telegram bot</li>
-          <li>Visual review editor</li>
-          <li>Brand portal for clients</li>
           <li>Priority support</li>
         </ul>
         <a href="#start" class="pricing-btn pricing-btn-outline">Get Started</a>
@@ -1811,7 +1998,7 @@ img { max-width: 100%; display: block; }
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <div class="faq-answer-inner">You need at least one &mdash; it's how you create campaigns and receive daily approval prompts. Most small business owners prefer Telegram for its simplicity. Slack works great if your team already uses it.</div>
+          <div class="faq-answer-inner">Not anymore. You can also use the brand portal &mdash; a web dashboard where you create campaigns, review content, and track analytics. Telegram and Slack are great for daily approval prompts and quick commands, but the portal works on its own too.</div>
         </div>
       </div>
       <div class="faq-item">
@@ -2032,6 +2219,16 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     btn.textContent = origText;
     btn.disabled = false;
   }
+});
+
+// ── Demo Industry Tabs ───────────────────────────────────────────────────────
+document.querySelectorAll('.demo-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('demo-' + tab.dataset.demo).classList.add('active');
+  });
 });
 
 // ── Smooth Scroll for anchor links ────────────────────────────────────────────
