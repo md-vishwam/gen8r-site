@@ -662,6 +662,15 @@ img { max-width: 100%; display: block; }
   color: var(--accent-deep);
 }
 
+/* ── What It Replaces Grid ────────────────────────────────────────────────── */
+.replaces-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 /* ── Industry Tabs ────────────────────────────────────────────────────────── */
 .demo-tabs {
   display: flex;
@@ -1324,6 +1333,7 @@ img { max-width: 100%; display: block; }
   .demo-tab { padding: 8px 16px; font-size: 13px; }
   .demo-body { grid-template-columns: 1fr; }
   .demo-campaign { grid-template-columns: repeat(2, 1fr); }
+  .replaces-grid { grid-template-columns: 1fr; max-width: 480px; }
   .start-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
   .contact-grid { grid-template-columns: 1fr; gap: 48px; }
   .contact-form-row { grid-template-columns: 1fr; }
@@ -1812,7 +1822,7 @@ img { max-width: 100%; display: block; }
       <h2 class="section-title">One message replaces your entire workflow</h2>
       <p class="section-subtitle">No more brainstorming meetings, freelancer deadlines, or posting spreadsheets.</p>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:800px;margin:0 auto" class="reveal reveal-delay-1">
+    <div class="replaces-grid reveal reveal-delay-1">
       <div style="background:var(--bg-card);border:1.5px solid rgba(255,100,100,0.2);border-radius:16px;padding:20px 24px">
         <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#ff6b6b;margin-bottom:12px">Without gen8r</div>
         <ul style="list-style:none;font-size:14px;color:var(--text-dim);line-height:2">
