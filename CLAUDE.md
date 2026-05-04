@@ -19,11 +19,13 @@ No build tools, frameworks, bundlers, or package managers. To develop, open `ind
 
 Both `signupForm` and `contactForm` POST to `/api/notify` (a Vercel serverless function at `api/notify.js`). The function forwards submissions to a Telegram bot (`@gen8r_notify_bot`) via the Telegram Bot API. Bot token and chat ID are stored as Vercel environment variables (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`). The data payloads include a `source` field (`gen8r-website-signup` / `gen8r-website-contact`) to distinguish notification types.
 
+For signups (only), an additional welcome email is sent to the user via Resend's REST API (`https://api.resend.com/emails`). Sender: `Maulik Doshi <maulik@gen8r.ai>`, reply-to same. Email is non-blocking — Telegram notification is the source of truth, and email failures are logged but do not fail the signup. Requires `RESEND_API_KEY` env var on Vercel; if unset, the welcome email step is skipped silently. Domain `gen8r.ai` must be verified in the Resend dashboard (DKIM + SPF records on Cloudflare).
+
 ## Key External Integrations
 
 - **Telegram bot (customer-facing)**: `https://t.me/Gen8rBot` — used by customers to create campaigns
 - **Telegram bot (internal notifications)**: `@gen8r_notify_bot` — receives form submission alerts via `api/notify.js`
-- **Calendly**: `https://calendly.com/liftlogic/30min`
+- **Calendly**: `https://calendly.com/gen8r/30min`
 - **Google Fonts**: Instrument Serif, DM Sans, JetBrains Mono
 - **SEO**: Open Graph, Twitter Card meta tags, and JSON-LD structured data (SoftwareApplication + FAQPage schemas) are in `<head>`
 - **Parent company**: LiftLogic AI (`https://liftlogic.dev`, `hello@liftlogic.dev`)
