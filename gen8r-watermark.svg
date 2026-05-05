@@ -1,0 +1,16 @@
+<svg width="160" height="48" viewBox="0 0 160 48" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gen8r watermark badge — designed for compositing on user-generated
+       images (PersonalPost, flyers, etc.). Dark translucent backdrop ensures
+       legibility on ANY underlying image (bright sunset, dark interior, busy
+       scene). White text + gradient "8" carries the brand mark. Renders
+       cleanly at the small size used in bottom-right composites (~120-160px
+       wide on a 1080px canvas). -->
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00e5ff"/>
+      <stop offset="100%" stop-color="#ffb800"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="48" rx="10" fill="#06060b" fill-opacity="0.75"/>
+  <text x="80" y="33" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="800" font-size="26" fill="#ffffff">Gen<tspan fill="url(#g)">8</tspan>r</text>
+</svg>
