@@ -12,5 +12,5 @@
     </linearGradient>
   </defs>
   <rect width="160" height="48" rx="10" fill="#06060b" fill-opacity="0.75"/>
-  <text x="80" y="33" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="800" font-size="26" fill="#ffffff">Gen<tspan fill="url(#g)">8</tspan>r</text>
+  <text x="80" y="33" text-anchor="middle" font-family="'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="800" font-size="26" fill="#ffffff">Gen<tspan fill="url(#g)">8</tspan>r</text>
 </svg>
