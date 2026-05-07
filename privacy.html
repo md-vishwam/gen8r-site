@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — gen8r</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="description" content="How gen8r collects, uses, and protects your data. Including AI-model providers, photo handling, and your rights.">
+<link rel="canonical" href="https://gen8r.ai/privacy">
+<meta name="robots" content="index, follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #06060b;
+  --bg-raised: #0c0c14;
+  --bg-card: #10101c;
+  --border: rgba(255,255,255,0.06);
+  --border-bright: rgba(255,255,255,0.12);
+  --text: #e8e8ed;
+  --text-dim: #8888a0;
+  --text-muted: #55556a;
+  --accent: #00e5ff;
+  --gradient-1: linear-gradient(135deg, #00e5ff 0%, #7b61ff 50%, #ff6ec7 100%);
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+a:hover { opacity: 0.75; }
+
+/* ── Navigation (slim) ─────────────────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 16px 0;
+  background: rgba(6,6,11,0.82);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.logo {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.logo-eight {
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-size: 26px;
+  filter: drop-shadow(0 0 8px rgba(0,229,255,0.4));
+}
+.nav-back {
+  font-size: 14px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+.nav-back:hover { color: var(--text); opacity: 1; }
+
+/* ── Legal page layout ─────────────────────────────────────────────────────── */
+.legal {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 24px 120px;
+}
+.legal-header { margin-bottom: 64px; }
+.legal-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.legal h1 {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
+.legal h1 em {
+  font-style: italic;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.legal-meta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.legal-intro {
+  font-size: 18px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-top: 32px;
+}
+
+.legal-banner {
+  background: rgba(255,184,0,0.06);
+  border: 1px solid rgba(255,184,0,0.2);
+  border-left: 3px solid #ffb800;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 48px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+.legal-banner strong { color: #ffb800; font-weight: 600; }
+
+.legal h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  margin-top: 56px;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.legal h3 {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+.legal p { color: var(--text-dim); margin-bottom: 16px; font-size: 16px; }
+.legal p strong { color: var(--text); font-weight: 600; }
+.legal ul, .legal ol {
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+.legal li { margin-bottom: 8px; }
+.legal li::marker { color: var(--accent); }
+.legal table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 14px;
+}
+.legal th, .legal td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.legal th {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: var(--bg-raised);
+}
+.legal td { color: var(--text-dim); }
+.legal td code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-raised);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.legal-toc {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 48px;
+}
+.legal-toc-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.legal-toc ol {
+  columns: 2;
+  column-gap: 32px;
+  list-style-position: inside;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.legal-toc li {
+  break-inside: avoid;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.legal-toc a { color: var(--text-dim); }
+.legal-toc a:hover { color: var(--accent); }
+
+@media (max-width: 600px) {
+  .legal { padding: 48px 20px 80px; }
+  .legal-toc ol { columns: 1; }
+}
+
+/* ── Footer (same as index) ────────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 0;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.footer-left { display: flex; flex-direction: column; gap: 8px; }
+.footer-copy { font-size: 13px; color: var(--text-muted); }
+.footer-links { display: flex; gap: 24px; list-style: none; }
+.footer-links a { font-size: 13px; color: var(--text-muted); }
+.footer-links a:hover { color: var(--text); opacity: 1; }
+.footer-bottom {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 24px 24px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.footer-bottom a { color: var(--text-dim); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 768px) {
+  .footer-inner { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">gen<span class="logo-eight">8</span>r</a>
+    <a href="/" class="nav-back">← Back to gen8r.ai</a>
+  </div>
+</nav>
+
+<main class="legal">
+
+  <header class="legal-header">
+    <div class="legal-eyebrow">Legal</div>
+    <h1>Privacy <em>Policy</em></h1>
+    <div class="legal-meta">Last updated: 7 May 2026 · Effective: 7 May 2026</div>
+    <p class="legal-intro">
+      This policy explains what data gen8r collects, why we collect it, who we share it with, how long we keep it, and what rights you have. We've tried to write it in plain language. If anything is unclear, email <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a>.
+    </p>
+  </header>
+
+  <div class="legal-banner">
+    <strong>Private beta.</strong> gen8r is currently invitation-only — this policy applies to participants in our beta program rather than to the public. The document reflects how gen8r operates today and was prepared in good faith, but it has not yet been reviewed by external counsel. We're publishing it so beta participants can see exactly what we do; if you rely on it in a regulated context, please confirm with us first.
+  </div>
+
+  <div class="legal-toc">
+    <div class="legal-toc-title">Contents</div>
+    <ol>
+      <li><a href="#who">Who we are</a></li>
+      <li><a href="#what">What we collect</a></li>
+      <li><a href="#how">How we use it</a></li>
+      <li><a href="#legal-basis">Legal basis (GDPR)</a></li>
+      <li><a href="#sub-processors">Sub-processors</a></li>
+      <li><a href="#dont">What we don't do</a></li>
+      <li><a href="#photos">Personal photos</a></li>
+      <li><a href="#cookies">Cookies & tracking</a></li>
+      <li><a href="#retention">Retention</a></li>
+      <li><a href="#rights">Your rights</a></li>
+      <li><a href="#transfers">International transfers</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#children">Children</a></li>
+      <li><a href="#changes">Changes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <h2 id="who">1. Who we are</h2>
+  <p>
+    "gen8r" (<em>"we", "us", "our"</em>) is operated by <strong>LiftLogic AI</strong>, the data controller for the personal information described in this policy. Our website is <a href="https://gen8r.ai">gen8r.ai</a> and our application is <a href="https://app.gen8r.ai">app.gen8r.ai</a>.
+  </p>
+  <p>
+    For privacy questions, data-access requests, or to withdraw consent, contact <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a>.
+  </p>
+
+  <h2 id="what">2. What we collect</h2>
+
+  <h3>You provide directly</h3>
+  <ul>
+    <li><strong>Account</strong> — name, email, phone, business name, industry</li>
+    <li><strong>Brand</strong> — voice, audience, logo, colours, optional face photo for personalised posts</li>
+    <li><strong>Connected platforms</strong> — channel identifiers (Slack workspace, Telegram chat) and Meta access tokens needed to publish on your behalf</li>
+    <li><strong>Content</strong> — campaign briefs, captions, scheduled posts, files you upload</li>
+  </ul>
+
+  <h3>Payment</h3>
+  <p>All card data is handled by <a href="https://stripe.com" target="_blank" rel="noopener">Stripe</a>. We do not store credit-card numbers — only a Stripe customer ID to manage your subscription.</p>
+
+  <h3>Collected automatically</h3>
+  <ul>
+    <li>API call logs (model used, tokens, latency) for billing and troubleshooting</li>
+    <li>Server logs (IP for rate-limiting, error traces) on a 30-day rolling basis</li>
+    <li>Engagement metrics for posts you've published, pulled from Meta Insights</li>
+  </ul>
+
+  <h2 id="how">3. How we use it</h2>
+  <ul>
+    <li><strong>Provide the service</strong> — generate campaigns, render flyers, source images, schedule and publish posts on your behalf</li>
+    <li><strong>Bill you</strong> — verify your card via Stripe and process subscription charges</li>
+    <li><strong>Communicate with you</strong> — send transactional messages (campaign-ready notifications, approval prompts, billing receipts, support replies)</li>
+    <li><strong>Operate and improve the platform</strong> — debug errors, monitor performance, prevent abuse</li>
+    <li><strong>Comply with the law</strong> — keep tax records, respond to lawful requests</li>
+  </ul>
+
+  <h2 id="legal-basis">4. Legal basis for processing (GDPR)</h2>
+  <p>If you are in the European Economic Area, United Kingdom, or Switzerland, the legal bases for processing your data are:</p>
+  <ul>
+    <li><strong>Contractual necessity</strong> — to provide the service you signed up for</li>
+    <li><strong>Legitimate interests</strong> — operating, securing, and improving the platform (where these don't override your rights)</li>
+    <li><strong>Consent</strong> — optional features you opt in to (e.g. personal photo upload)</li>
+    <li><strong>Legal obligations</strong> — tax recordkeeping, lawful requests</li>
+  </ul>
+
+  <h2 id="sub-processors">5. Sub-processors</h2>
+  <p>To deliver the service, we share data with the following providers, each under their own privacy and data-processing terms:</p>
+  <ul>
+    <li><strong>Payment</strong> — Stripe</li>
+    <li><strong>AI providers (LLMs and image generation)</strong> — OpenRouter (which routes to OpenAI, Google, Anthropic), Replicate</li>
+    <li><strong>Web search enrichment</strong> — Tavily</li>
+    <li><strong>Stock images</strong> — Pixabay, Pexels, Unsplash</li>
+    <li><strong>Publishing</strong> — Meta (Facebook, Instagram)</li>
+    <li><strong>Inbound channels</strong> — Slack, Telegram</li>
+    <li><strong>Hosting & infrastructure</strong> — Oracle Cloud, MongoDB Atlas, Vercel</li>
+    <li><strong>Email</strong> — Resend</li>
+  </ul>
+
+  <h2 id="dont">6. What we don't do</h2>
+  <ul>
+    <li>We do not sell your personal data</li>
+    <li>We do not share your data with advertisers for ad targeting</li>
+    <li>We do not use your content, photos, or prompts to train AI models</li>
+    <li>We do not share data with anyone not listed in the sub-processor section above</li>
+  </ul>
+
+  <h2 id="photos">7. Personal photos (PersonalPost)</h2>
+  <p>
+    If you upload a face photo to use the personalisation feature, we apply additional safeguards:
+  </p>
+  <ul>
+    <li>Your photo is stored in our hosting environment (Oracle Cloud Sydney) at a private path keyed to your brand ID.</li>
+    <li>It is shared with our image-generation providers (Google Gemini and OpenAI) <em>only</em> when you ask for a personal post or personal flyer.</li>
+    <li>Providers receive the photo as a one-shot reference for that single render; they do not retain it for training or future generations.</li>
+    <li>You can replace your photo at any time. The new photo replaces the old; previously generated posts retain the photo they were created with.</li>
+    <li>You can delete your photo at any time. Deletion removes the file from our storage immediately. Posts already published to Facebook/Instagram remain there until you remove them on those platforms.</li>
+    <li>Consent is captured once at first upload and not assumed for replacement uploads. The exact wording is: <em>"I consent to use my photo for AI image generation, deletable anytime, no model training, no third-party sharing beyond image providers."</em></li>
+  </ul>
+
+  <h2 id="cookies">8. Cookies & tracking</h2>
+  <p>
+    Our marketing site (<a href="https://gen8r.ai">gen8r.ai</a>) does not use third-party advertising or analytics cookies. We do not run Google Analytics, Facebook Pixel, or similar tracking scripts.
+  </p>
+  <p>
+    Our application (<a href="https://app.gen8r.ai">app.gen8r.ai</a>) sets a session cookie or local-storage token to keep you signed in. This is a strictly necessary cookie for authentication. No other cookies are set.
+  </p>
+  <p>
+    Where third-party widgets are embedded (e.g. Calendly, Stripe Checkout), those providers may set their own cookies on their own domains. They are governed by their own privacy policies.
+  </p>
+
+  <h2 id="retention">9. How long we keep things</h2>
+  <ul>
+    <li><strong>Account and content</strong> — kept while your account is active. You can delete individual items or your whole account at any time.</li>
+    <li><strong>Personal photos</strong> — kept until you delete them or close your account.</li>
+    <li><strong>Server logs</strong> — 30 days rolling.</li>
+  </ul>
+
+  <h2 id="rights">10. Your rights</h2>
+  <p>Subject to applicable law, you have the right to:</p>
+  <ul>
+    <li><strong>Access</strong> a copy of the data we hold about you</li>
+    <li><strong>Correct</strong> data that's inaccurate</li>
+    <li><strong>Delete</strong> your data</li>
+    <li><strong>Export</strong> your data in a portable format</li>
+    <li><strong>Withdraw consent</strong> for processing that relies on consent (such as your personal photo)</li>
+  </ul>
+
+  <h3>Additional rights for EEA / UK residents</h3>
+  <ul>
+    <li>Restrict or object to processing based on legitimate interests</li>
+    <li>Withdraw consent at any time without affecting prior lawful processing</li>
+    <li>Lodge a complaint with your local data-protection authority</li>
+  </ul>
+
+  <h3>California residents (CCPA / CPRA)</h3>
+  <ul>
+    <li><strong>Right to know</strong> — what data we collect, use, and disclose</li>
+    <li><strong>Right to delete</strong> — request deletion of your personal information</li>
+    <li><strong>Right to correct</strong> — request correction of inaccurate data</li>
+    <li><strong>Right to opt out of sale</strong> — note: we do not sell personal information</li>
+    <li><strong>Non-discrimination</strong> — we will not discriminate against you for exercising your rights</li>
+  </ul>
+
+  <p>
+    To exercise any of these rights, email <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a>. We will respond within 30 days. We may need to verify your identity before acting on a request.
+  </p>
+
+  <h2 id="transfers">11. International data transfers</h2>
+  <p>
+    Our application is hosted in Australia (Oracle Cloud Sydney), but several of our sub-processors are based in the United States or the European Union. Where data is transferred outside the country it was collected in, we rely on the provider's own standard contractual clauses or equivalent safeguards. By using gen8r, you accept that your data may be processed in those jurisdictions.
+  </p>
+
+  <h2 id="security">12. Security</h2>
+  <p>We protect your data with:</p>
+  <ul>
+    <li>TLS encryption for all data in transit between your browser/bot and our servers</li>
+    <li>Encryption at rest in MongoDB Atlas</li>
+    <li>Role-based access controls — only the people who need access for support or operations can see your data</li>
+    <li>Audit logs for administrative actions on your brand record</li>
+    <li>Regular dependency updates and infrastructure patching</li>
+  </ul>
+  <p>
+    No system is perfect. If we ever detect a breach affecting your data, we will notify you and the relevant authority within the timeframes required by law.
+  </p>
+
+  <h2 id="children">13. Children's privacy</h2>
+  <p>
+    gen8r is a business tool. We do not knowingly collect data from anyone under 18, and our service is not intended for use by minors. If you believe a minor has provided us with data, contact <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a> and we will delete it.
+  </p>
+
+  <h2 id="changes">14. Changes to this policy</h2>
+  <p>
+    We will update this policy when our practices change. The "Last updated" date at the top reflects the most recent revision. Material changes will be communicated to active users by email or in-app notice at least 14 days before they take effect.
+  </p>
+
+  <h2 id="contact">15. Contact</h2>
+  <p>
+    Privacy questions: <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a><br>
+    General support: <a href="mailto:support@gen8r.ai">support@gen8r.ai</a><br>
+    Operating entity: <strong>LiftLogic AI</strong><br>
+    Website: <a href="https://gen8r.ai">gen8r.ai</a>
+  </p>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="logo">gen<span class="logo-eight">8</span>r</div>
+      <div class="footer-copy">&copy; 2026 gen8r. All rights reserved.</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="/#pricing">Pricing</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/terms">Terms</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span>Built by <a href="https://liftlogic.dev" target="_blank">LiftLogic AI</a></span>
+    &nbsp;·&nbsp;
+    <span>In Collaboration with <a href="https://journeysunlimited.au" target="_blank">Journeys Unlimited</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — gen8r</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="description" content="The agreement between you and gen8r when you use the platform — what's included, your responsibilities, billing, and limitations.">
+<link rel="canonical" href="https://gen8r.ai/terms">
+<meta name="robots" content="index, follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #06060b;
+  --bg-raised: #0c0c14;
+  --bg-card: #10101c;
+  --border: rgba(255,255,255,0.06);
+  --border-bright: rgba(255,255,255,0.12);
+  --text: #e8e8ed;
+  --text-dim: #8888a0;
+  --text-muted: #55556a;
+  --accent: #00e5ff;
+  --gradient-1: linear-gradient(135deg, #00e5ff 0%, #7b61ff 50%, #ff6ec7 100%);
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+a:hover { opacity: 0.75; }
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 16px 0;
+  background: rgba(6,6,11,0.82);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.logo {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.logo-eight {
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-size: 26px;
+  filter: drop-shadow(0 0 8px rgba(0,229,255,0.4));
+}
+.nav-back {
+  font-size: 14px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+.nav-back:hover { color: var(--text); opacity: 1; }
+
+.legal {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 24px 120px;
+}
+.legal-header { margin-bottom: 64px; }
+.legal-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.legal h1 {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
+.legal h1 em {
+  font-style: italic;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.legal-meta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.legal-intro {
+  font-size: 18px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-top: 32px;
+}
+.legal-banner {
+  background: rgba(255,184,0,0.06);
+  border: 1px solid rgba(255,184,0,0.2);
+  border-left: 3px solid #ffb800;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 48px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+.legal-banner strong { color: #ffb800; font-weight: 600; }
+
+.legal h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  margin-top: 56px;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.legal h3 {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+.legal p { color: var(--text-dim); margin-bottom: 16px; font-size: 16px; }
+.legal p strong { color: var(--text); font-weight: 600; }
+.legal ul, .legal ol {
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+.legal li { margin-bottom: 8px; }
+.legal li::marker { color: var(--accent); }
+
+.legal-toc {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 48px;
+}
+.legal-toc-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.legal-toc ol {
+  columns: 2;
+  column-gap: 32px;
+  list-style-position: inside;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.legal-toc li {
+  break-inside: avoid;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.legal-toc a { color: var(--text-dim); }
+.legal-toc a:hover { color: var(--accent); }
+
+.legal code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-raised);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  .legal { padding: 48px 20px 80px; }
+  .legal-toc ol { columns: 1; }
+}
+
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 0;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.footer-left { display: flex; flex-direction: column; gap: 8px; }
+.footer-copy { font-size: 13px; color: var(--text-muted); }
+.footer-links { display: flex; gap: 24px; list-style: none; }
+.footer-links a { font-size: 13px; color: var(--text-muted); }
+.footer-links a:hover { color: var(--text); opacity: 1; }
+.footer-bottom {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 24px 24px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.footer-bottom a { color: var(--text-dim); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 768px) {
+  .footer-inner { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">gen<span class="logo-eight">8</span>r</a>
+    <a href="/" class="nav-back">← Back to gen8r.ai</a>
+  </div>
+</nav>
+
+<main class="legal">
+
+  <header class="legal-header">
+    <div class="legal-eyebrow">Legal</div>
+    <h1>Terms of <em>Service</em></h1>
+    <div class="legal-meta">Last updated: 7 May 2026 · Effective: 7 May 2026</div>
+    <p class="legal-intro">
+      These terms are the contract between you and gen8r when you use the platform. They cover what's included, what's expected of you, how billing works, and the limits of our liability. Please read them — using gen8r means you accept them.
+    </p>
+  </header>
+
+  <div class="legal-banner">
+    <strong>Private beta.</strong> gen8r is currently invitation-only — these Terms apply to participants in our beta program rather than to the public. The document reflects how gen8r operates today and was prepared in good faith, but it has not yet been reviewed by external counsel. We'll update it as we formalise our legal entity details and engage a lawyer.
+  </div>
+
+  <div class="legal-toc">
+    <div class="legal-toc-title">Contents</div>
+    <ol>
+      <li><a href="#acceptance">Acceptance</a></li>
+      <li><a href="#service">The service</a></li>
+      <li><a href="#eligibility">Eligibility</a></li>
+      <li><a href="#account">Your account</a></li>
+      <li><a href="#billing">Plans & billing</a></li>
+      <li><a href="#use">Acceptable use</a></li>
+      <li><a href="#content">Your content</a></li>
+      <li><a href="#ai">AI-generated content</a></li>
+      <li><a href="#photos">Personal photos</a></li>
+      <li><a href="#availability">Service availability</a></li>
+      <li><a href="#termination">Suspension & termination</a></li>
+      <li><a href="#ip">Intellectual property</a></li>
+      <li><a href="#third-party">Third-party platforms</a></li>
+      <li><a href="#disclaimers">Disclaimers</a></li>
+      <li><a href="#liability">Limitation of liability</a></li>
+      <li><a href="#indemnity">Indemnification</a></li>
+      <li><a href="#law">Governing law</a></li>
+      <li><a href="#changes">Changes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <h2 id="acceptance">1. Acceptance</h2>
+  <p>
+    By signing up for, accessing, or using gen8r, you (<em>"you", "your"</em>, or where you're acting for an organisation, that organisation) agree to these Terms of Service ("Terms") and our <a href="/privacy">Privacy Policy</a>. If you do not agree, do not use the service.
+  </p>
+  <p>
+    If you are using gen8r on behalf of a business, you confirm that you have the authority to bind that business to these Terms.
+  </p>
+
+  <h2 id="service">2. The service</h2>
+  <p>
+    gen8r is an AI-powered marketing automation platform operated by <strong>LiftLogic AI</strong> ("we", "us", "our"). The platform helps you create and publish social-media campaigns by combining your brand inputs with large language models, image generation, and stock-image sources. You interact with gen8r through Slack, Telegram, our brand portal, or APIs we expose.
+  </p>
+  <p>
+    The set of features, channels, and pricing described on <a href="https://gen8r.ai">gen8r.ai</a> at the time you sign up is the service we agree to provide. We may add, change, or remove features over time; if a change materially reduces your plan, we will notify you in advance.
+  </p>
+
+  <h2 id="eligibility">3. Eligibility</h2>
+  <ul>
+    <li>You must be at least 18 years old.</li>
+    <li>You must have legal capacity to enter into a contract in your jurisdiction.</li>
+    <li>You must use gen8r for lawful business purposes, not personal entertainment use only.</li>
+    <li>If your jurisdiction prohibits the use of any of our sub-processors (see Privacy Policy), you must not use the corresponding feature.</li>
+  </ul>
+
+  <h2 id="account">4. Your account</h2>
+  <p>You agree to:</p>
+  <ul>
+    <li>Provide accurate information during signup and keep it current</li>
+    <li>Keep your authentication credentials (Slack, Telegram, magic-link tokens) secure and not share them</li>
+    <li>Notify us immediately if you suspect unauthorised access to your account</li>
+    <li>Be responsible for all activity on your account, whether by you, your team members, or anyone you've granted access</li>
+  </ul>
+  <p>
+    You may invite team members through the <code>/team invite</code> command. You are responsible for actions your team members take on your account.
+  </p>
+
+  <h2 id="billing">5. Plans & billing</h2>
+
+  <h3>Plan tiers</h3>
+  <p>
+    Pricing and feature limits for each plan (Solo, Pro, Agency) are listed at <a href="https://gen8r.ai/#pricing">gen8r.ai/#pricing</a>. Limits include monthly campaigns, flyers, AI images, and reel videos. Usage that exceeds your plan's limit is blocked until the next billing cycle or until you upgrade.
+  </p>
+
+  <h3>Card verification</h3>
+  <p>
+    During <code>/setup</code> we ask you to verify a card via Stripe. This verification does <em>not</em> charge you. It confirms the card is valid so that, when you subscribe to a paid plan, billing can proceed.
+  </p>
+
+  <h3>Subscriptions and renewal</h3>
+  <ul>
+    <li>Subscriptions are billed monthly via Stripe in advance for the upcoming month.</li>
+    <li>Subscriptions automatically renew until you cancel.</li>
+    <li>You can cancel at any time. Cancellation takes effect at the end of the current billing period; we do not pro-rate partial months.</li>
+    <li>Prices are in USD unless otherwise stated and exclude any taxes you may be required to pay in your jurisdiction.</li>
+  </ul>
+
+  <h3>Refunds</h3>
+  <p>
+    We do not generally offer refunds for partial months. If you experience a serious service failure, contact <a href="mailto:support@gen8r.ai">support@gen8r.ai</a> — we will consider refund requests on a case-by-case basis.
+  </p>
+
+  <h3>Price changes</h3>
+  <p>
+    We may change subscription pricing from time to time. Any price increase that affects your existing plan will be communicated at least 30 days before it takes effect. If you do not accept the new price, you may cancel before it takes effect.
+  </p>
+
+  <h3>Free trials and credits</h3>
+  <p>
+    From time to time we may offer free credits or trial periods. Those are subject to the terms of the offer at the time, and we may withdraw them with notice.
+  </p>
+
+  <h2 id="use">6. Acceptable use</h2>
+  <p>You agree not to use gen8r to create, schedule, or publish content that:</p>
+  <ul>
+    <li>Is illegal under any law that applies to you, us, or your audience</li>
+    <li>Promotes violence, terrorism, hate speech, harassment, or self-harm</li>
+    <li>Sexually exploits or endangers minors</li>
+    <li>Infringes copyright, trademark, or other intellectual-property rights</li>
+    <li>Defames, libels, or invades the privacy of identifiable individuals</li>
+    <li>Misrepresents your identity, your business, or factual matters in a way that constitutes fraud</li>
+    <li>Constitutes spam, deceptive marketing, or violates platform policies (Meta Community Standards, Slack ToS, Telegram ToS, etc.)</li>
+    <li>Distributes malware, phishing links, or attempts to compromise others' systems</li>
+  </ul>
+  <p>You also agree not to:</p>
+  <ul>
+    <li>Reverse-engineer, decompile, or attempt to extract our source code or proprietary prompts</li>
+    <li>Scrape or automate the platform beyond the rate limits and patterns documented for normal use</li>
+    <li>Use gen8r to build a competing product</li>
+    <li>Resell, sublicense, or grant access to gen8r to third parties not on your own team without our written agreement (agency plans cover client management, but you cannot package gen8r as a white-label SaaS without permission)</li>
+  </ul>
+
+  <h2 id="content">7. Your content</h2>
+  <p>
+    You retain ownership of:
+  </p>
+  <ul>
+    <li>Your brand assets (logos, photos, brand voice rules, audience information)</li>
+    <li>Campaign briefs you provide</li>
+    <li>The final published posts after gen8r generates them</li>
+  </ul>
+  <p>
+    By submitting content to gen8r, you grant us a non-exclusive, worldwide, royalty-free licence to host, store, transmit, modify (e.g. resize images, format captions), and display your content as needed to operate the service. This licence ends when you delete the content or close your account, except that we may retain copies in backups for 90 days as described in our <a href="/privacy">Privacy Policy</a>.
+  </p>
+  <p>
+    You warrant that you have the rights to all content you submit, including any photos of yourself or others (you must have consent), brand logos (you must own them or be licensed to use them), and any references to third parties.
+  </p>
+
+  <h2 id="ai">8. AI-generated content</h2>
+  <p>
+    gen8r generates captions, hashtags, scripts, and images using artificial-intelligence models. You acknowledge that:
+  </p>
+  <ul>
+    <li><strong>AI output is not always accurate.</strong> Generated content may contain factual errors, awkward phrasing, or stylistic inconsistencies. We provide a review UI so you can check and correct everything before publishing. Nothing publishes without your approval.</li>
+    <li><strong>You are responsible for what you publish.</strong> Once you approve a post, it becomes your statement to your audience. We are not the publisher; you are.</li>
+    <li><strong>Disclosure obligations.</strong> Some platforms and jurisdictions require you to disclose that content is AI-generated. You are responsible for complying with those requirements.</li>
+    <li><strong>No copyright assignment over AI output.</strong> The legal status of AI-generated content varies by jurisdiction. Where copyright in AI output is recognised, we do not claim it; where it isn't, we cannot grant what we don't have.</li>
+    <li><strong>AI providers may have their own usage terms.</strong> By using gen8r, you accept that AI providers (OpenAI, Google, Anthropic, Replicate) process your inputs under their own terms.</li>
+  </ul>
+
+  <h2 id="photos">9. Personal photos</h2>
+  <p>
+    The PersonalPost feature uses your face photo as a reference for AI image generation. Specific terms:
+  </p>
+  <ul>
+    <li>You must have the right to upload the photo. If the photo includes anyone other than you, you must have that person's consent.</li>
+    <li>You consent to your photo being shared with the image-generation providers we use (currently Google Gemini and OpenAI), strictly for the purpose of generating posts you request.</li>
+    <li>Your photo will not be used to train AI models. See the <a href="/privacy#ai">Privacy Policy AI section</a>.</li>
+    <li>You can delete your photo at any time. Deletion removes it from our storage immediately. Posts already published with that photo remain on the social platforms until you remove them there.</li>
+    <li>Generated images are watermarked with AI-provenance metadata (XMP/EXIF) so they can be identified as AI-generated by tools that read those tags.</li>
+  </ul>
+
+  <h2 id="availability">10. Service availability</h2>
+  <p>
+    We aim for high uptime but do not guarantee any specific service level on standard plans. The service depends on third-party providers (Slack, Telegram, Meta, AI providers, hosting) whose own outages can affect us. We are not responsible for outages caused by third parties.
+  </p>
+  <p>
+    Scheduled maintenance, when needed, will be announced in advance where possible.
+  </p>
+
+  <h2 id="termination">11. Suspension & termination</h2>
+  <p>
+    <strong>You can stop using gen8r at any time.</strong> Cancel your subscription via the brand portal or email <a href="mailto:support@gen8r.ai">support@gen8r.ai</a>. Your data will be retained per the Privacy Policy retention schedule.
+  </p>
+  <p>
+    <strong>We may suspend or terminate your account</strong> if:
+  </p>
+  <ul>
+    <li>You materially breach these Terms (especially the Acceptable Use section)</li>
+    <li>Your payment fails and is not corrected after 14 days</li>
+    <li>Your usage threatens platform stability or other customers</li>
+    <li>We are required to do so by law or by a sub-processor (e.g. Meta suspending your page tokens)</li>
+  </ul>
+  <p>
+    Where the breach is not severe, we will give you notice and a chance to cure before terminating.
+  </p>
+
+  <h2 id="ip">12. Intellectual property</h2>
+  <p>
+    The gen8r platform — including the application code, prompts, brand-kit logic, flyer templates, and design system — is owned by LiftLogic AI. These Terms grant you a limited, non-exclusive, non-transferable licence to use the platform per your subscription. They do not transfer ownership of any platform component to you.
+  </p>
+  <p>
+    Conversely, you retain all rights in your own brand assets and content. Generating a post through gen8r does not transfer ownership of your brand inputs to us.
+  </p>
+
+  <h2 id="third-party">13. Third-party platforms</h2>
+  <p>
+    Publishing through gen8r relies on Meta's Graph API (Facebook and Instagram). Your relationship with Meta is governed by Meta's own terms. We facilitate publishing but do not control:
+  </p>
+  <ul>
+    <li>Whether Meta accepts your post (rejections, shadowbans, account restrictions)</li>
+    <li>Token expiry, permission scopes, or app-review status changes</li>
+    <li>Engagement metrics accuracy (data comes from Meta Insights as-is)</li>
+  </ul>
+  <p>
+    The same applies to Slack and Telegram for inbound interactions. If those platforms suspend your account or change their APIs, our ability to deliver service may be affected.
+  </p>
+
+  <h2 id="disclaimers">14. Disclaimers</h2>
+  <p>
+    <strong>To the maximum extent permitted by law</strong>, gen8r is provided <em>"as is"</em> and <em>"as available"</em>, without warranty of any kind, whether express, implied, or statutory. We do not warrant that:
+  </p>
+  <ul>
+    <li>The service will meet your specific marketing or revenue goals</li>
+    <li>AI-generated content will be accurate, on-brand, or platform-compliant in every case</li>
+    <li>The service will be uninterrupted, error-free, or secure against every threat</li>
+    <li>Any data, including engagement metrics, is complete or current</li>
+  </ul>
+  <p>
+    Statutory consumer guarantees that cannot be excluded under your local law continue to apply and are not limited by these Terms.
+  </p>
+
+  <h2 id="liability">15. Limitation of liability</h2>
+  <p>
+    <strong>To the maximum extent permitted by law</strong>, our total liability to you arising out of or relating to these Terms or the service is limited to the greater of:
+  </p>
+  <ul>
+    <li>The fees you paid to us in the 12 months immediately before the event giving rise to liability, or</li>
+    <li>USD $100.</li>
+  </ul>
+  <p>
+    Neither party is liable for indirect, consequential, special, incidental, or punitive damages, including lost profits, lost goodwill, or loss of data, even if advised of the possibility.
+  </p>
+  <p>
+    The limitations in this section reflect a reasonable allocation of risk between us and form a fundamental part of these Terms — without them, the Terms would be different.
+  </p>
+  <p>
+    Nothing in these Terms excludes liability that cannot be excluded by law (such as for death or personal injury caused by our negligence, or for fraud).
+  </p>
+
+  <h2 id="indemnity">16. Indemnification</h2>
+  <p>
+    You agree to indemnify and hold harmless LiftLogic AI, its officers, employees, and contractors, from any claim, damage, or expense (including reasonable legal fees) arising out of:
+  </p>
+  <ul>
+    <li>Content you publish through gen8r</li>
+    <li>Your breach of these Terms</li>
+    <li>Your infringement of any third-party right (intellectual property, privacy, publicity)</li>
+    <li>Your misuse of the service</li>
+  </ul>
+
+  <h2 id="law">17. Governing law and disputes</h2>
+  <p>
+    These Terms are governed by the laws of <strong>New South Wales, Australia</strong>, without regard to conflict-of-laws principles.
+  </p>
+  <p>
+    Disputes will first be addressed by good-faith negotiation. If negotiation does not resolve the dispute within 30 days, either party may submit it to the courts of New South Wales, which will have exclusive jurisdiction (subject to any non-waivable rights you have under your local consumer-protection laws).
+  </p>
+
+  <h2 id="changes">18. Changes to these Terms</h2>
+  <p>
+    We may update these Terms over time. Material changes will be communicated to active users by email or in-app notice at least 14 days before they take effect. Continued use of gen8r after the effective date constitutes acceptance of the revised Terms. If you do not accept the changes, you may cancel your subscription before they take effect.
+  </p>
+
+  <h2 id="contact">19. Contact</h2>
+  <p>
+    Questions about these Terms: <a href="mailto:hello@gen8r.ai">hello@gen8r.ai</a><br>
+    General support: <a href="mailto:support@gen8r.ai">support@gen8r.ai</a><br>
+    Operating entity: <strong>LiftLogic AI</strong><br>
+    Website: <a href="https://gen8r.ai">gen8r.ai</a>
+  </p>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="logo">gen<span class="logo-eight">8</span>r</div>
+      <div class="footer-copy">&copy; 2026 gen8r. All rights reserved.</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="/#pricing">Pricing</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/terms">Terms</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span>Built by <a href="https://liftlogic.dev" target="_blank">LiftLogic AI</a></span>
+    &nbsp;·&nbsp;
+    <span>In Collaboration with <a href="https://journeysunlimited.au" target="_blank">Journeys Unlimited</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
