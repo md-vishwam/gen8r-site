@@ -1707,6 +1707,7 @@ img { max-width: 100%; display: block; }
             <input type="text" name="name" placeholder="Your name" required>
             <input type="email" name="email" placeholder="Email address" required>
             <input type="tel" name="phone" placeholder="Phone (optional)">
+            <input type="url" name="companyUrl" placeholder="Company website (optional, e.g. yourbrand.com)">
             <select name="business_type" required>
               <option value="" disabled selected>Business type</option>
               <option value="travel_agency">Travel Agency</option>
@@ -2165,17 +2166,54 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     name: form.name.value,
     email: form.email.value,
     phone: form.phone.value,
+    companyUrl: form.companyUrl.value,
     business_type: form.business_type.value,
     source: 'gen8r-website-signup'
   };
 
+  // Maps the marketing-form business_type to the Gen8r backend's industry slug.
+  // Unknown values fall through to 'general'.
+  const BUSINESS_TYPE_TO_INDUSTRY = {
+    travel_agency: 'travel',
+    restaurant:    'restaurant',
+    yoga:          'yoga',
+    real_estate:   'real-estate',
+    hotel:         'travel',
+  };
+  const industry = BUSINESS_TYPE_TO_INDUSTRY[data.business_type] || 'general';
+
+  // Dual-fire so we never lose the lead even if app.gen8r.ai is down:
+  //   - /api/notify (Vercel)   → Telegram ping to @gen8r_notify_bot + Resend
+  //                              welcome email. Always fires.
+  //   - app.gen8r.ai/api/signup → real onboarding flow (creates Brand,
+  //                              mints Telegram bridge token, fires brand
+  //                              extraction if companyUrl, sends magic-link
+  //                              activation email). Best-effort.
+  const notifyP = fetch('/api/notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+
+  const signupP = fetch('https://app.gen8r.ai/api/signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name:       data.name,
+      email:      data.email,
+      phone:      data.phone,
+      companyUrl: data.companyUrl,
+      industry,
+    }),
+  }).catch((err) => {
+    // Backend unreachable — notify still ran, lead is captured. Log for ops.
+    console.warn('Signup backend POST failed (lead still captured via notify):', err);
+    return null;
+  });
+
   try {
-    const resp = await fetch('/api/notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!resp.ok) throw new Error('Request failed');
+    const [notifyRes] = await Promise.all([notifyP, signupP]);
+    if (!notifyRes || !notifyRes.ok) throw new Error('Request failed');
     form.reset();
     signupCollapse.classList.remove('open');
     signupToggle.style.display = '';
