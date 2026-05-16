@@ -19,7 +19,7 @@ No build tools, frameworks, bundlers, or package managers. To develop, open `ind
 
 Both `signupForm` and `contactForm` POST to `/api/notify` (a Vercel serverless function at `api/notify.js`). The function forwards submissions to a Telegram bot (`@gen8r_notify_bot`) via the Telegram Bot API. Bot token and chat ID are stored as Vercel environment variables (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`). The data payloads include a `source` field (`gen8r-website-signup` / `gen8r-website-contact`) to distinguish notification types.
 
-For signups (only), an additional welcome email is sent to the user via Resend's REST API (`https://api.resend.com/emails`). Sender: `Maulik Doshi <maulik@gen8r.ai>`, reply-to same. Email is non-blocking — Telegram notification is the source of truth, and email failures are logged but do not fail the signup. Requires `RESEND_API_KEY` env var on Vercel; if unset, the welcome email step is skipped silently. Domain `gen8r.ai` must be verified in the Resend dashboard (DKIM + SPF records on Cloudflare).
+The welcome email to the signed-up customer is sent by the Gen8r backend (`app.gen8r.ai/api/signup`), NOT from this Vercel function. The backend's welcome email carries the magic-link Stripe activation + brand portal access + Telegram bridge token — `api/notify.js` here is only responsible for the Telegram lead-ping to ops (`@gen8r_notify_bot`) and for routing contact-form messages. The `RESEND_API_KEY` env var was used historically for a duplicate Vercel-side welcome email; it's now unused and can be removed from the Vercel project settings.
 
 ## Key External Integrations
 
