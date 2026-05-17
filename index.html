@@ -1707,20 +1707,8 @@ img { max-width: 100%; display: block; }
             <input type="text" name="name" placeholder="Your name" required>
             <input type="email" name="email" placeholder="Email address" required>
             <input type="tel" name="phone" placeholder="Phone (optional)">
+            <input type="text" name="companyName" placeholder="Company name (used if we can't detect it from your website)">
             <input type="url" name="companyUrl" placeholder="Company website (optional, e.g. yourbrand.com)">
-            <select name="business_type" required>
-              <option value="" disabled selected>Business type</option>
-              <option value="travel_agency">Travel Agency</option>
-              <option value="restaurant">Restaurant / Cafe</option>
-              <option value="retail">Retail Store</option>
-              <option value="salon_spa">Salon / Spa</option>
-              <option value="yoga">Yoga / Wellness</option>
-              <option value="real_estate">Real Estate</option>
-              <option value="fitness">Gym / Fitness</option>
-              <option value="hotel">Hotel / Hospitality</option>
-              <option value="professional">Professional Services</option>
-              <option value="other">Other</option>
-            </select>
             <button type="submit" class="btn-primary">Submit &rarr;</button>
             <div class="form-msg" id="signupMsg"></div>
             <div class="form-note">1 free campaign &middot; Card validated later, not charged</div>
@@ -2166,29 +2154,22 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     name: form.name.value,
     email: form.email.value,
     phone: form.phone.value,
+    companyName: form.companyName.value,
     companyUrl: form.companyUrl.value,
-    business_type: form.business_type.value,
     source: 'gen8r-website-signup'
   };
 
-  // Maps the marketing-form business_type to the Gen8r backend's industry slug.
-  // Unknown values fall through to 'general'.
-  const BUSINESS_TYPE_TO_INDUSTRY = {
-    travel_agency: 'travel',
-    restaurant:    'restaurant',
-    yoga:          'yoga',
-    real_estate:   'real-estate',
-    hotel:         'travel',
-  };
-  const industry = BUSINESS_TYPE_TO_INDUSTRY[data.business_type] || 'general';
-
   // Dual-fire so we never lose the lead even if app.gen8r.ai is down:
-  //   - /api/notify (Vercel)   → Telegram ping to @gen8r_notify_bot + Resend
-  //                              welcome email. Always fires.
+  //   - /api/notify (Vercel)   → Telegram ping to @gen8r_notify_bot. Always
+  //                              fires; preserves the lead if app is down.
   //   - app.gen8r.ai/api/signup → real onboarding flow (creates Brand,
   //                              mints Telegram bridge token, fires brand
   //                              extraction if companyUrl, sends magic-link
   //                              activation email). Best-effort.
+  //
+  // companyName: Brand.name fallback when extraction can't find a name on
+  // the URL (og:site_name / title / domain heuristic all empty). Extracted
+  // name still wins if found — companyName is the safety net.
   const notifyP = fetch('/api/notify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -2199,11 +2180,11 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      name:       data.name,
-      email:      data.email,
-      phone:      data.phone,
-      companyUrl: data.companyUrl,
-      industry,
+      name:        data.name,
+      email:       data.email,
+      phone:       data.phone,
+      companyName: data.companyName,
+      companyUrl:  data.companyUrl,
     }),
   }).catch((err) => {
     // Backend unreachable — notify still ran, lead is captured. Log for ops.

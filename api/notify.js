@@ -40,7 +40,7 @@ export default async function handler(req, res) {
 }
 
 function formatMessage(data) {
-  const { source, name, email, phone, business_type, message } = data;
+  const { source, name, email, phone, companyName, companyUrl, message } = data;
 
   if (source === 'gen8r-website-signup') {
     return [
@@ -48,8 +48,9 @@ function formatMessage(data) {
       '',
       `<b>Name:</b> ${esc(name)}`,
       `<b>Email:</b> ${esc(email)}`,
-      phone ? `<b>Phone:</b> ${esc(phone)}` : null,
-      business_type ? `<b>Business:</b> ${esc(business_type)}` : null,
+      phone       ? `<b>Phone:</b> ${esc(phone)}`             : null,
+      companyName ? `<b>Company:</b> ${esc(companyName)}`     : null,
+      companyUrl  ? `<b>Website:</b> ${esc(companyUrl)}`      : null,
     ].filter(Boolean).join('\n');
   }
 
