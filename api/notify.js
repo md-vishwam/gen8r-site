@@ -39,8 +39,24 @@ export default async function handler(req, res) {
   }
 }
 
+// ISO-2 country → dial code lookup. Mirrors the 12 entries in the signup
+// dropdown. "OTHER" / unknown codes render the raw phone unchanged. Used to
+// prefix the local phone number with its country code for the ops Telegram
+// ping — gives @gen8r_notify_bot a fully-dialable number without storing
+// the prefix on the form.
+const DIAL_CODES = {
+  AU: '+61', US: '+1', GB: '+44', IN: '+91', NZ: '+64', SG: '+65',
+  CA: '+1',  AE: '+971', IE: '+353', ZA: '+27', DE: '+49', PH: '+63',
+};
+
+function formatPhone(country, phone) {
+  if (!phone) return '';
+  const code = DIAL_CODES[(country || '').toUpperCase()];
+  return code ? `${code} ${phone}` : String(phone);
+}
+
 function formatMessage(data) {
-  const { source, name, email, phone, companyName, companyUrl, message } = data;
+  const { source, name, email, phone, country, companyName, companyUrl, message } = data;
 
   if (source === 'gen8r-website-signup') {
     return [
@@ -48,7 +64,8 @@ function formatMessage(data) {
       '',
       `<b>Name:</b> ${esc(name)}`,
       `<b>Email:</b> ${esc(email)}`,
-      phone       ? `<b>Phone:</b> ${esc(phone)}`             : null,
+      country     ? `<b>Country:</b> ${esc(country)}`         : null,
+      phone       ? `<b>Phone:</b> ${esc(formatPhone(country, phone))}` : null,
       companyName ? `<b>Company:</b> ${esc(companyName)}`     : null,
       companyUrl  ? `<b>Website:</b> ${esc(companyUrl)}`      : null,
     ].filter(Boolean).join('\n');
@@ -59,7 +76,7 @@ function formatMessage(data) {
     '',
     `<b>Name:</b> ${esc(name)}`,
     `<b>Email:</b> ${esc(email)}`,
-    phone ? `<b>Phone:</b> ${esc(phone)}` : null,
+    phone ? `<b>Phone:</b> ${esc(formatPhone(country, phone))}` : null,
     message ? `<b>Message:</b> ${esc(message)}` : null,
   ].filter(Boolean).join('\n');
 }

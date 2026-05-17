@@ -1706,7 +1706,34 @@ img { max-width: 100%; display: block; }
           <form class="signup-form" id="signupForm">
             <input type="text" name="name" placeholder="Your name" required>
             <input type="email" name="email" placeholder="Email address" required>
-            <input type="tel" name="phone" placeholder="Phone (for chat support)" required>
+            <!--
+              Phone country + local number. The country dropdown's `value` is
+              the ISO-2 code (AU, US, …); the visible label shows flag + dial
+              code so customers recognise the format. We submit `country` (ISO-2)
+              + `phone` (local digits, without dial code) separately, and the
+              Vercel notify function joins them as "+CC NN…" for the lead ping.
+              The instagrammer backend uses `country` to derive Brand.timezone
+              via countryToTimezone() as fallback when Vercel-IP timezone header
+              is missing.
+            -->
+            <div style="display:flex;gap:8px">
+              <select name="country" id="signupCountry" required style="flex:0 0 130px">
+                <option value="AU" selected>🇦🇺 +61 AU</option>
+                <option value="US">🇺🇸 +1 US</option>
+                <option value="GB">🇬🇧 +44 GB</option>
+                <option value="IN">🇮🇳 +91 IN</option>
+                <option value="NZ">🇳🇿 +64 NZ</option>
+                <option value="SG">🇸🇬 +65 SG</option>
+                <option value="CA">🇨🇦 +1 CA</option>
+                <option value="AE">🇦🇪 +971 AE</option>
+                <option value="IE">🇮🇪 +353 IE</option>
+                <option value="ZA">🇿🇦 +27 ZA</option>
+                <option value="DE">🇩🇪 +49 DE</option>
+                <option value="PH">🇵🇭 +63 PH</option>
+                <option value="OTHER">🌐 Other</option>
+              </select>
+              <input type="tel" name="phone" placeholder="Phone (for chat support)" required style="flex:1">
+            </div>
             <input type="text" name="companyName" placeholder="Company name (of which campaigns will run)" required>
             <input type="url" name="companyUrl" placeholder="Company website (optional, e.g. yourbrand.com)">
             <button type="submit" class="btn-primary">Submit &rarr;</button>
@@ -2150,9 +2177,16 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
   msg.textContent = '';
   msg.className = 'form-msg';
 
+  // `country` is the ISO-2 code from the signup country dropdown (default AU).
+  // The backend uses it to derive Brand.timezone via countryToTimezone() when
+  // the Vercel-IP timezone header is absent (server-to-server, dev, or
+  // non-Vercel proxy). `phone` is just the local digits — the dial code is
+  // implied by `country` and rendered into the Telegram lead ping by the
+  // Vercel notify function. "OTHER" falls through to UTC.
   const data = {
     name: form.name.value,
     email: form.email.value,
+    country: form.country.value,
     phone: form.phone.value,
     companyName: form.companyName.value,
     companyUrl: form.companyUrl.value,
@@ -2182,6 +2216,7 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     body: JSON.stringify({
       name:        data.name,
       email:       data.email,
+      country:     data.country,
       phone:       data.phone,
       companyName: data.companyName,
       companyUrl:  data.companyUrl,
