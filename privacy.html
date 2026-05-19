@@ -446,14 +446,25 @@ a:hover { opacity: 0.75; }
 
   <h3 id="data-deletion">Meta data deletion</h3>
   <p>
-    When you disconnect Gen8r from your Facebook or Instagram account — either by removing Gen8r from your Facebook account settings (<em>Settings → Apps and Websites</em>) or by emailing <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a> with a request to disconnect Meta — we delete the following within 30 days:
+    You can delete the Meta connection data Gen8r holds for you at any time via the Gen8r Brand Portal:
+  </p>
+  <ol>
+    <li>Open the Brand Portal at <strong>app.gen8r.ai</strong>.</li>
+    <li>Go to <em>Settings → Publishing Platforms</em>.</li>
+    <li>Click <strong>Disconnect</strong> next to Facebook and/or Instagram.</li>
+  </ol>
+  <p>
+    This immediately deletes the following from our database:
   </p>
   <ul>
     <li>Your Facebook Page Access Token and Instagram User Access Token</li>
     <li>Your Facebook Page ID and Instagram Business Account ID</li>
   </ul>
   <p>
-    We also stop fetching engagement metrics for posts previously published via those connections. Your Gen8r account, Telegram chat connection, Slack workspace, brand kit, and historical post records remain unaffected. To delete those as well, email <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a> and reference "full account deletion".
+    Engagement metrics already fetched for posts published via those connections expire automatically with each published-post record (typically 30 days after publish). If you'd like those records cleared sooner, or want to confirm deletion in writing, email <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a> with the subject <em>"Meta data deletion request"</em> — we respond within 30 days.
+  </p>
+  <p>
+    Revoking Gen8r's access at Meta's side (<em>Facebook → Settings → Apps and Websites → Remove Gen8r</em>) invalidates our access tokens at the Meta layer but does not by itself clear the IDs from our database — use the Brand Portal Disconnect above to complete the deletion.
   </p>
 
   <h2 id="transfers">11. International data transfers</h2>
