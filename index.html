@@ -2229,12 +2229,29 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
   });
 
   try {
-    const [notifyRes] = await Promise.all([notifyP, signupP]);
+    const [notifyRes, signupRes] = await Promise.all([notifyP, signupP]);
     if (!notifyRes || !notifyRes.ok) throw new Error('Request failed');
     form.reset();
     signupCollapse.classList.remove('open');
     signupToggle.style.display = '';
-    signupToggle.textContent = "Check your inbox — you'll hear from us soon.";
+
+    // app.gen8r.ai/api/signup returns 409 when an account already exists
+    // for this email. The backend already fires:
+    //   (a) admin notify to ops
+    //   (b) a "someone tried to sign up with your email" alert to the
+    //       existing brand's contact
+    // so the legitimate owner is informed. Here we surface a useful
+    // message to whoever just filled the form — without it they'd see
+    // the generic "check your inbox" copy below and wait forever for a
+    // welcome email that will never arrive. Other backend statuses
+    // (network failure, 5xx, etc.) still fall through to the generic
+    // success message because the lead is captured via /api/notify.
+    if (signupRes && signupRes.status === 409) {
+      signupToggle.innerHTML = 'An account with this email already exists. <a href="https://app.gen8r.ai/login" style="color:inherit;text-decoration:underline">Log in instead &rarr;</a>';
+    } else {
+      signupToggle.textContent = "Check your inbox — you'll hear from us soon.";
+    }
+
     signupToggle.disabled = true;
     signupToggle.style.opacity = '0.8';
   } catch (err) {
