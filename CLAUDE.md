@@ -49,4 +49,4 @@ The welcome email is sent by `app.gen8r.ai/api/signup`, NOT by this Vercel funct
 - Typography: `--font-display` (Instrument Serif) for headings, `--font-body` (DM Sans) for text, `--font-mono` (JetBrains Mono) for code/labels
 - Gradient palette defined in `--gradient-1` and `--gradient-2`
 - Scroll-reveal animation system using `.reveal` class + IntersectionObserver (add `.reveal-delay-1` through `.reveal-delay-3` for staggered animations)
-- Pricing tiers: Solo ($29), Pro ($79), Agency ($149) — referenced in JSON-LD structured data, so keep both in sync
+- Pricing tiers: Starter ($29), Growth ($49), Pro ($99) — the JSON-LD `AggregateOffer` in `<head>` carries `lowPrice`/`highPrice`/`offerCount`, so keep it in sync when prices or tier count change
