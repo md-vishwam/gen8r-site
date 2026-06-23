@@ -10,7 +10,7 @@ gen8r.ai — a landing page for an AI-powered social media campaign tool. The pr
 
 The landing page is a **single self-contained file**, `index.html` (~2300 lines) — CSS, HTML, and JS are all inline, in that order:
 - **CSS**: Custom properties in `:root`, component styles, responsive breakpoints, animations
-- **HTML**: Sections in order — Nav, Hero, How It Works, Demo Preview (toggleable panels `#demo-travel` / `#demo-yoga` / `#demo-realestate`), Features, Pricing, FAQ, Get Started (signup form + Telegram CTA + Calendly booking), Contact, Footer
+- **HTML**: Sections in order — Nav, Hero, How It Works, Demo Preview (toggleable panels `#demo-travel` / `#demo-yoga` / `#demo-realestate`), Features, "What it replaces", Pricing, FAQ, Get Started (`#start`: signup form + Brand Portal login CTA + Calendly booking), Contact, Footer. `#start` lives after the FAQ so pricing/FAQ CTAs (`href="#start"`) scroll down into it.
 - **JavaScript**: Scroll reveal (IntersectionObserver), nav scroll/mobile toggle, FAQ accordion, signup toggle, form submission handlers (`signupForm`, `contactForm`), smooth-scroll for anchor links
 
 Line numbers drift as the file grows — locate things by section comment (`// ── Contact Form ──`), element `id`, or CSS selector rather than by line.
