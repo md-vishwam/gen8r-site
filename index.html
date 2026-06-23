@@ -795,6 +795,27 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase;
   border-radius: 100px;
 }
+.pricing-free-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 16px;
+  background: var(--gold);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.pricing-free-note {
+  font-size: 13px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
 .pricing-name {
   font-size: 16px;
   font-weight: 600;
@@ -1683,10 +1704,10 @@ img { max-width: 100%; display: block; }
       <div class="start-card reveal reveal-delay-1">
         <div class="start-card-icon">&#9998;</div>
         <h3>Sign Up</h3>
-        <p>Create your account and get one month of free Start Pack to try gen8r out. No payment required.</p>
+        <p>Create your account and get your first month on the Starter plan &mdash; free. No payment required.</p>
         <div class="start-card-footer">
         <button class="btn-primary" id="signupToggle" style="width:100%;justify-content:center;">Sign Up &rarr;</button>
-        <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">1 free campaign &middot; No payment required</div>
+        <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">First month free &middot; No payment required</div>
         <div class="signup-collapse" id="signupCollapse">
           <form class="signup-form" id="signupForm">
             <input type="text" name="name" placeholder="Your name" required>
@@ -1723,7 +1744,7 @@ img { max-width: 100%; display: block; }
             <input type="url" name="companyUrl" placeholder="Company website (optional, e.g. yourbrand.com)">
             <button type="submit" class="btn-primary">Submit &rarr;</button>
             <div class="form-msg" id="signupMsg"></div>
-            <div class="form-note">1 Month Free - Starter Pack &middot; Card validated later, not charged</div>
+            <div class="form-note">First month free on Starter &middot; Card validated, not charged</div>
           </form>
         </div>
         </div>
@@ -1865,12 +1886,14 @@ img { max-width: 100%; display: block; }
     <div class="pricing-grid">
       <!-- Starter -->
       <div class="pricing-card reveal reveal-delay-1">
+        <div class="pricing-free-badge">First month free</div>
         <div class="pricing-name">Starter</div>
         <div class="pricing-price">
           <span class="pricing-currency">$</span>
           <span class="pricing-amount">29</span>
           <span class="pricing-period">/mo</span>
         </div>
+        <div class="pricing-free-note">Free for your first month &mdash; then subscribe to continue. No card charged.</div>
         <div class="pricing-divider"></div>
         <ul class="pricing-features">
           <li>2 campaigns per month</li>
@@ -1884,7 +1907,7 @@ img { max-width: 100%; display: block; }
           <li>Engagement analytics</li>
           <li>Slack or Telegram bot</li>
         </ul>
-        <a href="#start" class="pricing-btn pricing-btn-outline">Get Started</a>
+        <a href="#start" class="pricing-btn pricing-btn-outline">Start free &rarr;</a>
       </div>
       <!-- Growth -->
       <div class="pricing-card featured reveal reveal-delay-2">
@@ -1998,7 +2021,7 @@ img { max-width: 100%; display: block; }
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <div class="faq-answer-inner">Your trial includes one full 10-piece campaign with posts, flyers, and reel videos. When it finishes, you can pick a plan. Your card is validated upfront but never charged during the trial. No surprise bills.</div>
+          <div class="faq-answer-inner">You get your first month on the Starter plan free &mdash; real campaigns, flyers, and reel videos up to the Starter limits. After 30 days your account pauses until you subscribe to a plan; nothing publishes and you're never auto-charged. Your card is validated at signup but not charged during the free month.</div>
         </div>
       </div>
       <div class="faq-item">
