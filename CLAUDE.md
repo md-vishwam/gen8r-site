@@ -8,18 +8,31 @@ gen8r.ai — a landing page for an AI-powered social media campaign tool. The pr
 
 ## Architecture
 
-This is a **single-file static site** — everything lives in `index.html` (~1950 lines):
-- **CSS** (lines ~11–1210): Custom properties in `:root`, component styles, responsive breakpoints, animations
-- **HTML** (lines ~1213–1808): Sections in order: Nav, Hero, How It Works, Demo Preview, Features, Pricing, FAQ, Get Started (signup form + Telegram CTA + Calendly booking), Contact, Footer
-- **JavaScript** (lines ~1810–end): Scroll reveal (IntersectionObserver), nav scroll/mobile toggle, FAQ accordion, signup toggle, form submission handlers (`signupForm`, `contactForm`), smooth-scroll for anchor links
+The landing page is a **single self-contained file**, `index.html` (~2300 lines) — CSS, HTML, and JS are all inline, in that order:
+- **CSS**: Custom properties in `:root`, component styles, responsive breakpoints, animations
+- **HTML**: Sections in order — Nav, Hero, How It Works, Demo Preview (toggleable panels `#demo-travel` / `#demo-yoga` / `#demo-realestate`), Features, Pricing, FAQ, Get Started (signup form + Telegram CTA + Calendly booking), Contact, Footer
+- **JavaScript**: Scroll reveal (IntersectionObserver), nav scroll/mobile toggle, FAQ accordion, signup toggle, form submission handlers (`signupForm`, `contactForm`), smooth-scroll for anchor links
 
-No build tools, frameworks, bundlers, or package managers. To develop, open `index.html` in a browser.
+Line numbers drift as the file grows — locate things by section comment (`// ── Contact Form ──`), element `id`, or CSS selector rather than by line.
+
+### Other pages
+`privacy.html`, `terms.html`, and `open-telegram.html` are **independent** static pages, each with its own inline CSS (they do NOT share styles with `index.html`). A change to the design system in `index.html` will not propagate to them — update each page deliberately. `open-telegram.html` is the deep-link bridge that sends mobile users into `https://t.me/Gen8rBot?start=web` and shows a QR for desktop.
+
+No build tools, frameworks, bundlers, or package managers — there is nothing to build, lint, or test. To develop, open the HTML file in a browser. Deployment is via Vercel (static files + the `api/` serverless function); pushing to the repo triggers a deploy.
 
 ## Form Submission Flow
 
-Both `signupForm` and `contactForm` POST to `/api/notify` (a Vercel serverless function at `api/notify.js`). The function forwards submissions to a Telegram bot (`@gen8r_notify_bot`) via the Telegram Bot API. Bot token and chat ID are stored as Vercel environment variables (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`). The data payloads include a `source` field (`gen8r-website-signup` / `gen8r-website-contact`) to distinguish notification types.
+Both forms tag their payload with a `source` field (`gen8r-website-signup` / `gen8r-website-contact`) so the serverless function can format the notification correctly.
 
-The welcome email to the signed-up customer is sent by the Gen8r backend (`app.gen8r.ai/api/signup`), NOT from this Vercel function. The backend's welcome email carries the magic-link Stripe activation + brand portal access + Telegram bridge token — `api/notify.js` here is only responsible for the Telegram lead-ping to ops (`@gen8r_notify_bot`) and for routing contact-form messages. The `RESEND_API_KEY` env var was used historically for a duplicate Vercel-side welcome email; it's now unused and can be removed from the Vercel project settings.
+**Contact form** — single POST to `/api/notify` (the Vercel function at `api/notify.js`), which forwards to the internal Telegram bot (`@gen8r_notify_bot`) via the Telegram Bot API. Token and chat ID are Vercel env vars (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`).
+
+**Signup form** — **dual-fires** two requests in parallel (`index.html`, `signupForm` handler):
+1. `/api/notify` (Vercel → Telegram ops ping) — always fires; this is what guarantees the lead is captured even if the backend is down. The form's success/error state is driven by THIS response.
+2. `https://app.gen8r.ai/api/signup` (the real onboarding backend, separate repo) — best-effort, wrapped in `.catch()`. Creates the Brand, mints the Telegram bridge token, kicks off brand extraction when `companyUrl` is given, and sends the magic-link activation email. A `409` here means the email already has an account → the form swaps in a "Log in instead" message; all other backend outcomes fall through to the generic success copy because the lead is already captured via notify.
+
+The welcome email is sent by `app.gen8r.ai/api/signup`, NOT by this Vercel function — `api/notify.js` only does the ops Telegram ping and contact routing. The `RESEND_API_KEY` env var (historical duplicate welcome email) is now unused and can be removed from Vercel.
+
+**Keep in sync:** `notify.js` has a `DIAL_CODES` map that mirrors the 12-entry country dropdown in the signup form (`#signupCountry`). If you add/remove a country option in `index.html`, update `DIAL_CODES` so the ops ping shows a fully-dialable phone number.
 
 ## Key External Integrations
 
