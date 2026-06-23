@@ -18,7 +18,7 @@ Line numbers drift as the file grows — locate things by section comment (`// �
 ### Other pages
 `privacy.html`, `terms.html`, and `open-telegram.html` are **independent** static pages, each with its own inline CSS (they do NOT share styles with `index.html`). A change to the design system in `index.html` will not propagate to them — update each page deliberately. `open-telegram.html` is the deep-link bridge that sends mobile users into `https://t.me/Gen8rBot?start=web` and shows a QR for desktop.
 
-No build tools, frameworks, bundlers, or package managers — there is nothing to build, lint, or test. To develop, open the HTML file in a browser. Deployment is via Vercel (static files + the `api/` serverless function); pushing to the repo triggers a deploy.
+No build tools, frameworks, bundlers, or package managers — there is nothing to build, lint, or test. To develop, open the HTML file in a browser. Note that opening `index.html` via `file://` (or a plain static server) leaves `/api/notify` unrouted, so form submissions will fail — run `vercel dev` to exercise the signup/contact forms and the `api/notify.js` function end-to-end. Deployment is via Vercel (static files + the `api/` serverless function); pushing to the repo triggers a deploy.
 
 ## Form Submission Flow
 
@@ -32,7 +32,7 @@ Both forms tag their payload with a `source` field (`gen8r-website-signup` / `ge
 
 The welcome email is sent by `app.gen8r.ai/api/signup`, NOT by this Vercel function — `api/notify.js` only does the ops Telegram ping and contact routing. The `RESEND_API_KEY` env var (historical duplicate welcome email) is now unused and can be removed from Vercel.
 
-**Keep in sync:** `notify.js` has a `DIAL_CODES` map that mirrors the 12-entry country dropdown in the signup form (`#signupCountry`). If you add/remove a country option in `index.html`, update `DIAL_CODES` so the ops ping shows a fully-dialable phone number.
+**Keep in sync:** `notify.js` has a `DIAL_CODES` map that mirrors the 12 dialable countries in the signup dropdown (`#signupCountry`, which also carries a 13th `OTHER` option with no dial code). If you add/remove a dialable country option in `index.html`, update `DIAL_CODES` so the ops ping shows a fully-dialable phone number.
 
 ## Key External Integrations
 
