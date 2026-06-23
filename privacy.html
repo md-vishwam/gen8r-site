@@ -302,7 +302,7 @@ a:hover { opacity: 0.75; }
   <header class="legal-header">
     <div class="legal-eyebrow">Legal</div>
     <h1>Privacy <em>Policy</em></h1>
-    <div class="legal-meta">Last updated: 7 May 2026 · Effective: 7 May 2026</div>
+    <div class="legal-meta">Last updated: 23 June 2026 · Effective: 23 June 2026</div>
     <p class="legal-intro">
       This policy explains what data gen8r collects, why we collect it, who we share it with, how long we keep it, and what rights you have. We've tried to write it in plain language. If anything is unclear, email <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a>.
     </p>
@@ -347,7 +347,7 @@ a:hover { opacity: 0.75; }
   <ul>
     <li><strong>Account</strong> — name, email, phone, business name, industry</li>
     <li><strong>Brand</strong> — voice, audience, logo, colours, optional face photo for personalised posts</li>
-    <li><strong>Connected platforms</strong> — channel identifiers (Slack workspace, Telegram chat) and Meta access tokens needed to publish on your behalf</li>
+    <li><strong>Connected platforms</strong> — identifiers for your inbound channels (Slack workspace, Telegram chat) and references to the social accounts you connect for publishing (Facebook, Instagram, YouTube, TikTok, LinkedIn, Pinterest, Google Business Profile, WhatsApp, Reddit). The access tokens for those publishing connections are held by our publishing providers (Postproxy and Zernio), not by us — we store only the account reference/ID needed to send your posts</li>
     <li><strong>Content</strong> — campaign briefs, captions, scheduled posts, files you upload</li>
   </ul>
 
@@ -358,7 +358,7 @@ a:hover { opacity: 0.75; }
   <ul>
     <li>API call logs (model used, tokens, latency) for billing and troubleshooting</li>
     <li>Server logs (IP for rate-limiting, error traces) on a 30-day rolling basis</li>
-    <li>Engagement metrics for posts you've published, pulled from Meta Insights</li>
+    <li>Engagement metrics for posts you've published, pulled from our publishing providers (Postproxy and Zernio) and the destination platforms' APIs</li>
   </ul>
 
   <h2 id="how">3. How we use it</h2>
@@ -386,7 +386,7 @@ a:hover { opacity: 0.75; }
     <li><strong>AI providers (LLMs and image generation)</strong> — OpenRouter (which routes to OpenAI, Google, Anthropic), Replicate</li>
     <li><strong>Web search enrichment</strong> — Tavily</li>
     <li><strong>Stock images</strong> — Pixabay, Pexels, Unsplash</li>
-    <li><strong>Publishing</strong> — Meta (Facebook, Instagram)</li>
+    <li><strong>Publishing &amp; scheduling</strong> — <a href="https://postproxy.dev/privacy-policy/" target="_blank" rel="noopener">Postproxy</a> (Facebook, Instagram, YouTube, TikTok, LinkedIn, Pinterest, Google Business Profile) and <a href="https://zernio.com/privacy-policy" target="_blank" rel="noopener">Zernio</a> (WhatsApp, Reddit). These providers hold the platform access tokens and transmit your approved posts and media to the destination platforms on your behalf; each destination platform then processes that content under its own terms.</li>
     <li><strong>Inbound channels</strong> — Slack, Telegram</li>
     <li><strong>Hosting & infrastructure</strong> — Oracle Cloud, MongoDB Atlas, Vercel</li>
     <li><strong>Email</strong> — Resend</li>
@@ -409,7 +409,7 @@ a:hover { opacity: 0.75; }
     <li>It is shared with our image-generation providers (Google Gemini and OpenAI) <em>only</em> when you ask for a personal post or personal flyer.</li>
     <li>Providers receive the photo as a one-shot reference for that single render; they do not retain it for training or future generations.</li>
     <li>You can replace your photo at any time. The new photo replaces the old; previously generated posts retain the photo they were created with.</li>
-    <li>You can delete your photo at any time. Deletion removes the file from our storage immediately. Posts already published to Facebook/Instagram remain there until you remove them on those platforms.</li>
+    <li>You can delete your photo at any time. Deletion removes the file from our storage immediately. Posts already published to your social platforms remain there until you remove them on those platforms.</li>
     <li>Consent is captured once at first upload and not assumed for replacement uploads. The exact wording is: <em>"I consent to use my photo for AI image generation, deletable anytime, no model training, no third-party sharing beyond image providers."</em></li>
   </ul>
 
@@ -461,32 +461,29 @@ a:hover { opacity: 0.75; }
     To exercise any of these rights, email <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a>. We will respond within 30 days. We may need to verify your identity before acting on a request.
   </p>
 
-  <h3 id="data-deletion">Meta data deletion</h3>
+  <h3 id="data-deletion">Disconnecting publishing platforms &amp; deleting connection data</h3>
   <p>
-    You can delete the Meta connection data Gen8r holds for you at any time via the Gen8r Brand Portal:
+    You can disconnect any connected social account and delete the connection data Gen8r holds for you at any time via the Gen8r Brand Portal:
   </p>
   <ol>
     <li>Open the Brand Portal at <strong>app.gen8r.ai</strong>.</li>
     <li>Go to <em>Settings → Publishing Platforms</em>.</li>
-    <li>Click <strong>Disconnect</strong> next to Facebook and/or Instagram.</li>
+    <li>Click <strong>Disconnect</strong> next to the platform you want to remove (Facebook, Instagram, YouTube, TikTok, LinkedIn, Pinterest, Google Business Profile, WhatsApp, or Reddit).</li>
   </ol>
   <p>
-    This immediately deletes the following from our database:
+    Publishing and scheduling are carried out on our behalf by <strong>Postproxy</strong> (Facebook, Instagram, YouTube, TikTok, LinkedIn, Pinterest, Google Business Profile) and <strong>Zernio</strong> (WhatsApp, Reddit). The access tokens for your connected accounts are held by those providers, not stored in our database. Disconnecting in the Brand Portal:
   </p>
   <ul>
-    <li>Your Facebook Page Access Token and Instagram User Access Token</li>
-    <li>Your Facebook Page ID and Instagram Business Account ID</li>
+    <li>Deletes the account reference/ID we store for that platform; and</li>
+    <li>Instructs the relevant publishing provider (Postproxy or Zernio) to revoke and delete the access token it holds for that connection.</li>
   </ul>
   <p>
-    Engagement metrics already fetched for posts published via those connections expire automatically with each published-post record (typically 30 days after publish). If you'd like those records cleared sooner, or want to confirm deletion in writing, email <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a> with the subject <em>"Meta data deletion request"</em> — we respond within 30 days.
-  </p>
-  <p>
-    Revoking Gen8r's access at Meta's side (<em>Facebook → Settings → Apps and Websites → Remove Gen8r</em>) invalidates our access tokens at the Meta layer but does not by itself clear the IDs from our database — use the Brand Portal Disconnect above to complete the deletion.
+    Engagement metrics already fetched for posts published via those connections expire automatically with each published-post record (typically 30 days after publish). You can also revoke Gen8r's access directly from the platform's own settings (for example, a platform's "connected apps" or "business integrations" screen); doing so invalidates the connection at the platform layer, but you should still use the Brand Portal Disconnect above to clear the reference we store. If you'd like records cleared sooner, or want to confirm deletion in writing, email <a href="mailto:privacy@gen8r.ai">privacy@gen8r.ai</a> with the subject <em>"Publishing-platform data deletion request"</em> — we respond within 30 days.
   </p>
 
   <h2 id="transfers">11. International data transfers</h2>
   <p>
-    Our application is hosted in Australia (Oracle Cloud Sydney), but several of our sub-processors are based in the United States or the European Union. Where data is transferred outside the country it was collected in, we rely on the provider's own standard contractual clauses or equivalent safeguards. By using gen8r, you accept that your data may be processed in those jurisdictions.
+    Our application is hosted in Australia (Oracle Cloud Sydney), but several of our sub-processors are based in the United States or the European Union. Where data is transferred outside the country it was collected in, we rely on the provider's own standard contractual clauses or equivalent safeguards. Our publishing providers Postproxy and Zernio, and the destination platforms they transmit to, may also process your data outside your country under their own terms and safeguards. By using gen8r, you accept that your data may be processed in those jurisdictions.
   </p>
 
   <h2 id="security">12. Security</h2>

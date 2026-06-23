@@ -277,7 +277,7 @@ a:hover { opacity: 0.75; }
   <header class="legal-header">
     <div class="legal-eyebrow">Legal</div>
     <h1>Terms of <em>Service</em></h1>
-    <div class="legal-meta">Last updated: 7 May 2026 · Effective: 7 May 2026</div>
+    <div class="legal-meta">Last updated: 23 June 2026 · Effective: 23 June 2026</div>
     <p class="legal-intro">
       These terms are the contract between you and gen8r when you use the platform. They cover what's included, what's expected of you, how billing works, and the limits of our liability. Please read them — using gen8r means you accept them.
     </p>
@@ -392,7 +392,7 @@ a:hover { opacity: 0.75; }
     <li>Infringes copyright, trademark, or other intellectual-property rights</li>
     <li>Defames, libels, or invades the privacy of identifiable individuals</li>
     <li>Misrepresents your identity, your business, or factual matters in a way that constitutes fraud</li>
-    <li>Constitutes spam, deceptive marketing, or violates platform policies (Meta Community Standards, Slack ToS, Telegram ToS, etc.)</li>
+    <li>Constitutes spam, deceptive marketing, or violates the policies of any platform we publish to or integrate with (e.g. Meta Community Standards, YouTube, TikTok, LinkedIn, Pinterest, Google Business Profile, WhatsApp Business, Reddit, Slack and Telegram ToS) or of our publishing providers Postproxy and Zernio</li>
     <li>Distributes malware, phishing links, or attempts to compromise others' systems</li>
   </ul>
   <p>You also agree not to:</p>
@@ -445,7 +445,7 @@ a:hover { opacity: 0.75; }
 
   <h2 id="availability">10. Service availability</h2>
   <p>
-    We aim for high uptime but do not guarantee any specific service level on standard plans. The service depends on third-party providers (Slack, Telegram, Meta, AI providers, hosting) whose own outages can affect us. We are not responsible for outages caused by third parties.
+    We aim for high uptime but do not guarantee any specific service level on standard plans. The service depends on third-party providers — including our publishing providers <strong>Postproxy</strong> and <strong>Zernio</strong>, the social platforms they deliver to (Facebook, Instagram, YouTube, TikTok, LinkedIn, Pinterest, Google Business Profile, WhatsApp, Reddit), inbound channels (Slack, Telegram), AI providers, and hosting — whose own outages, errors, rate limits, or changes can affect us. We are not responsible for failures, delays, or losses caused by third parties.
   </p>
   <p>
     Scheduled maintenance, when needed, will be announced in advance where possible.
@@ -462,7 +462,7 @@ a:hover { opacity: 0.75; }
     <li>You materially breach these Terms (especially the Acceptable Use section)</li>
     <li>Your payment fails and is not corrected after 14 days</li>
     <li>Your usage threatens platform stability or other customers</li>
-    <li>We are required to do so by law or by a sub-processor (e.g. Meta suspending your page tokens)</li>
+    <li>We are required to do so by law, or a publishing provider or platform suspends or revokes your connection (e.g. Postproxy, Zernio, or a destination platform disabling your account or tokens)</li>
   </ul>
   <p>
     Where the breach is not severe, we will give you notice and a chance to cure before terminating.
@@ -476,17 +476,29 @@ a:hover { opacity: 0.75; }
     Conversely, you retain all rights in your own brand assets and content. Generating a post through gen8r does not transfer ownership of your brand inputs to us.
   </p>
 
-  <h2 id="third-party">13. Third-party platforms</h2>
+  <h2 id="third-party">13. Third-party platforms &amp; publishing providers</h2>
   <p>
-    Publishing through gen8r relies on Meta's Graph API (Facebook and Instagram). Your relationship with Meta is governed by Meta's own terms. We facilitate publishing but do not control:
+    gen8r does not publish to social networks directly. Publishing and scheduling are carried out on your behalf by independent third-party providers:
   </p>
   <ul>
-    <li>Whether Meta accepts your post (rejections, shadowbans, account restrictions)</li>
-    <li>Token expiry, permission scopes, or app-review status changes</li>
-    <li>Engagement metrics accuracy (data comes from Meta Insights as-is)</li>
+    <li><strong><a href="https://postproxy.dev/terms-conditions/" target="_blank" rel="noopener">Postproxy</a></strong> — Facebook, Instagram, YouTube, TikTok, LinkedIn, Pinterest, and Google Business Profile.</li>
+    <li><strong><a href="https://zernio.com/tos" target="_blank" rel="noopener">Zernio</a></strong> — WhatsApp and Reddit.</li>
   </ul>
   <p>
-    The same applies to Slack and Telegram for inbound interactions. If those platforms suspend your account or change their APIs, our ability to deliver service may be affected.
+    These providers, and each destination platform, operate under their own terms and policies, and your use of them is subject to those terms (links above are provided for convenience; we do not control third-party content, and those terms may change). We facilitate the connection and send your approved content, but we do not control and are not responsible for:
+  </p>
+  <ul>
+    <li>Whether a platform accepts, rejects, delays, alters, throttles, or removes your post, or restricts, shadowbans, or suspends your account</li>
+    <li>Posts that publish late, fail to publish, publish more than once, publish to the wrong account, or appear differently than previewed, where caused by a publishing provider or platform</li>
+    <li>Outages, bugs, data loss, security incidents, or changes to APIs, pricing, permissions, scopes, or app-review status at any provider or platform</li>
+    <li>The accuracy or completeness of engagement metrics, which are passed through from the providers and platforms as-is</li>
+    <li>Any act or omission of Postproxy, Zernio, or a destination platform, including loss of your content, tokens, or connection data held by them</li>
+  </ul>
+  <p>
+    To the maximum extent permitted by law, gen8r is not liable for any loss arising from the acts, omissions, errors, or outages of Postproxy, Zernio, or any destination platform, and the limitation of liability in section 15 applies to any such claim. Your remedies for a publishing provider's or platform's failure are against that provider or platform under its own terms, not against gen8r.
+  </p>
+  <p>
+    The same applies to Slack and Telegram for inbound interactions. If any of these platforms or providers suspend your account or change their APIs, our ability to deliver service may be affected.
   </p>
 
   <h2 id="disclaimers">14. Disclaimers</h2>
@@ -497,6 +509,7 @@ a:hover { opacity: 0.75; }
     <li>The service will meet your specific marketing or revenue goals</li>
     <li>AI-generated content will be accurate, on-brand, or platform-compliant in every case</li>
     <li>The service will be uninterrupted, error-free, or secure against every threat</li>
+    <li>Content will publish successfully, on time, only once, or at all — publishing relies on third-party providers (Postproxy, Zernio) and platforms whose behaviour we do not control</li>
     <li>Any data, including engagement metrics, is complete or current</li>
   </ul>
   <p>
@@ -529,6 +542,7 @@ a:hover { opacity: 0.75; }
     <li>Content you publish through gen8r</li>
     <li>Your breach of these Terms</li>
     <li>Your infringement of any third-party right (intellectual property, privacy, publicity)</li>
+    <li>Your breach of the terms or policies of any publishing provider (Postproxy, Zernio) or destination platform</li>
     <li>Your misuse of the service</li>
   </ul>
 
