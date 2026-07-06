@@ -21,7 +21,7 @@ const OUT_DIR = path.join(ROOT, 'c');
 // match the existing sitemap.xml convention).
 const STATIC_URLS = [
   { loc: `${brand.origin}/`, changefreq: 'weekly', priority: '1.0' },
-  { loc: `${brand.origin}/open-telegram.html`, changefreq: 'monthly', priority: '0.5' },
+  { loc: `${brand.origin}/open-telegram`, changefreq: 'monthly', priority: '0.5' },
   { loc: `${brand.origin}/privacy`, changefreq: 'yearly', priority: '0.3' },
   { loc: `${brand.origin}/terms`, changefreq: 'yearly', priority: '0.3' },
 ];
