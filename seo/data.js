@@ -26,6 +26,8 @@ const brand = {
     'https://www.instagram.com/gen8rai',
     'https://www.youtube.com/@gen8r',
     'https://www.tiktok.com/@gen8rai',
+    'https://www.pinterest.com/doshi4582/gen8r/',
+    'https://www.reddit.com/r/Gen8R/',
   ],
 };
 
