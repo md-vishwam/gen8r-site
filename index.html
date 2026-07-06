@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>gen8r — AI-Powered Social Media Campaigns</title>
+<title>gen8r — AI Social Media Campaigns for Small Business</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="description" content="Describe your business. Get a full social media campaign — captions, AI images, branded flyers, hashtags, reels — published on autopilot. From $29/mo.">
 <meta name="keywords" content="AI social media marketing, automated social media campaigns, Instagram automation, Facebook marketing, social media content generator, AI marketing tool, small business marketing">
@@ -12,7 +12,7 @@
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://gen8r.ai/">
-<meta property="og:title" content="gen8r — AI-Powered Social Media Campaigns">
+<meta property="og:title" content="gen8r — AI Social Media Campaigns for Small Business">
 <meta property="og:description" content="Describe your business. Get a full social media campaign — captions, AI images, branded flyers, hashtags, reels — published on autopilot. From $29/mo.">
 <meta property="og:site_name" content="gen8r">
 <meta property="og:image" content="https://gen8r.ai/og-preview.png">
@@ -22,7 +22,7 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="gen8r — AI-Powered Social Media Campaigns">
+<meta name="twitter:title" content="gen8r — AI Social Media Campaigns for Small Business">
 <meta name="twitter:description" content="Describe your business. Get a full social media campaign — captions, AI images, branded flyers, hashtags, reels — published on autopilot. From $29/mo.">
 <meta name="twitter:image" content="https://gen8r.ai/og-preview.png">
 
@@ -1355,6 +1355,16 @@ img { max-width: 100%; display: block; }
   gtag('js', new Date());
 
   gtag('config', 'G-MWDBQS20QL');
+
+  // ── Conversion tracking helper ──────────────────────────────────────────
+  // One place to fire conversions, and it never throws if gtag is blocked
+  // (adblockers) or hasn't loaded. Names use GA4's recommended events where
+  // they exist (sign_up, generate_lead); CTA clicks use custom names below.
+  // To make these show up in the "Key events" metric, mark them as Key events
+  // in GA4: Admin → Events → toggle "Mark as key event".
+  window.track = function (name, params) {
+    try { gtag('event', name, params || {}); } catch (e) { /* no-op */ }
+  };
 </script>
 <body>
 
@@ -1380,7 +1390,7 @@ img { max-width: 100%; display: block; }
 
 <main>
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
-<section class="hero">
+<section class="hero" id="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
   <div class="hero-content">
@@ -2086,6 +2096,7 @@ img { max-width: 100%; display: block; }
       <ul class="footer-links">
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
+        <li><a href="/c/">Guides</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="/privacy.html">Privacy</a></li>
         <li><a href="/terms.html">Terms</a></li>
@@ -2235,8 +2246,13 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     // success message because the lead is captured via /api/notify.
     if (signupRes && signupRes.status === 409) {
       signupToggle.innerHTML = 'An account with this email already exists. <a href="https://app.gen8r.ai/login" style="color:inherit;text-decoration:underline">Log in instead &rarr;</a>';
+      // Still a real conversion (a captured lead who intended to start), but an
+      // existing account rather than a fresh one — tag it so the two are
+      // distinguishable in GA.
+      track('sign_up', { method: 'website_form', status: 'existing' });
     } else {
       signupToggle.textContent = "Check your inbox — you'll hear from us soon.";
+      track('sign_up', { method: 'website_form', status: 'new' });
     }
 
     signupToggle.disabled = true;
@@ -2281,6 +2297,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     msg.textContent = "Message sent! We'll get back to you soon.";
     msg.className = 'form-msg success';
     form.reset();
+    track('generate_lead', { form: 'contact' });
   } catch (err) {
     msg.textContent = 'Something went wrong. Please try again.';
     msg.className = 'form-msg error';
@@ -2289,6 +2306,65 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     btn.disabled = false;
   }
 });
+
+// ── CTA click tracking ───────────────────────────────────────────────────────
+// Delegated so every CTA is covered — including ones added later — without
+// wiring each anchor. `location` is auto-derived from the enclosing section id,
+// so we can see WHICH placement drives clicks (hero vs pricing vs FAQ) with no
+// per-link tagging. Outbound links map to intent-named events; internal CTAs
+// (e.g. "Try Now" → #start) fire cta_click labelled by their text.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a');
+  if (!a) return;
+  const href = a.getAttribute('href') || '';
+  const sec = a.closest('section, nav, footer');
+  const loc = a.dataset.loc || (sec ? (sec.id || sec.getAttribute('class') || sec.tagName.toLowerCase()) : 'body');
+
+  if (href.includes('open-telegram') || href.includes('t.me/Gen8rBot')) {
+    track('telegram_start', { location: loc });        // customer entering the bot
+  } else if (href.includes('calendly.com')) {
+    track('book_call', { location: loc });             // booking a call
+  } else if (href.includes('app.gen8r.ai/review')) {
+    track('view_demo', { location: loc });             // viewing a live campaign
+  } else if (href.includes('app.gen8r.ai/login')) {
+    track('open_portal', { location: loc });           // heading to the brand portal
+  } else if (a.classList.contains('btn-primary') || a.classList.contains('btn-secondary') || a.dataset.cta) {
+    // Internal CTA — the main one is "Try Now" scrolling to the signup form.
+    // Label by text so we can see which placement pushes people to the form.
+    track('cta_click', {
+      location: loc,
+      label: (a.dataset.cta || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 40),
+      target: href,
+    });
+  }
+});
+
+// ── Section-view + scroll-depth tracking ─────────────────────────────────────
+// Shows how far down the page visitors actually get — the drop-off point in the
+// funnel — with no per-element wiring. Each fires once per pageview.
+(function () {
+  const seen = new Set();
+  const secObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && entry.target.id && !seen.has(entry.target.id)) {
+        seen.add(entry.target.id);
+        track('section_view', { section: entry.target.id });
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('section[id]').forEach((s) => secObserver.observe(s));
+
+  const marks = [25, 50, 75, 100];
+  let hit = 0;
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const pct = ((doc.scrollTop + window.innerHeight) / doc.scrollHeight) * 100;
+    while (hit < marks.length && pct >= marks[hit]) {
+      track('scroll_depth', { percent: marks[hit] });
+      hit++;
+    }
+  }, { passive: true });
+})();
 
 // ── Demo Industry Tabs ───────────────────────────────────────────────────────
 document.querySelectorAll('.demo-tab').forEach(tab => {

@@ -18,6 +18,8 @@ Line numbers drift as the file grows — locate things by section comment (`// �
 ### Other pages
 `privacy.html`, `terms.html`, and `open-telegram.html` are **independent** static pages, each with its own inline CSS (they do NOT share styles with `index.html`). A change to the design system in `index.html` will not propagate to them — update each page deliberately. `open-telegram.html` is the deep-link bridge that sends mobile users into `https://t.me/Gen8rBot?start=web` and shows a QR for desktop.
 
+**Keep in sync:** `sitemap.xml` lists the crawlable pages (note it uses the extensionless Vercel routes `/privacy` and `/terms`, but `/open-telegram.html` with its extension). Add/remove a page here when you add or delete one. `robots.txt` allows everything and points at the sitemap.
+
 No build tools, frameworks, bundlers, or package managers — there is nothing to build, lint, or test. To develop, open the HTML file in a browser. Note that opening `index.html` via `file://` (or a plain static server) leaves `/api/notify` unrouted, so form submissions will fail — run `vercel dev` to exercise the signup/contact forms and the `api/notify.js` function end-to-end. Deployment is via Vercel (static files + the `api/` serverless function); pushing to the repo triggers a deploy.
 
 ## Form Submission Flow
