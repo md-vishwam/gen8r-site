@@ -106,6 +106,14 @@ function renderPage({ vertical: v, contentType: ct, verticals, contentTypes }) {
   const structured = [
     {
       '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: brand.name,
+      url: brand.origin,
+      logo: `${brand.origin}/gen8r-logo.png`,
+      sameAs: brand.social,
+    },
+    {
+      '@context': 'https://schema.org',
       '@type': 'Article',
       headline: ct.label(v),
       description,

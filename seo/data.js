@@ -18,6 +18,15 @@ const brand = {
   name: 'gen8r',
   origin: 'https://gen8r.ai',
   tagline: 'AI social media campaigns for small business',
+  // Social profiles → emitted as Organization `sameAs` for entity/brand SEO.
+  // Keep in sync with the footer + Organization schema in index.html. Swap the
+  // numeric Facebook URL for /gen8r once the vanity username is claimed.
+  social: [
+    'https://www.facebook.com/profile.php?id=61589032155158',
+    'https://www.instagram.com/gen8rai',
+    'https://www.youtube.com/@gen8r',
+    'https://www.tiktok.com/@gen8rai',
+  ],
 };
 
 const verticals = [
