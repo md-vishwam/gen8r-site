@@ -1,0 +1,17 @@
+{
+  "_comment": "Time-series of monitoring snapshots, appended by the SEO monitoring agent each run. One object per run in 'snapshots'.",
+  "snapshots": [
+    {
+      "date": "2026-07-14",
+      "run": "baseline (manual, day 0)",
+      "gsc": { "clicks": 0, "impressions": 6, "avg_position": 34.5, "window_days": 8, "note": "all 3 queries are brand typos (gener8or/gen8/genr8r)" },
+      "serp": [
+        { "q": "gen8r ai social media", "rank": 1, "ranked_url": "https://www.gen8r.ai/", "target": "/", "winnable": "held" },
+        { "q": "ai social media campaign tool for small business", "rank": null, "target": "/", "winnable": "hard (Blaze/SocialBee/Buffer own it)" },
+        { "q": "ai instagram caption generator", "rank": null, "target": "/c/", "winnable": "no (Ahrefs/Hootsuite/Canva, DA90+) — pursue via AEO only" },
+        { "q": "instagram captions for a yoga studio", "rank": null, "target": "/c/instagram-captions-for-a-yoga-studio", "winnable": "yes-with-authority (mid-tier listicle competitors)" },
+        { "q": "15 day social media plan for a coffee shop", "rank": null, "target": "/c/15-day-social-media-plan-for-a-coffee-shop", "winnable": "yes-with-authority (marketing-blog competitors)" }
+      ]
+    }
+  ]
+}

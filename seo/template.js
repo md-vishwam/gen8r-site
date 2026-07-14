@@ -97,7 +97,7 @@ function relatedLinks(v, ct, verticals, contentTypes) {
     </nav>`;
 }
 
-function renderPage({ vertical: v, contentType: ct, verticals, contentTypes }) {
+function renderPage({ vertical: v, contentType: ct, verticals, contentTypes, buildDate }) {
   const url = pageUrl(v, ct);
   const title = `${ct.label(v)} — free, ready to post | ${brand.name}`;
   const description = `${ct.intro(v).split('. ').slice(0, 2).join('. ')}.`.slice(0, 158);
@@ -119,8 +119,15 @@ function renderPage({ vertical: v, contentType: ct, verticals, contentTypes }) {
       description,
       about: ct.query(v),
       url,
+      ...(buildDate ? { datePublished: buildDate, dateModified: buildDate } : {}),
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       isPartOf: { '@type': 'WebSite', name: brand.name, url: brand.origin },
-      publisher: { '@type': 'Organization', name: brand.name, url: brand.origin },
+      publisher: {
+        '@type': 'Organization',
+        name: brand.name,
+        url: brand.origin,
+        logo: { '@type': 'ImageObject', url: `${brand.origin}/gen8r-logo.png` },
+      },
     },
     {
       '@context': 'https://schema.org',

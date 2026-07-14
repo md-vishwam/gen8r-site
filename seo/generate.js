@@ -17,6 +17,11 @@ const { renderPage, pageSlug } = require('./template');
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'c');
 
+// Build date (YYYY-MM-DD) — stamped as <lastmod> in the sitemap and as
+// dateModified in each page's Article schema. A moving lastmod is a legitimate
+// recrawl signal: it tells Google/Bing the page changed since last crawl.
+const BUILD_DATE = new Date().toISOString().slice(0, 10);
+
 // Hand-maintained pages that must stay in the sitemap (extensionless routes, to
 // match the existing sitemap.xml convention).
 const STATIC_URLS = [
@@ -33,7 +38,7 @@ const generated = [];
 for (const vertical of verticals) {
   for (const contentType of contentTypes) {
     const slug = pageSlug(vertical, contentType);
-    const html = renderPage({ vertical, contentType, verticals, contentTypes });
+    const html = renderPage({ vertical, contentType, verticals, contentTypes, buildDate: BUILD_DATE });
     fs.writeFileSync(path.join(OUT_DIR, `${slug}.html`), html);
     generated.push({ slug, vertical, contentType });
   }
@@ -117,7 +122,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${allUrls
   .map(
     (u) =>
-      `  <url>\n    <loc>${u.loc}</loc>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`
+      `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${BUILD_DATE}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`
   )
   .join('\n')}
 </urlset>

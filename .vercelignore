@@ -1,0 +1,4 @@
+# Build-time SEO source + private monitoring data — not part of the served site.
+# Generated output lives in /c/ (committed separately); seo/ is source only.
+seo/
+report/

@@ -1,0 +1,28 @@
+{
+  "_comment": "Tracked keywords for the SEO monitoring agent. EDIT THIS LIST. Each entry: the query the agent searches, the page we WANT to rank, and intent. 'group' just organizes the report. Remove/add freely.",
+  "site": "gen8r.ai",
+  "brand_terms": [
+    { "q": "gen8r", "target": "/", "note": "brand — must be #1" },
+    { "q": "gen8r ai", "target": "/", "note": "brand" },
+    { "q": "gen8r social media tool", "target": "/", "note": "brand + category" }
+  ],
+  "category_terms": [
+    { "q": "ai social media campaign tool for small business", "target": "/", "note": "core positioning, high competition" },
+    { "q": "ai tool to generate and publish instagram posts", "target": "/", "note": "core capability" },
+    { "q": "ai instagram caption generator", "target": "/c/", "note": "high volume, high competition" },
+    { "q": "automated social media campaign generator", "target": "/", "note": "core capability" },
+    { "q": "auto post to instagram and facebook ai", "target": "/", "note": "capability" }
+  ],
+  "vertical_longtail": [
+    { "q": "instagram captions for a yoga studio", "target": "/c/instagram-captions-for-a-yoga-studio", "note": "winnable long-tail" },
+    { "q": "15 day social media plan for a coffee shop", "target": "/c/15-day-social-media-plan-for-a-coffee-shop", "note": "winnable long-tail" },
+    { "q": "instagram reel ideas for a restaurant", "target": "/c/instagram-reel-ideas-for-a-restaurant", "note": "winnable long-tail" },
+    { "q": "social media content ideas for a hair salon", "target": "/c/15-day-social-media-plan-for-a-hair-salon", "note": "winnable long-tail" },
+    { "q": "instagram captions for real estate agents", "target": "/c/instagram-captions-for-a-real-estate-agent", "note": "winnable long-tail" }
+  ],
+  "comparison_aeo": [
+    { "q": "best ai social media tool for restaurants", "target": "(future comparison page)", "note": "AEO — answer-engine target" },
+    { "q": "gen8r vs hootsuite", "target": "(future comparison page)", "note": "AEO — needs a vs page" },
+    { "q": "alternative to hootsuite for small business ai", "target": "(future comparison page)", "note": "AEO opportunity" }
+  ]
+}

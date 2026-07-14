@@ -52,3 +52,21 @@ The welcome email is sent by `app.gen8r.ai/api/signup`, NOT by this Vercel funct
 - Gradient palette defined in `--gradient-1` and `--gradient-2`
 - Scroll-reveal animation system using `.reveal` class + IntersectionObserver (add `.reveal-delay-1` through `.reveal-delay-3` for staggered animations)
 - Pricing tiers: Starter ($29), Growth ($49), Pro ($99) — the JSON-LD `AggregateOffer` in `<head>` carries `lowPrice`/`highPrice`/`offerCount`, so keep it in sync when prices or tier count change
+
+## Growth / SEO
+
+Two systems, both referenced above, live here:
+
+**Programmatic SEO (`seo/`)** — a Node generator that emits one static page per (vertical × contentType) combo into `/c/`, plus a `/c/` link hub and a fresh `sitemap.xml`:
+- `seo/data.js` — the content source: `brand` (incl. `social[]` → Organization `sameAs`), `verticals`, and `contentTypes`. **Adding a row here is how you add coverage** — no template edits needed.
+- `seo/template.js` — `renderPage()` + `pageSlug()`; the page HTML/CSS (self-contained, mirrors the design system) and slug derivation.
+- `seo/generate.js` — orchestrates: renders combos → writes `/c/*.html` + `/c/index.html` → rebuilds `sitemap.xml` from `STATIC_URLS` (hand-maintained pages) + the generated set.
+
+Run `node seo/generate.js` after editing `data.js` or `template.js`. **Output is committed to the repo** — the deploy stays a plain static push, Vercel just serves the files (no runtime cost). Content is hand-authored (not yet wired to the app.gen8r.ai generation endpoint) so each page is substantive — thin/duplicated pages get demoted. City expansion is a planned extension (thread a `city` field, extend the slug with `-in-<city>`); verticals carry no geo yet.
+
+**Conversion tracking (GA4)** — gtag.js (`G-MWDBQS20QL`) loads in `<head>`, exposing a `window.track(name, params)` helper that never throws if gtag is blocked/unloaded. Events fire from:
+- A **delegated click listener** (`document`-level) — every `<a>` is auto-covered, no per-link wiring. Outbound links map to intent events (`telegram_start`, `book_call`, `view_demo`, `open_portal`); internal CTAs fire `cta_click`. `location` is auto-derived from the enclosing section `id`, so you can see which placement drives clicks.
+- **Form handlers** — `sign_up` (with `status: new|existing`) and `generate_lead`.
+- **Section-view + scroll-depth observers** — `section_view` per section id, `scroll_depth` at 25/50/75/100%.
+
+Because CTAs are matched by class (`.btn-primary`/`.btn-secondary`), `data-cta`, or href pattern, new buttons are tracked automatically — but a new *outbound* destination needs a branch added to the click listener to get an intent-named event. To surface events in GA4's "Key events" metric, mark them in Admin → Events.
