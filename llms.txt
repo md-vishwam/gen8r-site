@@ -1,0 +1,34 @@
+# gen8r
+
+> gen8r is an AI social media campaign tool for small businesses. You describe a promotion in one sentence (via Slack, Telegram, or a web brand portal), and gen8r generates a full 15-day social media campaign — captions, AI images, branded flyers, hashtags, and Reels — then auto-publishes it to Instagram and Facebook once you approve each post. Built by LiftLogic AI.
+
+gen8r turns a one-line description of what a business is promoting into a complete, on-brand, 15-day social media campaign, and publishes it on the owner's approval. It is aimed at small businesses — yoga studios, coffee shops, restaurants, hair salons, real estate agents, travel agencies, gyms, retail — that need a consistent social presence without a marketer on staff. Nothing publishes without approval: the owner gets a daily prompt on Slack or Telegram (or uses the web brand portal) to review, edit, skip, or publish.
+
+## Key facts
+
+- **What it does:** Generates and auto-publishes 15-day social campaigns (captions, AI-generated images, branded flyers, hashtags, Reels) from a one-sentence prompt.
+- **Where it publishes:** Instagram and Facebook today. Google Business, YouTube, Pinterest, TikTok, WhatsApp, Reddit, and LinkedIn rolling out across plans.
+- **How you use it:** Slack, Telegram (t.me/Gen8rBot), or the web brand portal at app.gen8r.ai. No design or copywriting skill needed.
+- **Control:** Nothing publishes without owner approval. Edit any caption, swap any image, skip any day. Cancel anytime, no contract.
+- **Pricing:** Starter $29/mo, Growth $49/mo, Pro $99/mo. Early-access accounts get the first month free.
+- **Who it's for:** Small businesses that promote on Instagram/Facebook — yoga studios, coffee shops, restaurants, hair salons, real estate agents, and more.
+- **Parent company:** LiftLogic AI (https://liftlogic.dev).
+
+## Primary pages
+
+- [Home — product overview, how it works, pricing, FAQ](https://gen8r.ai/): What gen8r does, live campaign demos, pricing tiers, and sign-up.
+- [Free guides hub](https://gen8r.ai/c/): Free, ready-to-post Instagram captions, Reel ideas, and 15-day plans by business type.
+- [15-day social media plan for a coffee shop](https://gen8r.ai/c/15-day-social-media-plan-for-a-coffee-shop): Example day-by-day campaign.
+- [Instagram captions for a yoga studio](https://gen8r.ai/c/instagram-captions-for-a-yoga-studio): Ready-to-post caption examples.
+- [Instagram Reel ideas for a restaurant](https://gen8r.ai/c/instagram-reel-ideas-for-a-restaurant): Phone-shootable Reel concepts.
+
+## Getting started
+
+- [Start free / sign up](https://gen8r.ai/#start): Create a brand and generate a first campaign; first month free on early access.
+- [Book a 30-minute call](https://calendly.com/gen8r/30min): Talk to the team.
+- [Customer Telegram bot](https://t.me/Gen8rBot): Create campaigns from Telegram.
+
+## Policies
+
+- [Privacy policy](https://gen8r.ai/privacy)
+- [Terms of service](https://gen8r.ai/terms)
