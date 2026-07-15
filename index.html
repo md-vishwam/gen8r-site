@@ -273,6 +273,56 @@ img { max-width: 100%; display: block; }
   background: rgba(0,229,255,0.08) !important;
   border-color: rgba(0,229,255,0.6) !important;
 }
+/* Industries dropdown */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+.nav-caret { font-size: 10px; transition: transform 0.3s; }
+.nav-dropdown:hover .nav-caret,
+.nav-dropdown:focus-within .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  list-style: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  min-width: 210px;
+  background: rgba(10,10,18,0.97);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 16px 44px rgba(0,0,0,0.55);
+}
+/* invisible bridge so the pointer can cross the gap without closing */
+.nav-dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -12px; left: 0; right: 0;
+  height: 12px;
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(4px);
+}
+.nav-dropdown-menu li a {
+  display: block;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-dropdown-menu li a:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+.nav-dropdown-all { color: var(--accent) !important; border-top: 1px solid var(--border); margin-top: 4px; padding-top: 11px !important; border-radius: 0 !important; }
 
 /* Mobile menu */
 .nav-toggle {
@@ -1384,6 +1434,24 @@ img { max-width: 100%; display: block; }
     border-bottom: 1px solid var(--border);
   }
   .nav-toggle { display: flex; }
+  /* Industries dropdown: inline expanded list inside the mobile menu */
+  .nav-dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    padding: 10px 0 0 14px;
+    gap: 6px;
+  }
+  .nav-dropdown-menu::before { display: none; }
+  .nav-dropdown-menu li a { padding: 4px 0; }
+  .nav-dropdown-all { border-top: none !important; margin-top: 0 !important; padding-top: 4px !important; }
+  .nav-caret { display: none; }
   .steps-grid { grid-template-columns: 1fr; }
   .features-grid { grid-template-columns: 1fr; }
   .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
@@ -1430,6 +1498,17 @@ img { max-width: 100%; display: block; }
     <a href="#" class="logo">gen<span class="logo-eight">8</span>r</a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#how-it-works">How it works</a></li>
+      <li class="nav-dropdown">
+        <a href="/c/" class="nav-dropdown-toggle">Industries<span class="nav-caret" aria-hidden="true">▾</span></a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="/c/15-day-social-media-plan-for-a-yoga-studio">Yoga studio</a></li>
+          <li><a href="/c/15-day-social-media-plan-for-a-coffee-shop">Coffee shop</a></li>
+          <li><a href="/c/15-day-social-media-plan-for-a-restaurant">Restaurant</a></li>
+          <li><a href="/c/15-day-social-media-plan-for-a-hair-salon">Hair salon</a></li>
+          <li><a href="/c/15-day-social-media-plan-for-a-real-estate-agent">Real estate agent</a></li>
+          <li><a href="/c/" class="nav-dropdown-all">All guides &rarr;</a></li>
+        </ul>
+      </li>
       <li><a href="#start">Get Started</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#pricing">Pricing</a></li>
