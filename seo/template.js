@@ -99,7 +99,7 @@ function relatedLinks(v, ct, verticals, contentTypes) {
 
 function renderPage({ vertical: v, contentType: ct, verticals, contentTypes, buildDate }) {
   const url = pageUrl(v, ct);
-  const title = `${ct.label(v)} — free, ready to post | ${brand.name}`;
+  const title = `${ct.label(v)} | ${brand.name}`;
   const description = `${ct.intro(v).split('. ').slice(0, 2).join('. ')}.`.slice(0, 158);
   const faqs = faqItems(v, ct);
 
