@@ -4,14 +4,210 @@
     {
       "date": "2026-07-14",
       "run": "baseline (manual, day 0)",
-      "gsc": { "clicks": 0, "impressions": 6, "avg_position": 34.5, "window_days": 8, "note": "all 3 queries are brand typos (gener8or/gen8/genr8r)" },
+      "gsc": {
+        "clicks": 0,
+        "impressions": 6,
+        "avg_position": 34.5,
+        "window_days": 8,
+        "note": "all 3 queries are brand typos (gener8or/gen8/genr8r)"
+      },
       "serp": [
-        { "q": "gen8r ai social media", "rank": 1, "ranked_url": "https://www.gen8r.ai/", "target": "/", "winnable": "held" },
-        { "q": "ai social media campaign tool for small business", "rank": null, "target": "/", "winnable": "hard (Blaze/SocialBee/Buffer own it)" },
-        { "q": "ai instagram caption generator", "rank": null, "target": "/c/", "winnable": "no (Ahrefs/Hootsuite/Canva, DA90+) — pursue via AEO only" },
-        { "q": "instagram captions for a yoga studio", "rank": null, "target": "/c/instagram-captions-for-a-yoga-studio", "winnable": "yes-with-authority (mid-tier listicle competitors)" },
-        { "q": "15 day social media plan for a coffee shop", "rank": null, "target": "/c/15-day-social-media-plan-for-a-coffee-shop", "winnable": "yes-with-authority (marketing-blog competitors)" }
+        {
+          "q": "gen8r ai social media",
+          "rank": 1,
+          "ranked_url": "https://www.gen8r.ai/",
+          "target": "/",
+          "winnable": "held"
+        },
+        {
+          "q": "ai social media campaign tool for small business",
+          "rank": null,
+          "target": "/",
+          "winnable": "hard (Blaze/SocialBee/Buffer own it)"
+        },
+        {
+          "q": "ai instagram caption generator",
+          "rank": null,
+          "target": "/c/",
+          "winnable": "no (Ahrefs/Hootsuite/Canva, DA90+) \u2014 pursue via AEO only"
+        },
+        {
+          "q": "instagram captions for a yoga studio",
+          "rank": null,
+          "target": "/c/instagram-captions-for-a-yoga-studio",
+          "winnable": "yes-with-authority (mid-tier listicle competitors)"
+        },
+        {
+          "q": "15 day social media plan for a coffee shop",
+          "rank": null,
+          "target": "/c/15-day-social-media-plan-for-a-coffee-shop",
+          "winnable": "yes-with-authority (marketing-blog competitors)"
+        }
       ]
+    },
+    {
+      "date": "2026-07-15",
+      "run": "manual run (Run now)",
+      "gsc": {
+        "clicks": null,
+        "impressions": null,
+        "avg_position": null,
+        "window_days": null,
+        "note": "GSC not pulled; baseline 0 clicks / 6 impr / 34.5 avg"
+      },
+      "serp": [
+        {
+          "q": "gen8r",
+          "rank": 1,
+          "ranked_url": "https://www.gen8r.ai/",
+          "target": "/",
+          "winnable": "held"
+        },
+        {
+          "q": "gen8r ai social media",
+          "rank": 1,
+          "ranked_url": "https://www.gen8r.ai/",
+          "target": "/",
+          "winnable": "held"
+        },
+        {
+          "q": "ai social media campaign tool for small business",
+          "rank": null,
+          "target": "/",
+          "winnable": "hard (Blaze/Velocity/Lately/Hootsuite)"
+        },
+        {
+          "q": "ai instagram caption generator",
+          "rank": null,
+          "target": "/c/",
+          "winnable": "no (Ahrefs/Hootsuite/Canva DA90+) \u2014 AEO only"
+        },
+        {
+          "q": "automated social media campaign generator",
+          "rank": null,
+          "target": "/",
+          "winnable": "hard (HubSpot/Buffer/Make)"
+        },
+        {
+          "q": "instagram captions for a yoga studio",
+          "rank": null,
+          "target": "/c/instagram-captions-for-a-yoga-studio",
+          "winnable": "yes-with-authority"
+        },
+        {
+          "q": "15 day social media plan for a coffee shop",
+          "rank": null,
+          "target": "/c/15-day-social-media-plan-for-a-coffee-shop",
+          "winnable": "yes-with-authority"
+        },
+        {
+          "q": "instagram reel ideas for a restaurant",
+          "rank": null,
+          "target": "/c/instagram-reel-ideas-for-a-restaurant",
+          "winnable": "yes-with-authority"
+        },
+        {
+          "q": "instagram captions for real estate agents",
+          "rank": null,
+          "target": "/c/instagram-captions-for-a-real-estate-agent",
+          "winnable": "yes-with-authority"
+        },
+        {
+          "q": "best ai social media tool for restaurants",
+          "rank": null,
+          "target": "(future comparison page)",
+          "winnable": "AEO \u2014 not ranked/cited"
+        },
+        {
+          "q": "gen8r vs hootsuite",
+          "rank": null,
+          "target": "(future comparison page)",
+          "winnable": "AEO \u2014 not ranked/cited"
+        }
+      ],
+      "changes_vs_prior": "none \u2014 brand held #1, nothing entered top 20"
+    },
+    {
+      "date": "2026-07-16",
+      "run": "scheduled sweep (Thursday)",
+      "gsc": {
+        "clicks": null,
+        "impressions": null,
+        "avg_position": null,
+        "window_days": null,
+        "note": "GSC not pulled; web-SERP sweep only"
+      },
+      "serp": [
+        {
+          "q": "gen8r",
+          "rank": 1,
+          "ranked_url": "https://www.gen8r.ai/",
+          "target": "/",
+          "winnable": "held"
+        },
+        {
+          "q": "gen8r ai social media",
+          "rank": 1,
+          "ranked_url": "https://www.gen8r.ai/",
+          "target": "/",
+          "winnable": "held"
+        },
+        {
+          "q": "ai social media campaign tool for small business",
+          "rank": null,
+          "target": "/",
+          "winnable": "hard (Blaze/Velocity/Lately/SocialBee)"
+        },
+        {
+          "q": "ai instagram caption generator",
+          "rank": null,
+          "target": "/c/",
+          "winnable": "no (Ahrefs/Hootsuite/Canva DA90+) \u2014 AEO only"
+        },
+        {
+          "q": "automated social media campaign generator",
+          "rank": null,
+          "target": "/",
+          "winnable": "hard (HubSpot/Buffer/Make)"
+        },
+        {
+          "q": "instagram captions for a yoga studio",
+          "rank": null,
+          "target": "/c/instagram-captions-for-a-yoga-studio",
+          "winnable": "yes-with-authority"
+        },
+        {
+          "q": "15 day social media plan for a coffee shop",
+          "rank": null,
+          "target": "/c/15-day-social-media-plan-for-a-coffee-shop",
+          "winnable": "yes-with-authority"
+        },
+        {
+          "q": "instagram reel ideas for a restaurant",
+          "rank": null,
+          "target": "/c/instagram-reel-ideas-for-a-restaurant",
+          "winnable": "yes-with-authority"
+        },
+        {
+          "q": "instagram captions for real estate agents",
+          "rank": null,
+          "target": "/c/instagram-captions-for-a-real-estate-agent",
+          "winnable": "yes-with-authority"
+        },
+        {
+          "q": "best ai social media tool for restaurants",
+          "rank": null,
+          "target": "(future comparison page)",
+          "winnable": "AEO \u2014 not ranked/cited"
+        },
+        {
+          "q": "gen8r vs hootsuite",
+          "rank": null,
+          "target": "(future comparison page)",
+          "winnable": "AEO \u2014 not ranked/cited"
+        }
+      ],
+      "changes_vs_prior": "none \u2014 brand held #1, nothing entered top 20"
     }
   ]
 }
