@@ -66,7 +66,7 @@ const indexHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Free social media guides for small business | gen8r</title>
-<meta name="description" content="Free, ready-to-use Instagram captions, Reel ideas, and 15-day social media plans for yoga studios, coffee shops, restaurants, salons, and real estate agents.">
+<meta name="description" content="Free, ready-to-use Instagram captions, Reel ideas, and 10-day social media plans for yoga studios, coffee shops, restaurants, salons, and real estate agents.">
 <link rel="canonical" href="${brand.origin}/c/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,7 +82,8 @@ const indexHtml = `<!DOCTYPE html>
   .wrap{max-width:900px;margin:0 auto;padding:0 24px}
   header{border-bottom:1px solid var(--border);padding:20px 0}
   header .wrap{display:flex;justify-content:space-between;align-items:center}
-  .logo{font-family:var(--font-display);font-size:26px;color:var(--text)}.logo b{color:var(--accent)}
+  .logo{font-family:var(--font-mono);font-size:22px;font-weight:500;letter-spacing:-.5px;color:var(--text);display:inline-flex;align-items:center;gap:2px}
+  .logo-eight{background:linear-gradient(135deg,#00e5ff 0%,#7b61ff 50%,#ff6ec7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:26px;filter:drop-shadow(0 0 8px rgba(0,229,255,.4))}
   .nav-cta{font-family:var(--font-mono);font-size:13px;padding:8px 16px;border:1px solid var(--accent);border-radius:8px}
   h1{font-family:var(--font-display);font-size:clamp(32px,5vw,46px);font-weight:400;margin:48px 0 12px}
   .lede{color:var(--muted);font-size:18px;margin-bottom:16px;max-width:640px}
@@ -94,12 +95,12 @@ const indexHtml = `<!DOCTYPE html>
 </head>
 <body>
 <header><div class="wrap">
-  <a class="logo" href="/">gen<b>8</b>r</a>
+  <a class="logo" href="/">gen<span class="logo-eight">8</span>r</a>
   <a class="nav-cta" href="/#start">Try free &rarr;</a>
 </div></header>
 <main class="wrap">
   <h1>Free social media guides</h1>
-  <p class="lede">Ready-to-post captions, Reel ideas, and 15-day plans by business type — and the tool that generates and publishes them for you.</p>
+  <p class="lede">Ready-to-post captions, Reel ideas, and 10-day plans by business type — and the tool that generates and publishes them for you.</p>
   ${groups}
 </main>
 <footer><div class="wrap"><p><a href="/">gen8r</a> — ${brand.tagline}. &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p></div></footer>

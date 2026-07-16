@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-gen8r.ai — a landing page for an AI-powered social media campaign tool. The product lets small businesses describe a promotion (via Slack or Telegram), then generates and auto-publishes a 15-day social media campaign (captions, images, hashtags, reels) to Instagram and Facebook.
+gen8r.ai — a landing page for an AI-powered social media campaign tool. The product lets small businesses describe a promotion (via Slack or Telegram), then generates and auto-publishes a 10-post social media campaign (captions, images, hashtags, reels) to Instagram and Facebook.
 
 ## Architecture
 

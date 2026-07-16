@@ -4,7 +4,7 @@
 // (the design tokens are copied from index.html's :root — keep them roughly in
 // sync if the brand palette changes). Consumed by seo/generate.js.
 
-const { brand, fifteenDayPlan } = require('./data');
+const { brand, tenDayPlan } = require('./data');
 
 const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -36,7 +36,7 @@ function sampleBlock(v, ct) {
       </ul>`;
   }
   // plan
-  const rows = fifteenDayPlan(v)
+  const rows = tenDayPlan(v)
     .map(
       (d) => `
         <tr>
@@ -47,7 +47,7 @@ function sampleBlock(v, ct) {
     )
     .join('\n');
   return `
-      <h2>Your 15-day plan, day by day</h2>
+      <h2>Your 10-day plan, day by day</h2>
       <div class="table-wrap">
         <table class="plan">
           <thead><tr><th>Day</th><th>Theme</th><th>What to post</th></tr></thead>
@@ -61,7 +61,7 @@ function faqItems(v, ct) {
   return [
     {
       q: `How often should a ${v.name} post on Instagram?`,
-      a: `Consistency beats volume. For most ${v.name} accounts, three to five quality posts a week — a mix of offers, ${'behind-the-scenes'}, and Reels — outperforms daily posting you can’t sustain. The 15-day arc above is built to be repeatable, not exhausting.`,
+      a: `Consistency beats volume. For most ${v.name} accounts, three to five quality posts a week — a mix of offers, ${'behind-the-scenes'}, and Reels — outperforms daily posting you can’t sustain. The 10-day arc above is built to be repeatable, not exhausting.`,
     },
     {
       q: `Do I have to write all of this myself?`,
@@ -193,9 +193,15 @@ ${structured.map((s) => `<script type="application/ld+json">\n${JSON.stringify(s
   header{border-bottom:1px solid var(--border);padding:20px 0;position:sticky;top:0;
     background:rgba(6,6,11,.8);backdrop-filter:blur(12px);z-index:10}
   header .wrap{display:flex;align-items:center;justify-content:space-between}
-  .logo{font-family:var(--font-display);font-size:26px;color:var(--text)}
+  .logo{font-family:var(--font-mono);font-size:22px;font-weight:500;letter-spacing:-.5px;
+    color:var(--text);display:inline-flex;align-items:center;gap:2px}
   .logo:hover{text-decoration:none}
-  .logo b{color:var(--accent)}
+  .logo-eight{background:linear-gradient(135deg,#00e5ff 0%,#7b61ff 50%,#ff6ec7 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    font-weight:700;font-size:26px;filter:drop-shadow(0 0 8px rgba(0,229,255,.4));
+    animation:pulse-glow 3s ease-in-out infinite}
+  @keyframes pulse-glow{0%,100%{filter:drop-shadow(0 0 8px rgba(0,229,255,.4))}
+    50%{filter:drop-shadow(0 0 16px rgba(0,229,255,.6))}}
   .nav-cta{font-family:var(--font-mono);font-size:13px;padding:8px 16px;border:1px solid var(--accent);
     border-radius:8px;color:var(--accent)}
   .nav-cta:hover{background:var(--accent);color:var(--bg);text-decoration:none}
@@ -244,7 +250,7 @@ ${structured.map((s) => `<script type="application/ld+json">\n${JSON.stringify(s
 <body>
 <header>
   <div class="wrap">
-    <a class="logo" href="/">gen<b>8</b>r</a>
+    <a class="logo" href="/">gen<span class="logo-eight">8</span>r</a>
     <a class="nav-cta" href="/#start" data-loc="seo-header">Try free &rarr;</a>
   </div>
 </header>

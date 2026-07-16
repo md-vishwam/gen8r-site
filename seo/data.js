@@ -144,13 +144,13 @@ const contentTypes = [
     sample: 'captions',
   },
   {
-    slug: '15-day-social-media-plan',
-    noun: '15-day social media plan',
-    label: (v) => `A 15-Day Social Media Plan for a ${v.title}`,
+    slug: '10-day-social-media-plan',
+    noun: '10-day social media plan',
+    label: (v) => `A 10-Day Social Media Plan for a ${v.title}`,
     query: (v) => `social media plan for a ${v.name}`,
     intro: (v) =>
-      `The hardest part of social media for a ${v.name} isn’t any single post — it’s keeping it going for two straight weeks. ` +
-      `Here’s a proven 15-day arc built around ${v.promo}, tuned for ${v.audience}. It’s the same structure gen8r generates ` +
+      `The hardest part of social media for a ${v.name} isn’t any single post — it’s keeping it going day after day. ` +
+      `Here’s a proven 10-day arc built around ${v.promo}, tuned for ${v.audience}. It’s the same structure gen8r generates ` +
       `and publishes for you automatically, so you approve instead of author.`,
     sample: 'plan',
   },
@@ -167,9 +167,10 @@ const contentTypes = [
   },
 ];
 
-// A generic 15-day arc, specialized per vertical at render time. Kept here so
-// every "plan" page shares a credible backbone while reading uniquely.
-function fifteenDayPlan(v) {
+// A generic 10-day arc, specialized per vertical at render time. Kept here so
+// every "plan" page shares a credible backbone while reading uniquely. This
+// mirrors the 10 posts gen8r actually generates for a campaign.
+function tenDayPlan(v) {
   return [
     { day: 1, theme: 'Introduce the offer', post: `Announce ${v.promo} with a scroll-stopping image and a clear “here’s what you get.”` },
     { day: 2, theme: 'Behind the scenes', post: `A candid look at what makes your ${v.name} different — the people, the process, the details.` },
@@ -178,15 +179,10 @@ function fifteenDayPlan(v) {
     { day: 5, theme: 'Reel', post: v.reelIdeas[0] },
     { day: 6, theme: 'Offer reminder', post: `Nudge on ${v.promo} with a fresh angle and a deadline.` },
     { day: 7, theme: 'Community', post: 'Feature a regular, a staff pick, or a local partner — show you belong here.' },
-    { day: 8, theme: 'Value post', post: 'A quick tip or list your audience will save and come back to.' },
-    { day: 9, theme: 'Reel', post: v.reelIdeas[1] },
-    { day: 10, theme: 'Story-style', post: 'A day-in-the-life sequence that makes people feel the vibe before they visit.' },
-    { day: 11, theme: 'Testimonial', post: 'A second, different customer voice — variety builds trust.' },
-    { day: 12, theme: 'Objection-buster', post: `Tackle the reason someone hesitates about a ${v.name} like yours, head-on.` },
-    { day: 13, theme: 'Reel', post: v.reelIdeas[2] },
-    { day: 14, theme: 'Last call', post: `Final reminder on ${v.promo} — urgency + a single, obvious next step.` },
-    { day: 15, theme: 'Thank you + next', post: 'Thank everyone who engaged and tease what’s coming next so momentum carries.' },
+    { day: 8, theme: 'Reel', post: v.reelIdeas[1] },
+    { day: 9, theme: 'Last call', post: `Final reminder on ${v.promo} — urgency + a single, obvious next step.` },
+    { day: 10, theme: 'Thank you + next', post: 'Thank everyone who engaged and tease what’s coming next so momentum carries.' },
   ];
 }
 
-module.exports = { brand, verticals, contentTypes, fifteenDayPlan };
+module.exports = { brand, verticals, contentTypes, tenDayPlan };

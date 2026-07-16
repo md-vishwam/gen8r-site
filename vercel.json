@@ -1,3 +1,10 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/c/15-day-social-media-plan-for-a-yoga-studio", "destination": "/c/10-day-social-media-plan-for-a-yoga-studio", "permanent": true },
+    { "source": "/c/15-day-social-media-plan-for-a-coffee-shop", "destination": "/c/10-day-social-media-plan-for-a-coffee-shop", "permanent": true },
+    { "source": "/c/15-day-social-media-plan-for-a-restaurant", "destination": "/c/10-day-social-media-plan-for-a-restaurant", "permanent": true },
+    { "source": "/c/15-day-social-media-plan-for-a-hair-salon", "destination": "/c/10-day-social-media-plan-for-a-hair-salon", "permanent": true },
+    { "source": "/c/15-day-social-media-plan-for-a-real-estate-agent", "destination": "/c/10-day-social-media-plan-for-a-real-estate-agent", "permanent": true }
+  ]
 }
