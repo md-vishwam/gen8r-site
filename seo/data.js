@@ -9,10 +9,15 @@
 // reachable, real generated campaigns can replace/augment the `captions`,
 // `reelIdeas`, and plan output per vertical.
 //
-// CITY EXPANSION (hybrid plan): verticals carry no geo yet. When a page proves
-// it ranks, the same template can be re-emitted per city by extending the slug
-// with `-in-<city>` and threading a `city` field through — the template already
-// keys everything off the vertical object.
+// CITY EXPANSION (implemented): the `cities` array below re-emits selected
+// guides per city (slug extended with `-in-<slug>`) and powers a local landing
+// page. Which content types get localized is controlled by GEO_CONTENT_TYPES in
+// generate.js. Keep geo pages genuinely local (see the `cities` note) so they
+// don't get demoted as doorway pages.
+
+// "a" vs "an" for a following word — so vowel-initial verticals (event venue)
+// read correctly in titles, headings, and prose. Slugs keep the flat `-for-a-`.
+const art = (w) => (/^[aeiou]/i.test(String(w).trim()) ? 'an' : 'a');
 
 const brand = {
   name: 'gen8r',
@@ -127,6 +132,82 @@ const verticals = [
     ],
     hashtags: ['#hairsalon', '#hairtransformation', '#balayage', '#hairstylist', '#newhairnewme'],
   },
+  {
+    slug: 'event-venue',
+    name: 'event venue',
+    title: 'Event Venue',
+    audience: 'couples, companies, and organizers deciding where to host their next event',
+    promo: 'a venue tour offer or an off-peak date discount',
+    vibe: 'aspirational, vivid, and celebratory',
+    captions: [
+      'Picture your day here: golden-hour light, room for everyone, a view they won’t stop talking about. Book a tour this week. ✨',
+      'Off-peak dates just opened — same unforgettable space, a friendlier price. DM us before they’re taken. 🥂',
+      'From the first toast to the last dance, this room was built for the moment. Enquire for available dates.',
+    ],
+    reelIdeas: [
+      'A 15-second walkthrough from empty room to fully-styled event, with the reveal on the beat drop.',
+      'Time-lapse of a setup coming together — tables, lights, flowers — ending on the finished space at dusk.',
+      'A quick “three ways to use this space” tour (wedding, corporate, party) with enquiry details on the end card.',
+    ],
+    hashtags: ['#eventvenue', '#weddingvenue', '#eventspace', '#venuehire', '#corporateevents'],
+  },
+];
+
+// ── Cities (geo expansion) ───────────────────────────────────────────────────
+// Each city localizes the guide pages (slug gets `-in-<slug>`) and powers a
+// dedicated local landing page. To keep Google from treating geo variants as
+// doorway pages, every city carries REAL local signal per vertical (a genuine
+// local angle, taggable suburbs, and local hashtags) — not just a name swap.
+// Adding a city = add one object here (with a byVertical entry per vertical) and
+// re-run the generator. Start narrow, prove it ranks, then scale.
+const cities = [
+  {
+    slug: 'sydney',
+    name: 'Sydney',
+    region: 'Australia',
+    // Used by the local marketing landing page intro/meta.
+    blurb:
+      'Sydney small businesses compete for attention on the same feeds as everyone else — but the ones that win post consistently, locally, and on-brand.',
+    hashtags: ['#sydney', '#sydneysmallbusiness', '#supportlocalsydney'],
+    byVertical: {
+      'yoga-studio': {
+        angle:
+          'From Bondi to the Inner West, Sydney’s wellness crowd is spoilt for choice — your posts have to feel like a local exhale, not a franchise.',
+        suburbs: 'Bondi, Newtown, and Manly',
+        hashtags: ['#sydneyyoga', '#bondiyoga', '#yogasydney'],
+      },
+      'coffee-shop': {
+        angle:
+          'Sydney runs on coffee, and Surry Hills, Newtown and Manly set a brutal bar for a flat white — local regulars notice everything.',
+        suburbs: 'Surry Hills, Newtown, and Manly',
+        hashtags: ['#sydneycoffee', '#sydneycafe', '#surryhills'],
+      },
+      'real-estate-agent': {
+        angle:
+          'The Sydney market moves on suburb-level trust — buyers and sellers from the Inner West to the Northern Beaches want an agent who clearly owns their pocket.',
+        suburbs: 'the Inner West, Northern Beaches, and Eastern Suburbs',
+        hashtags: ['#sydneyrealestate', '#sydneyproperty', '#sydneyhomes'],
+      },
+      restaurant: {
+        angle:
+          'Sydney diners choose on the feed — from Surry Hills small bars to Darling Harbour, tonight’s booking is won on Instagram before anyone reads a menu.',
+        suburbs: 'Surry Hills, Newtown, and Darling Harbour',
+        hashtags: ['#sydneyeats', '#sydneyfood', '#sydneyrestaurant'],
+      },
+      'hair-salon': {
+        angle:
+          'Sydney clients book the look they see — the CBD-to-Bondi salon scene is crowded, and a strong feed is your chair’s best marketing.',
+        suburbs: 'the CBD, Bondi, and Paddington',
+        hashtags: ['#sydneyhair', '#sydneysalon', '#bondihair'],
+      },
+      'event-venue': {
+        angle:
+          'Sydney is a backdrop that sells itself — harbour views, warehouse spaces, rooftop bars — so your feed just has to make organizers picture their event there.',
+        suburbs: 'The Rocks, Darling Harbour, and the Inner West',
+        hashtags: ['#sydneyevents', '#sydneyvenue', '#sydneyweddings'],
+      },
+    },
+  },
 ];
 
 const contentTypes = [
@@ -134,10 +215,10 @@ const contentTypes = [
     slug: 'instagram-captions',
     noun: 'Instagram captions',
     // What the page is "about" — drives <title>, <h1>, and canonical query.
-    label: (v) => `Instagram Captions for a ${v.title}`,
-    query: (v) => `instagram captions for a ${v.name}`,
+    label: (v) => `Instagram Captions for ${art(v.title)} ${v.title}`,
+    query: (v) => `instagram captions for ${art(v.name)} ${v.name}`,
     intro: (v) =>
-      `Writing Instagram captions for a ${v.name} every day is the part that quietly eats your week. ` +
+      `Writing Instagram captions for ${art(v.name)} ${v.name} every day is the part that quietly eats your week. ` +
       `Below are ready-to-post captions written in a ${v.vibe} voice for ${v.audience} — plus the hashtags ` +
       `that actually get seen. Use them as-is, or let gen8r generate a fresh set (and the images to match) automatically.`,
     // Which sample block the template renders for this content type.
@@ -146,10 +227,10 @@ const contentTypes = [
   {
     slug: '10-day-social-media-plan',
     noun: '10-day social media plan',
-    label: (v) => `A 10-Day Social Media Plan for a ${v.title}`,
-    query: (v) => `social media plan for a ${v.name}`,
+    label: (v) => `A 10-Day Social Media Plan for ${art(v.title)} ${v.title}`,
+    query: (v) => `social media plan for ${art(v.name)} ${v.name}`,
     intro: (v) =>
-      `The hardest part of social media for a ${v.name} isn’t any single post — it’s keeping it going day after day. ` +
+      `The hardest part of social media for ${art(v.name)} ${v.name} isn’t any single post — it’s keeping it going day after day. ` +
       `Here’s a proven 10-day arc built around ${v.promo}, tuned for ${v.audience}. It’s the same structure gen8r generates ` +
       `and publishes for you automatically, so you approve instead of author.`,
     sample: 'plan',
@@ -157,10 +238,10 @@ const contentTypes = [
   {
     slug: 'instagram-reel-ideas',
     noun: 'Instagram Reel ideas',
-    label: (v) => `Instagram Reel Ideas for a ${v.title}`,
-    query: (v) => `reel ideas for a ${v.name}`,
+    label: (v) => `Instagram Reel Ideas for ${art(v.title)} ${v.title}`,
+    query: (v) => `reel ideas for ${art(v.name)} ${v.name}`,
     intro: (v) =>
-      `Reels are where a ${v.name} gets discovered by people who don’t follow you yet — but only if you keep shipping them. ` +
+      `Reels are where ${art(v.name)} ${v.name} gets discovered by people who don’t follow you yet — but only if you keep shipping them. ` +
       `Here are Reel ideas built for ${v.audience}, each one shootable on a phone in a few minutes. gen8r can turn ideas ` +
       `like these into finished, captioned videos as part of your campaign.`,
     sample: 'reels',
@@ -185,4 +266,4 @@ function tenDayPlan(v) {
   ];
 }
 
-module.exports = { brand, verticals, contentTypes, tenDayPlan };
+module.exports = { brand, verticals, contentTypes, cities, tenDayPlan, art };

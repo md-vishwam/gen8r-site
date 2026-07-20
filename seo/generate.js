@@ -11,11 +11,17 @@
 
 const fs = require('fs');
 const path = require('path');
-const { brand, verticals, contentTypes } = require('./data');
-const { renderPage, pageSlug } = require('./template');
+const { brand, verticals, contentTypes, cities } = require('./data');
+const { renderPage, renderLocalLanding, pageSlug, pageUrl, landingSlug, landingUrl } = require('./template');
 
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'c');
+
+// Which content types get localized per city. Deliberately narrow — the 10-day
+// plan reads as the most "local business" format, and fewer, genuinely-local
+// pages rank better than a combinatorial blast of near-duplicates (doorway-page
+// risk). Widen this only once the localized set proves it ranks.
+const GEO_CONTENT_TYPES = ['10-day-social-media-plan'];
 
 // Build date (YYYY-MM-DD) — stamped as <lastmod> in the sitemap and as
 // dateModified in each page's Article schema. A moving lastmod is a legitimate
@@ -33,7 +39,7 @@ const STATIC_URLS = [
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
-// ── 1. Render each combo ─────────────────────────────────────────────────────
+// ── 1. Render each (vertical × contentType) national combo ───────────────────
 const generated = [];
 for (const vertical of verticals) {
   for (const contentType of contentTypes) {
@@ -42,6 +48,33 @@ for (const vertical of verticals) {
     fs.writeFileSync(path.join(OUT_DIR, `${slug}.html`), html);
     generated.push({ slug, vertical, contentType });
   }
+}
+
+// ── 1b. Geo variants + local landing page, per city ──────────────────────────
+const geoGuides = [];   // localized guide pages (for sitemap + hub)
+const landingPages = []; // one local marketing landing page per city
+const geoContentTypes = contentTypes.filter((ct) => GEO_CONTENT_TYPES.includes(ct.slug));
+for (const city of cities) {
+  const cityGuides = [];
+  for (const vertical of verticals) {
+    for (const contentType of geoContentTypes) {
+      const slug = pageSlug(vertical, contentType, city);
+      const html = renderPage({ vertical, contentType, verticals, contentTypes, buildDate: BUILD_DATE, city });
+      fs.writeFileSync(path.join(OUT_DIR, `${slug}.html`), html);
+      const entry = {
+        slug,
+        url: pageUrl(vertical, contentType, city),
+        label: `${contentType.label(vertical)} in ${city.name}`,
+        city,
+      };
+      cityGuides.push(entry);
+      geoGuides.push(entry);
+    }
+  }
+  // Local marketing landing page — links to that city's localized guides.
+  const landingHtml = renderLocalLanding({ city, verticals, geoGuides: cityGuides, buildDate: BUILD_DATE });
+  fs.writeFileSync(path.join(OUT_DIR, `${landingSlug(city)}.html`), landingHtml);
+  landingPages.push({ slug: landingSlug(city), url: landingUrl(city), city });
 }
 
 // ── 2. /c/ hub index (link hub for crawlers + humans) ────────────────────────
@@ -53,6 +86,25 @@ const groups = verticals
     return `
       <section>
         <h2>${v.title}</h2>
+        <ul>
+        ${links}
+        </ul>
+      </section>`;
+  })
+  .join('\n');
+
+// Location sections — the local landing page + that city's localized guides.
+const locationGroups = cities
+  .map((city) => {
+    const links = [
+      `<li><a href="/c/${landingSlug(city)}"><strong>Social media marketing in ${city.name}</strong></a></li>`,
+      ...geoGuides
+        .filter((g) => g.city.slug === city.slug)
+        .map((g) => `<li><a href="/c/${g.slug}">${g.label}</a></li>`),
+    ].join('\n        ');
+    return `
+      <section>
+        <h2>${city.name}</h2>
         <ul>
         ${links}
         </ul>
@@ -102,6 +154,9 @@ const indexHtml = `<!DOCTYPE html>
   <h1>Free social media guides</h1>
   <p class="lede">Ready-to-post captions, Reel ideas, and 10-day plans by business type — and the tool that generates and publishes them for you.</p>
   ${groups}
+  <h1 style="font-size:clamp(26px,4vw,34px);margin:48px 0 8px">By location</h1>
+  <p class="lede">Local social media marketing, tuned to your city.</p>
+  ${locationGroups}
 </main>
 <footer><div class="wrap"><p><a href="/">gen8r</a> — ${brand.tagline}. &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p></div></footer>
 </body>
@@ -112,11 +167,13 @@ fs.writeFileSync(path.join(OUT_DIR, 'index.html'), indexHtml);
 const allUrls = [
   ...STATIC_URLS,
   { loc: `${brand.origin}/c/`, changefreq: 'weekly', priority: '0.6' },
+  ...landingPages.map((p) => ({ loc: p.url, changefreq: 'weekly', priority: '0.7' })),
   ...generated.map((g) => ({
     loc: `${brand.origin}/c/${g.slug}`,
     changefreq: 'monthly',
     priority: '0.6',
   })),
+  ...geoGuides.map((g) => ({ loc: g.url, changefreq: 'monthly', priority: '0.6' })),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -130,5 +187,5 @@ ${allUrls
 `;
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
 
-console.log(`Generated ${generated.length} pages + /c/ hub`);
+console.log(`Generated ${generated.length} national pages + ${geoGuides.length} geo pages + ${landingPages.length} local landing + /c/ hub`);
 console.log(`Sitemap: ${allUrls.length} URLs`);
