@@ -138,7 +138,14 @@ function renderPage({ vertical: v, contentType: ct, verticals, contentTypes, bui
   const inCity = city ? ` in ${city.name}` : '';
   const label = `${ct.label(v)}${inCity}`;
   const query = `${ct.query(v)}${city ? ` in ${city.name.toLowerCase()}` : ''}`;
-  const title = `${label} | ${brand.name}`;
+  // <title> is decoupled from the on-page H1 (`label`) so it stays under ~60
+  // chars (Bing/Google truncate longer). The 10-day-plan label is verbose
+  // ("A 10-Day Social Media Plan for a …"), so title uses a compact,
+  // keyword-front-loaded form; the "10-day" keyword still lives in H1, meta
+  // description, body, and slug.
+  const titleCore =
+    ct.slug === '10-day-social-media-plan' ? `${v.title} Social Media Plan${inCity}` : label;
+  const title = `${titleCore} | ${brand.name}`;
   // For city pages, lead the intro with the local angle so the meta description
   // (first two sentences) carries the city + suburb signal.
   const introText = city
@@ -347,12 +354,10 @@ const landingUrl = (city) => `${brand.origin}/c/${landingSlug(city)}`;
 function renderLocalLanding({ city, verticals, geoGuides, buildDate }) {
   const url = landingUrl(city);
   const title = `Social Media Marketing for ${city.name} Small Businesses | ${brand.name}`;
-  const description =
+  const description = (
     `AI social media marketing for ${city.name} small businesses. gen8r generates and auto-publishes ` +
-    `on-brand Instagram and Facebook campaigns from $29/mo — cheaper than a ${city.name} agency, faster than doing it yourself.`.slice(
-      0,
-      158
-    );
+    `Instagram and Facebook campaigns from $29/mo — no agency needed.`
+  ).slice(0, 158);
 
   const faqs = [
     {
