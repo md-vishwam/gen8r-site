@@ -20,6 +20,16 @@
     { "q": "social media content ideas for a hair salon", "target": "/c/10-day-social-media-plan-for-a-hair-salon", "note": "winnable long-tail" },
     { "q": "instagram captions for real estate agents", "target": "/c/instagram-captions-for-a-real-estate-agent", "note": "winnable long-tail" }
   ],
+  "sydney_local": [
+    { "q": "social media marketing for sydney small business", "target": "/c/social-media-marketing-for-small-business-in-sydney", "note": "local landing — core geo commercial intent" },
+    { "q": "social media marketing sydney", "target": "/c/social-media-marketing-for-small-business-in-sydney", "note": "local head term, competitive — directional" },
+    { "q": "social media agency for small business sydney", "target": "/c/social-media-marketing-for-small-business-in-sydney", "note": "agency intent we answer honestly (tool, not agency)" },
+    { "q": "social media plan for a coffee shop in sydney", "target": "/c/10-day-social-media-plan-for-a-coffee-shop-in-sydney", "note": "winnable geo long-tail" },
+    { "q": "social media for a restaurant in sydney", "target": "/c/10-day-social-media-plan-for-a-restaurant-in-sydney", "note": "winnable geo long-tail" },
+    { "q": "social media for real estate agents in sydney", "target": "/c/10-day-social-media-plan-for-a-real-estate-agent-in-sydney", "note": "winnable geo long-tail" },
+    { "q": "social media for a yoga studio in sydney", "target": "/c/10-day-social-media-plan-for-a-yoga-studio-in-sydney", "note": "winnable geo long-tail" },
+    { "q": "event venue marketing sydney", "target": "/c/10-day-social-media-plan-for-a-event-venue-in-sydney", "note": "new vertical + geo" }
+  ],
   "comparison_aeo": [
     { "q": "best ai social media tool for restaurants", "target": "(future comparison page)", "note": "AEO — answer-engine target" },
     { "q": "gen8r vs hootsuite", "target": "(future comparison page)", "note": "AEO — needs a vs page" },
