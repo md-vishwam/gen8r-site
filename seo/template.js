@@ -13,6 +13,119 @@ const pageSlug = (v, ct, city) =>
   `${ct.slug}-for-a-${v.slug}${city ? `-in-${city.slug}` : ''}`;
 const pageUrl = (v, ct, city) => `${brand.origin}/c/${pageSlug(v, ct, city)}`;
 
+// ── Date helpers ─────────────────────────────────────────────────────────────
+// Turn ISO YYYY-MM-DD into "20 July 2026" for the visible byline. AI answer
+// engines flagged missing visible dates as a freshness gap despite the Article
+// schema carrying datePublished/dateModified — render both.
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+const prettyDate = (iso) => {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  return `${parseInt(d, 10)} ${MONTHS[parseInt(m, 10) - 1]} ${y}`;
+};
+
+// ── Author schema + visible byline ───────────────────────────────────────────
+// One helper — used by both renderPage and renderLocalLanding so both surfaces
+// stay in sync.
+function authorPersons() {
+  return (brand.authors || []).map((a) => ({
+    '@type': 'Person',
+    name: a.name,
+    url: a.url,
+  }));
+}
+function authorByline(buildDate) {
+  const authors = brand.authors || [];
+  if (authors.length === 0) return '';
+  const names = authors
+    .map((a) => `<a href="${esc(a.url)}" rel="author">${esc(a.name)}</a>`)
+    .join(' &amp; ');
+  const dateBit = buildDate
+    ? ` &middot; Last updated <time datetime="${esc(buildDate)}">${esc(prettyDate(buildDate))}</time>`
+    : '';
+  return `<p class="byline">By ${names}${dateBit}</p>`;
+}
+
+// ── Case study block (visible + schema-friendly) ─────────────────────────────
+// Named, verifiable customer surfaced on landing pages. norg.ai specifically
+// flagged this as a content-depth gap for AI citation ("verifiable evidence over
+// competitors"). The Sydney metro area maps to Rhodes-NSW customers, etc.
+const CITY_METRO_MAP = {
+  sydney: ['Rhodes, NSW', 'Sydney, NSW', 'NSW'],
+};
+function customersForCity(city) {
+  if (!city || !brand.customers) return [];
+  const metroTerms = CITY_METRO_MAP[city.slug] || [city.name];
+  return brand.customers.filter((c) =>
+    metroTerms.some((t) => (c.city || '').toLowerCase().includes(t.toLowerCase()))
+  );
+}
+function caseStudyBlock(city) {
+  const list = customersForCity(city);
+  if (list.length === 0) return '';
+  const items = list
+    .map((c) => `
+    <article class="case-study">
+      <div class="case-head">
+        <h3>${esc(c.name)}</h3>
+        <p class="case-meta">${esc(c.industry)} &middot; ${esc(c.city)}</p>
+      </div>
+      <p>${esc(c.description)}</p>
+      <p><strong>What gen8r delivers:</strong> ${esc(c.output)}</p>
+      <p class="case-verify">
+        Verify it yourself &mdash;
+        <a href="${esc(c.instagram)}" rel="noopener">Instagram</a> &middot;
+        <a href="${esc(c.facebook)}" rel="noopener">Facebook</a> &middot;
+        <a href="${esc(c.website)}" rel="noopener">${esc(c.website.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>
+      </p>
+    </article>`)
+    .join('\n');
+  return `
+  <h2>Customers we work with in ${esc(city.name)}</h2>
+  ${items}`;
+}
+
+// ── Pricing offer schema ─────────────────────────────────────────────────────
+// Emit AggregateOffer with per-tier UnitPriceSpecification so AI engines can
+// answer "how much does gen8r cost" from the /c/ page context (norg.ai quick-win).
+function pricingOfferSchema() {
+  const tiers = (brand.pricing && brand.pricing.tiers) || [];
+  const currency = (brand.pricing && brand.pricing.currency) || 'USD';
+  if (tiers.length === 0) return null;
+  const prices = tiers.map((t) => parseFloat(t.price));
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AggregateOffer',
+    name: `${brand.name} subscription`,
+    url: `${brand.origin}/#start`,
+    priceCurrency: currency,
+    lowPrice: Math.min(...prices).toFixed(2),
+    highPrice: Math.max(...prices).toFixed(2),
+    offerCount: String(tiers.length),
+    offers: tiers.map((t) => ({
+      '@type': 'Offer',
+      name: t.name,
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: t.price,
+        priceCurrency: currency,
+        unitCode: 'MON',
+        billingIncrement: '1',
+      },
+      availability: 'https://schema.org/InStock',
+      url: `${brand.origin}/#start`,
+    })),
+    seller: {
+      '@type': 'Organization',
+      name: brand.name,
+      url: brand.origin,
+    },
+  };
+}
+
 // ── Per-content-type sample block ────────────────────────────────────────────
 function sampleBlock(v, ct) {
   if (ct.sample === 'captions') {
@@ -62,7 +175,7 @@ function faqItems(v, ct) {
   return [
     {
       q: `How often should ${art(v.name)} ${v.name} post on Instagram?`,
-      a: `Consistency beats volume. For most ${v.name} accounts, three to five quality posts a week — a mix of offers, ${'behind-the-scenes'}, and Reels — outperforms daily posting you can’t sustain. The 10-day arc above is built to be repeatable, not exhausting.`,
+      a: `Consistency beats volume. For most ${v.name} accounts, three to five quality posts a week — a mix of offers, behind-the-scenes, and Reels — outperforms daily posting you can't sustain. The 10-day arc above mirrors the structure gen8r ships in its own pilot campaigns: teaser flyer, warm-up posts, mid-arc Reel, community proof, last-call flyer.`,
     },
     {
       q: `Do I have to write all of this myself?`,
@@ -154,6 +267,24 @@ function renderPage({ vertical: v, contentType: ct, verticals, contentTypes, bui
   const description = `${introText.split('. ').slice(0, 2).join('. ')}.`.slice(0, 158);
   const faqs = faqItems(v, ct);
 
+  // HowTo schema on plan pages — the day-by-day table is a natural HowTo, and
+  // norg.ai flagged this specifically as a structured-data quick-win.
+  const howToSchema = ct.sample === 'plan'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: `10-day social media plan for ${art(v.name)} ${v.name}${inCity}`,
+        description: `A 10-day, day-by-day posting arc for ${art(v.name)} ${v.name} on Instagram and Facebook.`,
+        totalTime: 'P10D',
+        step: tenDayPlan(v).map((d) => ({
+          '@type': 'HowToStep',
+          position: d.day,
+          name: `Day ${d.day} — ${d.theme}`,
+          text: d.post,
+        })),
+      }
+    : null;
+
   const structured = [
     {
       '@context': 'https://schema.org',
@@ -162,6 +293,12 @@ function renderPage({ vertical: v, contentType: ct, verticals, contentTypes, bui
       url: brand.origin,
       logo: `${brand.origin}/gen8r-logo.png`,
       sameAs: brand.social,
+      founder: authorPersons(),
+      parentOrganization: {
+        '@type': 'Organization',
+        name: 'LiftLogic AI',
+        url: 'https://liftlogic.dev',
+      },
     },
     {
       '@context': 'https://schema.org',
@@ -172,6 +309,7 @@ function renderPage({ vertical: v, contentType: ct, verticals, contentTypes, bui
       url,
       ...(city ? { contentLocation: { '@type': 'City', name: city.name } } : {}),
       ...(buildDate ? { datePublished: buildDate, dateModified: buildDate } : {}),
+      author: authorPersons(),
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       isPartOf: { '@type': 'WebSite', name: brand.name, url: brand.origin },
       publisher: {
@@ -199,7 +337,9 @@ function renderPage({ vertical: v, contentType: ct, verticals, contentTypes, bui
         acceptedAnswer: { '@type': 'Answer', text: f.a },
       })),
     },
-  ];
+    pricingOfferSchema(),
+    howToSchema,
+  ].filter(Boolean);
 
   const faqHtml = faqs
     .map((f) => `<div class="faq-item"><h3>${esc(f.q)}</h3><p>${esc(f.a)}</p></div>`)
@@ -260,10 +400,14 @@ ${structured.map((s) => `<script type="application/ld+json">\n${JSON.stringify(s
   .crumb{font-family:var(--font-mono);font-size:12px;color:var(--muted);
     text-transform:uppercase;letter-spacing:.08em;margin:40px 0 14px}
   h1{font-family:var(--font-display);font-size:clamp(34px,6vw,52px);line-height:1.1;
-    font-weight:400;margin-bottom:20px}
+    font-weight:400;margin-bottom:14px}
   h2{font-family:var(--font-display);font-size:clamp(26px,4vw,34px);font-weight:400;
     margin:52px 0 18px}
   h3{font-size:18px;margin-bottom:8px}
+  .byline{font-family:var(--font-mono);font-size:12px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.06em;margin-bottom:22px}
+  .byline a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .byline a:hover{color:var(--accent)}
   .lede{font-size:19px;color:var(--muted);margin-bottom:28px}
   .btn{display:inline-block;font-family:var(--font-mono);font-size:15px;font-weight:500;
     background:var(--accent);color:var(--bg);padding:14px 28px;border-radius:10px;margin:8px 0}
@@ -294,8 +438,15 @@ ${structured.map((s) => `<script type="application/ld+json">\n${JSON.stringify(s
   nav.related h3{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;
     letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
   nav.related ul{list-style:none;display:grid;gap:8px}
+  .about-block{border-top:1px solid var(--border);padding:28px 0;margin-top:40px}
+  .about-block h3{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
+  .about-block p{color:var(--muted);font-size:15px}
+  .about-block a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .about-block a:hover{color:var(--accent)}
   footer{border-top:1px solid var(--border);padding:32px 0;margin-top:40px;
     color:var(--muted);font-size:14px}
+  footer time{font-family:var(--font-mono);color:var(--muted)}
   @media(max-width:600px){nav.related{grid-template-columns:1fr}}
 </style>
 </head>
@@ -310,6 +461,7 @@ ${structured.map((s) => `<script type="application/ld+json">\n${JSON.stringify(s
 <main class="wrap">
   <p class="crumb"><a href="/">gen8r</a> / ${esc(ct.noun)}${city ? ` / ${esc(city.name)}` : ''}</p>
   <h1>${esc(label)}</h1>
+  ${authorByline(buildDate)}
   <p class="lede">${esc(introText)}</p>
   <a class="btn" href="/#start" data-loc="seo-hero">Generate my campaign free &rarr;</a>
 
@@ -331,11 +483,25 @@ ${city ? localBlock(v, city) : ''}
   ${faqHtml}
 
   ${city ? cityRelatedLinks(v, ct, city) : relatedLinks(v, ct, verticals, contentTypes)}
+
+  <aside class="about-block">
+    <h3>About gen8r</h3>
+    <p>gen8r is AI social-media campaign software for small businesses, built by
+    <a href="https://liftlogic.dev">LiftLogic AI</a>. Co-founded by
+    <a href="${esc(brand.authors[0].url)}" rel="author">${esc(brand.authors[0].name)}</a>
+    and <a href="${esc(brand.authors[1].url)}" rel="author">${esc(brand.authors[1].name)}</a>,
+    two engineers who spent years watching small business owners burn weekends on Canva.
+    gen8r generates and auto-publishes 10-piece campaigns — captions, images, branded flyers,
+    and AI reel videos — to Instagram, Facebook, LinkedIn, TikTok, YouTube, Pinterest, and
+    Google Business Profile once you approve each post.</p>
+  </aside>
 </main>
 
 <footer>
   <div class="wrap">
-    <p><a href="/">gen8r</a> — ${esc(brand.tagline)}. &copy; gen8r by LiftLogic AI.
+    <p><a href="/">gen8r</a> — ${esc(brand.tagline)}. &copy; gen8r by
+    <a href="https://liftlogic.dev">LiftLogic AI</a>.
+    &middot; Last updated <time datetime="${esc(buildDate)}">${esc(prettyDate(buildDate))}</time>
     &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
   </div>
 </footer>
@@ -362,15 +528,19 @@ function renderLocalLanding({ city, verticals, geoGuides, buildDate }) {
   const faqs = [
     {
       q: `Do I need a marketing agency in ${city.name}?`,
-      a: `Not for social media. A ${city.name} agency typically charges $1,000–$3,000/month to run your socials. gen8r does the same core job — generating and publishing on-brand Instagram and Facebook campaigns — from $29/month, with you approving each post before it goes live. Keep an agency for big-picture strategy; let gen8r handle the daily posting.`,
+      a: `Not for social media. Australian social-media agency retainers commonly sit in the $1,000–$3,000/month range for SMB accounts (Clutch.co directory data, 2026). gen8r does the same core job — generating and publishing on-brand Instagram, Facebook, LinkedIn, TikTok and YouTube campaigns — from $29/month, with you approving each post before it goes live. Keep an agency for big-picture strategy; let gen8r handle the daily posting.`,
     },
     {
       q: `How much does social media marketing cost for ${art(city.name)} ${city.name} small business?`,
-      a: `With gen8r, plans start at $29/month and early-access accounts get their first month free — no contract. That’s a fraction of a ${city.name} agency retainer or the cost of hiring a part-time social media manager.`,
+      a: `With gen8r, plans start at $29/month (Starter, 2 campaigns), $49/month (Growth, 5 campaigns), or $99/month (Pro, 15 campaigns). Early-access accounts get their first month free — no contract. That's a fraction of a ${city.name} agency retainer or the cost of hiring a part-time social media manager.`,
+    },
+    {
+      q: `Which platforms does gen8r publish to in ${city.name}?`,
+      a: `Instagram, Facebook, LinkedIn, TikTok, YouTube Shorts, Pinterest, Google Business Profile, and Reddit — captions and formats tuned per platform. WhatsApp goes out as an opt-in broadcast to your customer list. You choose which channels each campaign publishes to.`,
     },
     {
       q: `Which ${city.name} businesses is gen8r for?`,
-      a: `Any ${city.name} small business that lives on Instagram and Facebook — cafés, restaurants, yoga studios, hair salons, real estate agents, and event venues, to name a few. You describe what you’re promoting; gen8r writes the captions, makes the images, and publishes the campaign on your approval.`,
+      a: `Any ${city.name} small business that lives on social media — cafés, restaurants, yoga studios, hair salons, real estate agents, event venues, coaches, and wellness studios, to name a few. You describe what you're promoting; gen8r writes the captions, makes the images, and publishes the campaign on your approval.`,
     },
   ];
 
@@ -392,6 +562,12 @@ function renderLocalLanding({ city, verticals, geoGuides, buildDate }) {
         url: brand.origin,
         logo: `${brand.origin}/gen8r-logo.png`,
         sameAs: brand.social,
+        founder: authorPersons(),
+        parentOrganization: {
+          '@type': 'Organization',
+          name: 'LiftLogic AI',
+          url: 'https://liftlogic.dev',
+        },
       },
       areaServed: { '@type': 'City', name: city.name },
       offers: {
@@ -400,6 +576,17 @@ function renderLocalLanding({ city, verticals, geoGuides, buildDate }) {
         priceCurrency: 'USD',
         url: `${brand.origin}/#start`,
       },
+      ...(customersForCity(city).length > 0
+        ? {
+            mentions: customersForCity(city).map((c) => ({
+              '@type': 'Organization',
+              name: c.name,
+              url: c.website,
+              address: { '@type': 'PostalAddress', addressLocality: c.city, addressCountry: c.country },
+              sameAs: [c.instagram, c.facebook].filter(Boolean),
+            })),
+          }
+        : {}),
     },
     {
       '@context': 'https://schema.org',
@@ -419,7 +606,8 @@ function renderLocalLanding({ city, verticals, geoGuides, buildDate }) {
         acceptedAnswer: { '@type': 'Answer', text: f.a },
       })),
     },
-  ];
+    pricingOfferSchema(),
+  ].filter(Boolean);
 
   const faqHtml = faqs
     .map((f) => `<div class="faq-item"><h3>${esc(f.q)}</h3><p>${esc(f.a)}</p></div>`)
@@ -477,16 +665,32 @@ ${structured.map((s) => `<script type="application/ld+json">\n${JSON.stringify(s
   .crumb{font-family:var(--font-mono);font-size:12px;color:var(--muted);
     text-transform:uppercase;letter-spacing:.08em;margin:40px 0 14px}
   h1{font-family:var(--font-display);font-size:clamp(34px,6vw,52px);line-height:1.1;
-    font-weight:400;margin-bottom:20px}
+    font-weight:400;margin-bottom:14px}
   h2{font-family:var(--font-display);font-size:clamp(26px,4vw,34px);font-weight:400;
     margin:52px 0 18px}
   h3{font-size:18px;margin-bottom:8px}
+  .byline{font-family:var(--font-mono);font-size:12px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.06em;margin-bottom:22px}
+  .byline a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .byline a:hover{color:var(--accent)}
   .lede{font-size:19px;color:var(--muted);margin-bottom:28px}
   p{margin-bottom:16px}
   .btn{display:inline-block;font-family:var(--font-mono);font-size:15px;font-weight:500;
     background:var(--accent);color:var(--bg);padding:14px 28px;border-radius:10px;margin:8px 0}
   .btn:hover{text-decoration:none;filter:brightness(1.1)}
   .btn.gold{background:var(--gold)}
+  .how-it-works{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:32px 0 8px}
+  .how-step{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+  .how-step .num{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:.1em}
+  .how-step h4{font-family:var(--font-display);font-size:22px;font-weight:400;margin:6px 0 8px}
+  .how-step p{color:var(--muted);font-size:14px;margin:0}
+  .case-study{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:24px 26px;margin:16px 0}
+  .case-study h3{font-family:var(--font-display);font-size:24px;font-weight:400;margin:0 0 4px}
+  .case-study .case-meta{font-family:var(--font-mono);font-size:12px;color:var(--muted);
+    letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+  .case-study p{color:var(--muted);font-size:15px;margin:8px 0}
+  .case-study .case-verify a{color:var(--accent)}
   ul.guides{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
   ul.guides li{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
   .cta-band{background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(255,184,0,.06));
@@ -494,9 +698,16 @@ ${structured.map((s) => `<script type="application/ld+json">\n${JSON.stringify(s
   .cta-band p{color:var(--muted);margin-bottom:8px}
   .faq-item{border-top:1px solid var(--border);padding:22px 0}
   .faq-item p{color:var(--muted);margin-bottom:0}
+  .about-block{border-top:1px solid var(--border);padding:28px 0;margin-top:40px}
+  .about-block h3{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
+  .about-block p{color:var(--muted);font-size:15px}
+  .about-block a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .about-block a:hover{color:var(--accent)}
   footer{border-top:1px solid var(--border);padding:32px 0;margin-top:40px;
     color:var(--muted);font-size:14px}
-  @media(max-width:600px){ul.guides{grid-template-columns:1fr}}
+  footer time{font-family:var(--font-mono);color:var(--muted)}
+  @media(max-width:600px){ul.guides,.how-it-works{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -510,17 +721,39 @@ ${structured.map((s) => `<script type="application/ld+json">\n${JSON.stringify(s
 <main class="wrap">
   <p class="crumb"><a href="/">gen8r</a> / Social media marketing in ${esc(city.name)}</p>
   <h1>Social media marketing for ${esc(city.name)} small businesses</h1>
-  <p class="lede">${esc(city.blurb)} gen8r is the AI that generates and auto-publishes your
-  Instagram and Facebook campaigns — so a ${esc(city.name)} café, salon, or studio can market like it has
-  a full-time social team, without hiring one.</p>
+  ${authorByline(buildDate)}
+  <p class="lede">${esc(city.blurb)} gen8r is AI social-media campaign software for small businesses &mdash;
+  it generates and auto-publishes campaigns to Instagram, Facebook, LinkedIn, TikTok, YouTube, Pinterest and
+  Google Business Profile, so a ${esc(city.name)} café, salon, or studio can market like it has a full-time
+  social team, without hiring one.</p>
   <a class="btn" href="/#start" data-loc="seo-hero">Generate my first campaign free &rarr;</a>
 
+  <h2>How it works in 3 steps</h2>
+  <div class="how-it-works">
+    <div class="how-step">
+      <div class="num">01 &middot; DESCRIBE</div>
+      <h4>Say what you're promoting</h4>
+      <p>One line in Slack, Telegram, or the web portal &mdash; a new offer, an event, a slow Tuesday.</p>
+    </div>
+    <div class="how-step">
+      <div class="num">02 &middot; GENERATE</div>
+      <h4>gen8r builds the campaign</h4>
+      <p>10 pieces in 30 seconds: 6 captioned posts, 2 branded flyers, 2 AI reel videos &mdash; on brand.</p>
+    </div>
+    <div class="how-step">
+      <div class="num">03 &middot; APPROVE &amp; PUBLISH</div>
+      <h4>Tap approve, it goes live</h4>
+      <p>Nothing publishes without your OK. gen8r schedules to your linked channels &mdash; IG, FB, LinkedIn, TikTok, YouTube, Pinterest, GBP.</p>
+    </div>
+  </div>
+
+  ${caseStudyBlock(city)}
+
   <h2>Marketing that keeps up with your week</h2>
-  <p>Most ${esc(city.name)} owners know they should be posting — they just don’t have the hours. gen8r fixes
-  the hard part: you describe what you’re promoting once (a new offer, an event, a slow Tuesday), and gen8r
-  writes the captions, generates the images and branded flyers, picks the hashtags, and scripts the Reels —
-  then publishes the whole campaign to Instagram and Facebook once you approve each post. You go from
-  <em>author</em> to <em>approve</em>.</p>
+  <p>Most ${esc(city.name)} owners know they should be posting &mdash; they just don't have the hours. gen8r fixes
+  the hard part: you describe what you're promoting once, and gen8r writes the captions, generates the images
+  and branded flyers, picks the hashtags, and scripts the Reels &mdash; then publishes the whole campaign to
+  your linked channels once you approve each post. You go from <em>author</em> to <em>approve</em>.</p>
 
   <h2>Built for ${esc(city.name)} business types</h2>
   <p>Start from a ready-to-post guide tuned for your business and your city, then let gen8r take it live:</p>
@@ -529,17 +762,29 @@ ${structured.map((s) => `<script type="application/ld+json">\n${JSON.stringify(s
   </ul>
 
   <div class="cta-band">
-    <p>Early access — first month free, no contract. Cheaper than a ${esc(city.name)} agency retainer.</p>
+    <p>Early access &mdash; first month free, no contract. Cheaper than a ${esc(city.name)} agency retainer.</p>
     <a class="btn gold" href="/#start" data-loc="seo-band">Start your free campaign &rarr;</a>
   </div>
 
   <h2>Frequently asked questions</h2>
   ${faqHtml}
+
+  <aside class="about-block">
+    <h3>About gen8r</h3>
+    <p>gen8r is AI social-media campaign software for small businesses, built by
+    <a href="https://liftlogic.dev">LiftLogic AI</a>. Co-founded by
+    <a href="${esc(brand.authors[0].url)}" rel="author">${esc(brand.authors[0].name)}</a>
+    and <a href="${esc(brand.authors[1].url)}" rel="author">${esc(brand.authors[1].name)}</a>,
+    two engineers who spent years watching small business owners burn weekends on Canva.
+    Serving ${esc(city.name)} and small businesses everywhere.</p>
+  </aside>
 </main>
 
 <footer>
   <div class="wrap">
-    <p><a href="/">gen8r</a> — ${esc(brand.tagline)}. &copy; gen8r by LiftLogic AI.
+    <p><a href="/">gen8r</a> &mdash; ${esc(brand.tagline)}. &copy; gen8r by
+    <a href="https://liftlogic.dev">LiftLogic AI</a>.
+    &middot; Last updated <time datetime="${esc(buildDate)}">${esc(prettyDate(buildDate))}</time>
     &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
   </div>
 </footer>

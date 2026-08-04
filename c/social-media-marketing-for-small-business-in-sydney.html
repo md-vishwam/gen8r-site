@@ -41,7 +41,24 @@
       "https://www.tiktok.com/@gen8rai",
       "https://www.pinterest.com/doshi4582/gen8r/",
       "https://www.reddit.com/r/Gen8R/"
-    ]
+    ],
+    "founder": [
+      {
+        "@type": "Person",
+        "name": "Maulik Doshi",
+        "url": "https://www.linkedin.com/in/maulikdoshi82/"
+      },
+      {
+        "@type": "Person",
+        "name": "Ashish Kapoor",
+        "url": "https://www.linkedin.com/in/ashkap/"
+      }
+    ],
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "LiftLogic AI",
+      "url": "https://liftlogic.dev"
+    }
   },
   "areaServed": {
     "@type": "City",
@@ -52,7 +69,23 @@
     "price": "29.00",
     "priceCurrency": "USD",
     "url": "https://gen8r.ai/#start"
-  }
+  },
+  "mentions": [
+    {
+      "@type": "Organization",
+      "name": "Journeys Unlimited",
+      "url": "https://journeysunlimited.au/",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Rhodes, NSW",
+        "addressCountry": "Australia"
+      },
+      "sameAs": [
+        "https://www.instagram.com/journeysunlimitedau/",
+        "https://www.facebook.com/journeysunlimitedAU/"
+      ]
+    }
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -91,7 +124,7 @@
       "name": "Do I need a marketing agency in Sydney?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not for social media. A Sydney agency typically charges $1,000–$3,000/month to run your socials. gen8r does the same core job — generating and publishing on-brand Instagram and Facebook campaigns — from $29/month, with you approving each post before it goes live. Keep an agency for big-picture strategy; let gen8r handle the daily posting."
+        "text": "Not for social media. Australian social-media agency retainers commonly sit in the $1,000–$3,000/month range for SMB accounts (Clutch.co directory data, 2026). gen8r does the same core job — generating and publishing on-brand Instagram, Facebook, LinkedIn, TikTok and YouTube campaigns — from $29/month, with you approving each post before it goes live. Keep an agency for big-picture strategy; let gen8r handle the daily posting."
       }
     },
     {
@@ -99,7 +132,15 @@
       "name": "How much does social media marketing cost for a Sydney small business?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "With gen8r, plans start at $29/month and early-access accounts get their first month free — no contract. That’s a fraction of a Sydney agency retainer or the cost of hiring a part-time social media manager."
+        "text": "With gen8r, plans start at $29/month (Starter, 2 campaigns), $49/month (Growth, 5 campaigns), or $99/month (Pro, 15 campaigns). Early-access accounts get their first month free — no contract. That's a fraction of a Sydney agency retainer or the cost of hiring a part-time social media manager."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which platforms does gen8r publish to in Sydney?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Instagram, Facebook, LinkedIn, TikTok, YouTube Shorts, Pinterest, Google Business Profile, and Reddit — captions and formats tuned per platform. WhatsApp goes out as an opt-in broadcast to your customer list. You choose which channels each campaign publishes to."
       }
     },
     {
@@ -107,10 +148,68 @@
       "name": "Which Sydney businesses is gen8r for?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Any Sydney small business that lives on Instagram and Facebook — cafés, restaurants, yoga studios, hair salons, real estate agents, and event venues, to name a few. You describe what you’re promoting; gen8r writes the captions, makes the images, and publishes the campaign on your approval."
+        "text": "Any Sydney small business that lives on social media — cafés, restaurants, yoga studios, hair salons, real estate agents, event venues, coaches, and wellness studios, to name a few. You describe what you're promoting; gen8r writes the captions, makes the images, and publishes the campaign on your approval."
       }
     }
   ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AggregateOffer",
+  "name": "gen8r subscription",
+  "url": "https://gen8r.ai/#start",
+  "priceCurrency": "USD",
+  "lowPrice": "29.00",
+  "highPrice": "99.00",
+  "offerCount": "3",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Starter",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "29.00",
+        "priceCurrency": "USD",
+        "unitCode": "MON",
+        "billingIncrement": "1"
+      },
+      "availability": "https://schema.org/InStock",
+      "url": "https://gen8r.ai/#start"
+    },
+    {
+      "@type": "Offer",
+      "name": "Growth",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "49.00",
+        "priceCurrency": "USD",
+        "unitCode": "MON",
+        "billingIncrement": "1"
+      },
+      "availability": "https://schema.org/InStock",
+      "url": "https://gen8r.ai/#start"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pro",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "99.00",
+        "priceCurrency": "USD",
+        "unitCode": "MON",
+        "billingIncrement": "1"
+      },
+      "availability": "https://schema.org/InStock",
+      "url": "https://gen8r.ai/#start"
+    }
+  ],
+  "seller": {
+    "@type": "Organization",
+    "name": "gen8r",
+    "url": "https://gen8r.ai"
+  }
 }
 </script>
 <style>
@@ -141,16 +240,32 @@
   .crumb{font-family:var(--font-mono);font-size:12px;color:var(--muted);
     text-transform:uppercase;letter-spacing:.08em;margin:40px 0 14px}
   h1{font-family:var(--font-display);font-size:clamp(34px,6vw,52px);line-height:1.1;
-    font-weight:400;margin-bottom:20px}
+    font-weight:400;margin-bottom:14px}
   h2{font-family:var(--font-display);font-size:clamp(26px,4vw,34px);font-weight:400;
     margin:52px 0 18px}
   h3{font-size:18px;margin-bottom:8px}
+  .byline{font-family:var(--font-mono);font-size:12px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.06em;margin-bottom:22px}
+  .byline a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .byline a:hover{color:var(--accent)}
   .lede{font-size:19px;color:var(--muted);margin-bottom:28px}
   p{margin-bottom:16px}
   .btn{display:inline-block;font-family:var(--font-mono);font-size:15px;font-weight:500;
     background:var(--accent);color:var(--bg);padding:14px 28px;border-radius:10px;margin:8px 0}
   .btn:hover{text-decoration:none;filter:brightness(1.1)}
   .btn.gold{background:var(--gold)}
+  .how-it-works{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:32px 0 8px}
+  .how-step{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+  .how-step .num{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:.1em}
+  .how-step h4{font-family:var(--font-display);font-size:22px;font-weight:400;margin:6px 0 8px}
+  .how-step p{color:var(--muted);font-size:14px;margin:0}
+  .case-study{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:24px 26px;margin:16px 0}
+  .case-study h3{font-family:var(--font-display);font-size:24px;font-weight:400;margin:0 0 4px}
+  .case-study .case-meta{font-family:var(--font-mono);font-size:12px;color:var(--muted);
+    letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+  .case-study p{color:var(--muted);font-size:15px;margin:8px 0}
+  .case-study .case-verify a{color:var(--accent)}
   ul.guides{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
   ul.guides li{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
   .cta-band{background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(255,184,0,.06));
@@ -158,9 +273,16 @@
   .cta-band p{color:var(--muted);margin-bottom:8px}
   .faq-item{border-top:1px solid var(--border);padding:22px 0}
   .faq-item p{color:var(--muted);margin-bottom:0}
+  .about-block{border-top:1px solid var(--border);padding:28px 0;margin-top:40px}
+  .about-block h3{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
+  .about-block p{color:var(--muted);font-size:15px}
+  .about-block a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .about-block a:hover{color:var(--accent)}
   footer{border-top:1px solid var(--border);padding:32px 0;margin-top:40px;
     color:var(--muted);font-size:14px}
-  @media(max-width:600px){ul.guides{grid-template-columns:1fr}}
+  footer time{font-family:var(--font-mono);color:var(--muted)}
+  @media(max-width:600px){ul.guides,.how-it-works{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -174,17 +296,55 @@
 <main class="wrap">
   <p class="crumb"><a href="/">gen8r</a> / Social media marketing in Sydney</p>
   <h1>Social media marketing for Sydney small businesses</h1>
-  <p class="lede">Sydney small businesses compete for attention on the same feeds as everyone else — but the ones that win post consistently, locally, and on-brand. gen8r is the AI that generates and auto-publishes your
-  Instagram and Facebook campaigns — so a Sydney café, salon, or studio can market like it has
-  a full-time social team, without hiring one.</p>
+  <p class="byline">By <a href="https://www.linkedin.com/in/maulikdoshi82/" rel="author">Maulik Doshi</a> &amp; <a href="https://www.linkedin.com/in/ashkap/" rel="author">Ashish Kapoor</a> &middot; Last updated <time datetime="2026-08-04">4 August 2026</time></p>
+  <p class="lede">Sydney small businesses compete for attention on the same feeds as everyone else — but the ones that win post consistently, locally, and on-brand. gen8r is AI social-media campaign software for small businesses &mdash;
+  it generates and auto-publishes campaigns to Instagram, Facebook, LinkedIn, TikTok, YouTube, Pinterest and
+  Google Business Profile, so a Sydney café, salon, or studio can market like it has a full-time
+  social team, without hiring one.</p>
   <a class="btn" href="/#start" data-loc="seo-hero">Generate my first campaign free &rarr;</a>
 
+  <h2>How it works in 3 steps</h2>
+  <div class="how-it-works">
+    <div class="how-step">
+      <div class="num">01 &middot; DESCRIBE</div>
+      <h4>Say what you're promoting</h4>
+      <p>One line in Slack, Telegram, or the web portal &mdash; a new offer, an event, a slow Tuesday.</p>
+    </div>
+    <div class="how-step">
+      <div class="num">02 &middot; GENERATE</div>
+      <h4>gen8r builds the campaign</h4>
+      <p>10 pieces in 30 seconds: 6 captioned posts, 2 branded flyers, 2 AI reel videos &mdash; on brand.</p>
+    </div>
+    <div class="how-step">
+      <div class="num">03 &middot; APPROVE &amp; PUBLISH</div>
+      <h4>Tap approve, it goes live</h4>
+      <p>Nothing publishes without your OK. gen8r schedules to your linked channels &mdash; IG, FB, LinkedIn, TikTok, YouTube, Pinterest, GBP.</p>
+    </div>
+  </div>
+
+  
+  <h2>Customers we work with in Sydney</h2>
+  
+    <article class="case-study">
+      <div class="case-head">
+        <h3>Journeys Unlimited</h3>
+        <p class="case-meta">Luxury tour operator &middot; Rhodes, NSW</p>
+      </div>
+      <p>Australian-owned bespoke tour operator running spiritual, cultural, wellness and heritage journeys across Bali, Thailand, Vietnam, Japan, India, Sri Lanka, Dubai and Morocco.</p>
+      <p><strong>What gen8r delivers:</strong> Full 10-piece campaigns per tour launch — captions, branded flyers and AI reel videos, auto-published to Instagram &amp; Facebook.</p>
+      <p class="case-verify">
+        Verify it yourself &mdash;
+        <a href="https://www.instagram.com/journeysunlimitedau/" rel="noopener">Instagram</a> &middot;
+        <a href="https://www.facebook.com/journeysunlimitedAU/" rel="noopener">Facebook</a> &middot;
+        <a href="https://journeysunlimited.au/" rel="noopener">journeysunlimited.au</a>
+      </p>
+    </article>
+
   <h2>Marketing that keeps up with your week</h2>
-  <p>Most Sydney owners know they should be posting — they just don’t have the hours. gen8r fixes
-  the hard part: you describe what you’re promoting once (a new offer, an event, a slow Tuesday), and gen8r
-  writes the captions, generates the images and branded flyers, picks the hashtags, and scripts the Reels —
-  then publishes the whole campaign to Instagram and Facebook once you approve each post. You go from
-  <em>author</em> to <em>approve</em>.</p>
+  <p>Most Sydney owners know they should be posting &mdash; they just don't have the hours. gen8r fixes
+  the hard part: you describe what you're promoting once, and gen8r writes the captions, generates the images
+  and branded flyers, picks the hashtags, and scripts the Reels &mdash; then publishes the whole campaign to
+  your linked channels once you approve each post. You go from <em>author</em> to <em>approve</em>.</p>
 
   <h2>Built for Sydney business types</h2>
   <p>Start from a ready-to-post guide tuned for your business and your city, then let gen8r take it live:</p>
@@ -198,19 +358,32 @@
   </ul>
 
   <div class="cta-band">
-    <p>Early access — first month free, no contract. Cheaper than a Sydney agency retainer.</p>
+    <p>Early access &mdash; first month free, no contract. Cheaper than a Sydney agency retainer.</p>
     <a class="btn gold" href="/#start" data-loc="seo-band">Start your free campaign &rarr;</a>
   </div>
 
   <h2>Frequently asked questions</h2>
-  <div class="faq-item"><h3>Do I need a marketing agency in Sydney?</h3><p>Not for social media. A Sydney agency typically charges $1,000–$3,000/month to run your socials. gen8r does the same core job — generating and publishing on-brand Instagram and Facebook campaigns — from $29/month, with you approving each post before it goes live. Keep an agency for big-picture strategy; let gen8r handle the daily posting.</p></div>
-<div class="faq-item"><h3>How much does social media marketing cost for a Sydney small business?</h3><p>With gen8r, plans start at $29/month and early-access accounts get their first month free — no contract. That’s a fraction of a Sydney agency retainer or the cost of hiring a part-time social media manager.</p></div>
-<div class="faq-item"><h3>Which Sydney businesses is gen8r for?</h3><p>Any Sydney small business that lives on Instagram and Facebook — cafés, restaurants, yoga studios, hair salons, real estate agents, and event venues, to name a few. You describe what you’re promoting; gen8r writes the captions, makes the images, and publishes the campaign on your approval.</p></div>
+  <div class="faq-item"><h3>Do I need a marketing agency in Sydney?</h3><p>Not for social media. Australian social-media agency retainers commonly sit in the $1,000–$3,000/month range for SMB accounts (Clutch.co directory data, 2026). gen8r does the same core job — generating and publishing on-brand Instagram, Facebook, LinkedIn, TikTok and YouTube campaigns — from $29/month, with you approving each post before it goes live. Keep an agency for big-picture strategy; let gen8r handle the daily posting.</p></div>
+<div class="faq-item"><h3>How much does social media marketing cost for a Sydney small business?</h3><p>With gen8r, plans start at $29/month (Starter, 2 campaigns), $49/month (Growth, 5 campaigns), or $99/month (Pro, 15 campaigns). Early-access accounts get their first month free — no contract. That's a fraction of a Sydney agency retainer or the cost of hiring a part-time social media manager.</p></div>
+<div class="faq-item"><h3>Which platforms does gen8r publish to in Sydney?</h3><p>Instagram, Facebook, LinkedIn, TikTok, YouTube Shorts, Pinterest, Google Business Profile, and Reddit — captions and formats tuned per platform. WhatsApp goes out as an opt-in broadcast to your customer list. You choose which channels each campaign publishes to.</p></div>
+<div class="faq-item"><h3>Which Sydney businesses is gen8r for?</h3><p>Any Sydney small business that lives on social media — cafés, restaurants, yoga studios, hair salons, real estate agents, event venues, coaches, and wellness studios, to name a few. You describe what you're promoting; gen8r writes the captions, makes the images, and publishes the campaign on your approval.</p></div>
+
+  <aside class="about-block">
+    <h3>About gen8r</h3>
+    <p>gen8r is AI social-media campaign software for small businesses, built by
+    <a href="https://liftlogic.dev">LiftLogic AI</a>. Co-founded by
+    <a href="https://www.linkedin.com/in/maulikdoshi82/" rel="author">Maulik Doshi</a>
+    and <a href="https://www.linkedin.com/in/ashkap/" rel="author">Ashish Kapoor</a>,
+    two engineers who spent years watching small business owners burn weekends on Canva.
+    Serving Sydney and small businesses everywhere.</p>
+  </aside>
 </main>
 
 <footer>
   <div class="wrap">
-    <p><a href="/">gen8r</a> — AI social media campaigns for small business. &copy; gen8r by LiftLogic AI.
+    <p><a href="/">gen8r</a> &mdash; AI social media campaigns for small business. &copy; gen8r by
+    <a href="https://liftlogic.dev">LiftLogic AI</a>.
+    &middot; Last updated <time datetime="2026-08-04">4 August 2026</time>
     &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
   </div>
 </footer>

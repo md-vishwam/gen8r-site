@@ -63,7 +63,7 @@
   "url": "https://gen8r.ai",
   "logo": "https://gen8r.ai/gen8r-logo.png",
   "image": "https://gen8r.ai/og-preview.png",
-  "description": "gen8r generates and auto-publishes 10-piece social media campaigns — captions, AI images, branded flyers, hashtags, and Reels — to Instagram and Facebook for small businesses.",
+  "description": "gen8r generates and auto-publishes 10-piece social media campaigns — captions, AI images, branded flyers, hashtags, and Reels — to Instagram, Facebook, LinkedIn, TikTok, YouTube, Pinterest, Google Business, and more, for small businesses.",
   "parentOrganization": {
     "@type": "Organization",
     "name": "LiftLogic AI",
@@ -92,7 +92,7 @@
   "@id": "https://gen8r.ai/#website",
   "name": "gen8r",
   "url": "https://gen8r.ai",
-  "description": "AI social media campaigns for small business — describe a promotion, get a published Instagram and Facebook campaign.",
+  "description": "AI social media campaigns for small business — describe a promotion, get a full multi-platform campaign published for you.",
   "publisher": { "@id": "https://gen8r.ai/#organization" },
   "inLanguage": "en"
 }
@@ -107,7 +107,7 @@
       "name": "Does gen8r post without my approval?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not without your approval. Each day, you get a notification on Slack or Telegram asking you to confirm. Tap 'Post it!' and it publishes to Instagram and Facebook. You can also skip any day."
+        "text": "Not without your approval. Each day, you get a notification on Slack, Telegram, or the brand portal asking you to confirm. Tap 'Post it!' and it publishes to your linked channels — Instagram, Facebook, LinkedIn, TikTok, YouTube, and more. You can skip any day."
       }
     },
     {
@@ -115,7 +115,7 @@
       "name": "What platforms does gen8r publish to?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Instagram and Facebook today, with Google Business, YouTube, Pinterest, TikTok, WhatsApp, Reddit, and LinkedIn rolling out across plans."
+        "text": "Instagram, Facebook, LinkedIn, TikTok, YouTube Shorts, Pinterest, Google Business Profile, and Reddit — with captions and formats tuned per platform. WhatsApp goes out as an opt-in broadcast to your customer list. You choose which channels each campaign publishes to."
       }
     },
     {
@@ -661,6 +661,35 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase;
   margin-bottom: 4px;
 }
+.channel-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  flex-wrap: nowrap;
+}
+.channel-tab {
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  background: transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.channel-tab:hover {
+  border-color: var(--border-bright);
+  color: var(--text-dim);
+}
+.channel-tab.active {
+  background: rgba(0,229,255,0.1);
+  border-color: rgba(0,229,255,0.3);
+  color: var(--accent);
+}
 .chat-msg {
   padding: 10px 14px;
   border-radius: 12px;
@@ -724,6 +753,9 @@ img { max-width: 100%; display: block; }
 .demo-post:nth-child(4) .demo-post-img { background: linear-gradient(135deg, #1a4a2a, #0d3318); }
 .demo-post:nth-child(5) .demo-post-img { background: linear-gradient(135deg, #4a1a1a, #330d0d); }
 .demo-post:nth-child(6) .demo-post-img { background: linear-gradient(135deg, #1a2a4a, #0d1833); }
+.demo-post:nth-child(7) .demo-post-img { background: linear-gradient(135deg, #4a1a3a, #330d28); }
+.demo-post:nth-child(8) .demo-post-img { background: linear-gradient(135deg, #4a2a1a, #331d0d); }
+.demo-post:nth-child(9) .demo-post-img { background: linear-gradient(135deg, #1a4a4a, #0d3333); }
 .demo-post-body {
   padding: 10px 12px;
 }
@@ -1603,7 +1635,7 @@ img { max-width: 100%; display: block; }
     <div class="section-header-center reveal">
       <div class="section-label">See it in action</div>
       <h2 class="section-title">From chat to campaign</h2>
-      <p class="section-subtitle">Start from chat or the web app &mdash; a full campaign in your browser.</p>
+      <p class="section-subtitle">Start from the Web Portal, Slack, or Telegram &mdash; same 10-piece campaign, in your browser.</p>
     </div>
     <div class="demo-tabs reveal reveal-delay-1">
       <button class="demo-tab active" data-demo="travel">Travel</button>
@@ -1621,9 +1653,12 @@ img { max-width: 100%; display: block; }
         <span class="demo-titlebar-text">gen8r &mdash; Campaign Review</span>
       </div>
       <div class="demo-body">
-        <div class="demo-chat">
-          <div class="demo-chat-label">Telegram</div>
-          <div class="chat-msg chat-user">/new campaign Bali wellness retreat, 7 nights, luxury villas, yoga &amp; spa included</div>
+        <div class="demo-chat" data-brief="Bali wellness retreat, 7 nights, luxury villas, yoga &amp; spa included">
+          <div class="channel-tabs">
+            <button class="channel-tab active" data-channel="web">Web Portal</button>
+            <button class="channel-tab" data-channel="slack">Slack / Telegram</button>
+          </div>
+          <div class="chat-msg chat-user chat-user-first">Bali wellness retreat, 7 nights, luxury villas, yoga &amp; spa included</div>
           <div class="chat-msg chat-bot">Got it! A few quick questions to build the best campaign.</div>
           <div class="chat-msg chat-bot">Question 1/6: Who is the ideal traveller?</div>
           <div class="chat-msg chat-user">Couples 30-50, wellness enthusiasts, mid-high budget</div>
@@ -1648,11 +1683,27 @@ img { max-width: 100%; display: block; }
             </div>
           </div>
           <div class="demo-post">
+            <div class="demo-post-img">&#129496;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 3 &middot; Post &middot; LinkedIn</div>
+              <div class="demo-post-caption">The wellness leader's guide to true rest &mdash; why founders retreat here...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#Leadership</span><span class="demo-tag">#Wellness</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
             <div class="demo-post-img">&#127916;</div>
             <div class="demo-post-body">
               <div class="demo-post-day">Day 4 &middot; Reel &middot; Instagram</div>
               <div class="demo-post-caption">HOOK: "What if your next holiday actually healed you?" + AI video</div>
               <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#WellnessTravel</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#127801;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 5 &middot; Pin &middot; Pinterest</div>
+              <div class="demo-post-caption">Bali packing list, sunrise yoga rituals, spa menu &mdash; a savable board</div>
+              <div class="demo-post-tags"><span class="demo-tag">Evergreen</span><span class="demo-tag">#BaliBucketList</span></div>
             </div>
           </div>
           <div class="demo-post">
@@ -1664,18 +1715,26 @@ img { max-width: 100%; display: block; }
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#127754;</div>
+            <div class="demo-post-img">&#127916;</div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 7 &middot; Reel &middot; Instagram</div>
-              <div class="demo-post-caption">HOOK: "7 nights of pure bliss &mdash; here's what's waiting" + AI video</div>
-              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#BaliVibes</span></div>
+              <div class="demo-post-day">Day 7 &middot; Reel &middot; TikTok</div>
+              <div class="demo-post-caption">HOOK: "POV: your soul got a passport" &mdash; 12s vertical, trending audio</div>
+              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#TravelTok</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#128227;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 8 &middot; Broadcast &middot; WhatsApp</div>
+              <div class="demo-post-caption">"Only 5 rooms left &mdash; tap to hold yours." Sent to opted-in list.</div>
+              <div class="demo-post-tags"><span class="demo-tag">Approved Template</span><span class="demo-tag">CTA</span></div>
             </div>
           </div>
           <div class="demo-post">
             <div class="demo-post-img">&#9989;</div>
             <div class="demo-post-body">
               <div class="demo-post-day">Day 10 &middot; Flyer &middot; Facebook</div>
-              <div class="demo-post-caption">Last call flyer: "Only 5 spots left &mdash; Nov 15 departure"</div>
+              <div class="demo-post-caption">Last call flyer: "Only 3 spots left &mdash; Nov 15 departure"</div>
               <div class="demo-post-tags"><span class="demo-tag">Last Call</span><span class="demo-tag">AI Flyer</span></div>
             </div>
           </div>
@@ -1694,9 +1753,12 @@ img { max-width: 100%; display: block; }
         <span class="demo-titlebar-text">gen8r &mdash; Campaign Review</span>
       </div>
       <div class="demo-body">
-        <div class="demo-chat">
-          <div class="demo-chat-label">Telegram</div>
-          <div class="chat-msg chat-user">/new campaign Weekend yoga &amp; meditation retreat, Byron Bay, breathwork and sound healing</div>
+        <div class="demo-chat" data-brief="Weekend yoga &amp; meditation retreat, Byron Bay, breathwork and sound healing">
+          <div class="channel-tabs">
+            <button class="channel-tab active" data-channel="web">Web Portal</button>
+            <button class="channel-tab" data-channel="slack">Slack / Telegram</button>
+          </div>
+          <div class="chat-msg chat-user chat-user-first">Weekend yoga &amp; meditation retreat, Byron Bay, breathwork and sound healing</div>
           <div class="chat-msg chat-bot">Got it! A few quick questions to build the best campaign.</div>
           <div class="chat-msg chat-bot">Question 1/5: What type of yoga or practice is featured?</div>
           <div class="chat-msg chat-user">Vinyasa flow, breathwork, sound healing, plant-based meals</div>
@@ -1721,6 +1783,14 @@ img { max-width: 100%; display: block; }
             </div>
           </div>
           <div class="demo-post">
+            <div class="demo-post-img">&#127774;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 3 &middot; Post &middot; Facebook</div>
+              <div class="demo-post-caption">"I came for the yoga, stayed for the community." Past attendees share...</div>
+              <div class="demo-post-tags"><span class="demo-tag">#SoundHealing</span><span class="demo-tag">#Community</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
             <div class="demo-post-img">&#127916;</div>
             <div class="demo-post-body">
               <div class="demo-post-day">Day 4 &middot; Reel &middot; Instagram</div>
@@ -1729,26 +1799,42 @@ img { max-width: 100%; display: block; }
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#127774;</div>
+            <div class="demo-post-img">&#127807;</div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 6 &middot; Post &middot; Facebook</div>
-              <div class="demo-post-caption">"I came for the yoga, stayed for the community." Past attendees share...</div>
-              <div class="demo-post-tags"><span class="demo-tag">#SoundHealing</span><span class="demo-tag">#Mindfulness</span></div>
+              <div class="demo-post-day">Day 5 &middot; Pin &middot; Pinterest</div>
+              <div class="demo-post-caption">Retreat packing list, breathwork routines, plant-based menu &mdash; savable board</div>
+              <div class="demo-post-tags"><span class="demo-tag">Evergreen</span><span class="demo-tag">#YogaLife</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#127916;</div>
+            <div class="demo-post-img">&#127925;</div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 7 &middot; Reel &middot; Instagram</div>
-              <div class="demo-post-caption">HOOK: "From stressed to centred in one weekend" + AI video</div>
+              <div class="demo-post-day">Day 6 &middot; Reel &middot; TikTok</div>
+              <div class="demo-post-caption">HOOK: "Your nervous system called &mdash; it's tired." 12s trending audio</div>
+              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#WellnessTok</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#128250;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 7 &middot; Short &middot; YouTube</div>
+              <div class="demo-post-caption">HOOK: "From stressed to centred in one weekend" &mdash; long-form + Short</div>
               <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#Breathwork</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#128227;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 8 &middot; Broadcast &middot; WhatsApp</div>
+              <div class="demo-post-caption">"3 mats left for June 14 &mdash; reply YES to hold yours." Opted-in list.</div>
+              <div class="demo-post-tags"><span class="demo-tag">Approved Template</span><span class="demo-tag">CTA</span></div>
             </div>
           </div>
           <div class="demo-post">
             <div class="demo-post-img">&#9989;</div>
             <div class="demo-post-body">
               <div class="demo-post-day">Day 10 &middot; Flyer &middot; Facebook</div>
-              <div class="demo-post-caption">Last call flyer: "3 mats left &mdash; June 14 retreat"</div>
+              <div class="demo-post-caption">Last call flyer: "Final mat available &mdash; June 14 retreat"</div>
               <div class="demo-post-tags"><span class="demo-tag">Last Call</span><span class="demo-tag">AI Flyer</span></div>
             </div>
           </div>
@@ -1767,9 +1853,12 @@ img { max-width: 100%; display: block; }
         <span class="demo-titlebar-text">gen8r &mdash; Campaign Review</span>
       </div>
       <div class="demo-body">
-        <div class="demo-chat">
-          <div class="demo-chat-label">Telegram</div>
-          <div class="chat-msg chat-user">/new campaign New listing: 4-bed harbour view home, Mosman, open home Saturday</div>
+        <div class="demo-chat" data-brief="New listing: 4-bed harbour view home, Mosman, open home Saturday">
+          <div class="channel-tabs">
+            <button class="channel-tab active" data-channel="web">Web Portal</button>
+            <button class="channel-tab" data-channel="slack">Slack / Telegram</button>
+          </div>
+          <div class="chat-msg chat-user chat-user-first">New listing: 4-bed harbour view home, Mosman, open home Saturday</div>
           <div class="chat-msg chat-bot">Got it! A few quick questions to build the best campaign.</div>
           <div class="chat-msg chat-bot">Question 1/5: What's the key selling point of this property?</div>
           <div class="chat-msg chat-user">Unobstructed harbour views, renovated kitchen, north-facing garden</div>
@@ -1794,6 +1883,14 @@ img { max-width: 100%; display: block; }
             </div>
           </div>
           <div class="demo-post">
+            <div class="demo-post-img">&#128188;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 3 &middot; Post &middot; LinkedIn</div>
+              <div class="demo-post-caption">Why Mosman's north-facing homes command a premium &mdash; a broker's note.</div>
+              <div class="demo-post-tags"><span class="demo-tag">#Investment</span><span class="demo-tag">#Sydney</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
             <div class="demo-post-img">&#127916;</div>
             <div class="demo-post-body">
               <div class="demo-post-day">Day 4 &middot; Reel &middot; Instagram</div>
@@ -1802,19 +1899,35 @@ img { max-width: 100%; display: block; }
             </div>
           </div>
           <div class="demo-post">
+            <div class="demo-post-img">&#128205;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 5 &middot; Post &middot; Google Business</div>
+              <div class="demo-post-caption">Open home Saturday 10am&ndash;10:45am &mdash; pinned to your local map results.</div>
+              <div class="demo-post-tags"><span class="demo-tag">GBP</span><span class="demo-tag">#LocalSearch</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
             <div class="demo-post-img">&#128227;</div>
             <div class="demo-post-body">
               <div class="demo-post-day">Day 6 &middot; Post &middot; Facebook</div>
-              <div class="demo-post-caption">Open home this Saturday 10am&ndash;10:45am. North-facing garden, renovated throughout...</div>
+              <div class="demo-post-caption">Open home this Saturday 10am&ndash;10:45am. Renovated throughout &mdash; share with a friend...</div>
               <div class="demo-post-tags"><span class="demo-tag">#OpenHome</span><span class="demo-tag">#SydneyProperty</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#127916;</div>
+            <div class="demo-post-img">&#128250;</div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 7 &middot; Reel &middot; Instagram</div>
-              <div class="demo-post-caption">HOOK: "The kitchen renovation alone is worth the visit" + AI video</div>
+              <div class="demo-post-day">Day 7 &middot; Short &middot; YouTube</div>
+              <div class="demo-post-caption">HOOK: "The kitchen reno alone is worth the visit" &mdash; walk-through + Short</div>
               <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#DreamHome</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img">&#128241;</div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 8 &middot; Broadcast &middot; WhatsApp</div>
+              <div class="demo-post-caption">"Offers close Tuesday &mdash; final inspection Sunday." Sent to your VIP list.</div>
+              <div class="demo-post-tags"><span class="demo-tag">Approved Template</span><span class="demo-tag">CTA</span></div>
             </div>
           </div>
           <div class="demo-post">
@@ -2026,7 +2139,16 @@ img { max-width: 100%; display: block; }
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <div class="faq-answer-inner">Any business that needs social media presence &mdash; travel agencies, restaurants, retail stores, salons, gyms, real estate agents, and more. If you promote things on Instagram or Facebook, gen8r can help.</div>
+          <div class="faq-answer-inner">Any business that runs promotions online &mdash; travel agencies, restaurants, retail, salons, gyms, real estate, wellness studios, coaches, and more. If you post anywhere on social, gen8r turns each promotion into a full campaign for you.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Which platforms does gen8r publish to?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Instagram, Facebook, LinkedIn, TikTok, YouTube Shorts, Pinterest, Google Business Profile, and Reddit &mdash; captions and formats tuned per platform. WhatsApp goes out as an opt-in broadcast to your customer list. You choose which channels each campaign publishes to.</div>
         </div>
       </div>
       <div class="faq-item">
@@ -2035,7 +2157,7 @@ img { max-width: 100%; display: block; }
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <div class="faq-answer-inner">Not without your approval. Each day, you get a notification on Slack or Telegram asking you to confirm. Tap "Post it!" and it publishes to Instagram and Facebook. You can also skip any day. You're always in control.</div>
+          <div class="faq-answer-inner">Not without your approval. Each day, you get a notification on Slack, Telegram, or the brand portal asking you to confirm. Tap "Post it!" and it publishes to your linked channels &mdash; Instagram, Facebook, LinkedIn, TikTok, YouTube, and more. You can skip any day. You're always in control.</div>
         </div>
       </div>
       <div class="faq-item">
@@ -2053,7 +2175,7 @@ img { max-width: 100%; display: block; }
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <div class="faq-answer-inner">Each campaign generates 10 pieces: 6 social media posts with captions, hashtags, and multiple images to choose from; 2 branded flyers with AI-generated copy and hero images; and 2 reel video scripts that can be turned into AI-generated video clips on approval. Everything is scheduled backwards from your event date for maximum impact.</div>
+          <div class="faq-answer-inner">Each campaign generates 10 pieces: 6 social posts with captions, hashtags, and multiple images to choose from; 2 branded flyers with AI-generated copy and hero images; and 2 AI reel videos generated on approval. Enable WhatsApp broadcast and you get 2 additional opt-in messages to your customer list. Everything is scheduled backwards from your event date for maximum impact.</div>
         </div>
       </div>
       <div class="faq-item">
@@ -2528,6 +2650,21 @@ document.querySelectorAll('.demo-tab').forEach(tab => {
     document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById('demo-' + tab.dataset.demo).classList.add('active');
+  });
+});
+
+// ── Channel Tabs (Web / Slack / Telegram) ───────────────────────────────────
+document.querySelectorAll('.channel-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const chat = btn.closest('.demo-chat');
+    if (!chat) return;
+    chat.querySelectorAll('.channel-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const channel = btn.dataset.channel;
+    const brief = chat.dataset.brief || '';
+    const firstMsg = chat.querySelector('.chat-user-first');
+    if (!firstMsg) return;
+    firstMsg.textContent = channel === 'web' ? brief : '/new campaign ' + brief;
   });
 });
 

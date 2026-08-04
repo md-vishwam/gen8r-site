@@ -34,6 +34,47 @@ const brand = {
     'https://www.pinterest.com/doshi4582/gen8r/',
     'https://www.reddit.com/r/Gen8R/',
   ],
+  // Named authors → surfaced as visible byline + Article schema `author` on every
+  // /c/ page (E-E-A-T / authority signal for AI answer engines).
+  authors: [
+    { name: 'Maulik Doshi', url: 'https://www.linkedin.com/in/maulikdoshi82/' },
+    { name: 'Ashish Kapoor', url: 'https://www.linkedin.com/in/ashkap/' },
+  ],
+  // Public pricing snapshot → emitted as AggregateOffer schema on every /c/ page.
+  // Keep in sync with the AggregateOffer in index.html <head> and the pricing
+  // cards in index.html body. See CLAUDE.md for the sync rule.
+  pricing: {
+    currency: 'USD',
+    tiers: [
+      { name: 'Starter', price: '29.00' },
+      { name: 'Growth', price: '49.00' },
+      { name: 'Pro', price: '99.00' },
+    ],
+  },
+  // Named, verifiable customers → surfaced as case-study block on the Sydney
+  // landing + a subtle "featured customer" line on other /c/ pages. Only list a
+  // customer here after the owner has consented to being named publicly; the
+  // point is verifiability, so the social handles must show live gen8r output.
+  customers: [
+    {
+      name: 'Journeys Unlimited',
+      city: 'Rhodes, NSW',
+      country: 'Australia',
+      industry: 'Luxury tour operator',
+      description:
+        'Australian-owned bespoke tour operator running spiritual, cultural, wellness ' +
+        'and heritage journeys across Bali, Thailand, Vietnam, Japan, India, Sri Lanka, ' +
+        'Dubai and Morocco.',
+      website: 'https://journeysunlimited.au/',
+      instagram: 'https://www.instagram.com/journeysunlimitedau/',
+      facebook: 'https://www.facebook.com/journeysunlimitedAU/',
+      // What gen8r actually ships for them. Kept observational — no fabricated
+      // engagement metrics; verifiability is via their live social handles.
+      output:
+        'Full 10-piece campaigns per tour launch — captions, branded flyers and AI reel ' +
+        'videos, auto-published to Instagram & Facebook.',
+    },
+  ],
 };
 
 const verticals = [
@@ -231,8 +272,8 @@ const contentTypes = [
     query: (v) => `social media plan for ${art(v.name)} ${v.name}`,
     intro: (v) =>
       `The hardest part of social media for ${art(v.name)} ${v.name} isn’t any single post — it’s keeping it going day after day. ` +
-      `Here’s a proven 10-day arc built around ${v.promo}, tuned for ${v.audience}. It’s the same structure gen8r generates ` +
-      `and publishes for you automatically, so you approve instead of author.`,
+      `Here’s the 10-day arc gen8r ships in its own pilot campaigns — built around ${v.promo}, tuned for ${v.audience}. ` +
+      `It’s the same structure gen8r generates and publishes for you automatically, so you approve instead of author.`,
     sample: 'plan',
   },
   {
