@@ -4,29 +4,71 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-gen8r.ai — a landing page for an AI-powered social media campaign tool. The product lets small businesses describe a promotion (via Slack or Telegram), then generates and auto-publishes a 10-post social media campaign (captions, images, hashtags, reels) to Instagram and Facebook.
+gen8r.ai — a landing page for an AI-powered social media campaign tool. The product lets small businesses describe a promotion in one sentence (via Slack, Telegram, or the web brand portal at `app.gen8r.ai`), then generates a 10-piece campaign (captions, AI images, branded flyers, hashtags, Reels) and publishes it — on the owner's per-post approval — to Instagram, Facebook, LinkedIn, TikTok, YouTube Shorts, Pinterest, Google Business Profile and Reddit, plus WhatsApp as an opt-in broadcast.
+
+The platform list, the "nothing publishes without approval" promise, and the tier prices are stated in many places at once (hero/FAQ/pricing copy, four JSON-LD blocks, `llms.txt`, `seo/data.js`). Changing any of those facts means a sweep, not a single edit — see the **Keep in sync** notes below.
 
 ## Architecture
 
-The landing page is a **single self-contained file**, `index.html` (~2300 lines) — CSS, HTML, and JS are all inline, in that order:
+The landing page is a **single self-contained file**, `index.html` (~2700 lines) — CSS, HTML, and JS are all inline, in that order:
 - **CSS**: Custom properties in `:root`, component styles, responsive breakpoints, animations
-- **HTML**: Sections in order — Nav, Hero, How It Works, Demo Preview (toggleable panels `#demo-travel` / `#demo-yoga` / `#demo-realestate`), Features, "What it replaces", Pricing, FAQ, Get Started (`#start`: signup form + Brand Portal login CTA + Calendly booking), Contact, Footer. `#start` lives after the FAQ so pricing/FAQ CTAs (`href="#start"`) scroll down into it.
-- **JavaScript**: Scroll reveal (IntersectionObserver), nav scroll/mobile toggle, FAQ accordion, signup toggle, form submission handlers (`signupForm`, `contactForm`), smooth-scroll for anchor links
+- **HTML**: Sections in order — Nav, Hero, How It Works, Demo Preview, Features, "What it replaces", Pricing, FAQ, Get Started (`#start`: signup form + Brand Portal login CTA + Calendly booking), Contact, Footer. `#start` lives after the FAQ so pricing/FAQ CTAs (`href="#start"`) scroll down into it.
+- **JavaScript**: Scroll reveal (IntersectionObserver), nav scroll/mobile toggle, FAQ accordion, signup toggle, form submission handlers (`signupForm`, `contactForm`), the two tab systems below, analytics listeners, smooth-scroll for anchor links
 
 Line numbers drift as the file grows — locate things by section comment (`// ── Contact Form ──`), element `id`, or CSS selector rather than by line.
+
+### Two independent tab systems (both in the Demo Preview section)
+- **Industry tabs** — `.demo-tab[data-demo]` swap which `.demo-panel` is `.active` (`#demo-travel` / `#demo-yoga` / `#demo-realestate`). Adding an industry means adding both a tab button and a matching `#demo-<key>` panel.
+- **Channel tabs** — `.channel-tab[data-channel="web|slack"]`, one set *inside each* demo panel. Clicking rewrites the text of that panel's `.chat-user-first` bubble: the raw brief for `web`, or `/new campaign <brief>` for `slack`. The brief comes from `data-brief` on the enclosing `.demo-chat`, so **`data-brief` must match the initial `.chat-user-first` text** — otherwise the bubble visibly changes content on the first tab click.
+
+### Nav "Industries" dropdown
+`.nav-dropdown` in the nav **hardcodes five `/c/` guide URLs** (the 10-day plans). It is pure CSS hover/focus-within — no JS. Renaming or removing a `/c/` slug silently breaks these links; `node seo/generate.js` does not touch `index.html`. On mobile the dropdown flattens into an inline expanded list via the `@media` override.
 
 ### Other pages
 `privacy.html`, `terms.html`, and `open-telegram.html` are **independent** static pages, each with its own inline CSS (they do NOT share styles with `index.html`). A change to the design system in `index.html` will not propagate to them — update each page deliberately. `open-telegram.html` is the deep-link bridge that sends mobile users into `https://t.me/Gen8rBot?start=web` and shows a QR for desktop.
 
 `llms.txt` is a hand-maintained AEO file (referenced by `robots.txt`) that describes the product to answer-engine crawlers in plain prose — it restates the core product facts (what it does, where it publishes, pricing, primary pages). Keep it in sync when those facts change (pricing, verticals, publishing surfaces, primary `/c/` pages).
 
+`c36d7c865f5ffc360133deea7d893a36.txt` at the repo root is the **IndexNow key file** — its filename is the key and its body is that same key. Bing/IndexNow fetches it to verify ownership before accepting URL-change pings. Don't rename, move, or "clean up" this file; it looks like junk and isn't.
+
+`report/` holds Search Console exports; it is excluded from the deploy (see `.vercelignore`).
+
 **Keep in sync:** `sitemap.xml` lists the crawlable pages using extensionless URLs (`/privacy`, `/terms`, `/open-telegram`, `/c/...`). This works because `vercel.json` sets `"cleanUrls": true` — Vercel serves `foo.html` at `/foo` and 308-redirects the `.html` form to it. So all internal links should be extensionless too (a `.html` link just costs a redirect hop). When you **rename a `/c/` slug**, add a 308 `redirects` entry in `vercel.json` from the old path to the new one so the old URL keeps its rankings (see the `15-day` → `10-day` block for the pattern) — the generator does not do this for you. The `/c/` pages + `sitemap.xml` are regenerated by `node seo/generate.js` (see Growth/SEO below); hand-maintained pages live in `STATIC_URLS` in `seo/generate.js`. `robots.txt` allows everything and points at the sitemap.
 
-No build tools, frameworks, bundlers, or package managers — there is nothing to build, lint, or test. To develop, open the HTML file in a browser. Note that opening `index.html` via `file://` (or a plain static server) leaves `/api/notify` unrouted, so form submissions will fail — run `vercel dev` to exercise the signup/contact forms and the `api/notify.js` function end-to-end. Deployment is via Vercel (static files + the `api/` serverless function); pushing to the repo triggers a deploy.
+## Commands
+
+No build tools, frameworks, bundlers, or package managers — there is nothing to build, lint, or test. There is no `package.json`; `seo/*.js` are plain CommonJS scripts run directly by Node.
+
+```bash
+vercel dev              # local dev — the only way to exercise the forms + api/notify.js
+node seo/generate.js    # regenerate all of /c/ and sitemap.xml from seo/data.js
+```
+
+Opening `index.html` via `file://` (or a plain static server) is fine for CSS/layout work, but leaves `/api/notify` unrouted, so both form submissions will fail — use `vercel dev` for anything touching the forms. Deployment is via Vercel (static files + the `api/` serverless function); pushing to the repo triggers a deploy.
+
+Work on a branch and open a PR — `main` is the deploy branch, so pushing straight to it ships to production immediately.
 
 ## Form Submission Flow
 
 Both forms tag their payload with a `source` field (`gen8r-website-signup` / `gen8r-website-contact`) so the serverless function can format the notification correctly.
+
+### Anti-spam pipeline (added Aug 2026 — read before touching either form)
+
+`/api/notify` was an unauthenticated public relay into the ops Telegram. A form-spam bot driving a real headless browser used it — and, through the signup form's second request, `app.gen8r.ai/api/signup` — to fire brand-activation emails at scraped third-party addresses. That's subscription bombing: the victims are the mailbox owners, and the cost to gen8r is sending-domain reputation. Three layers now guard both forms:
+
+1. **Cloudflare Turnstile** — the load-bearing one. Sitekey is inline in `<head>` (public by design); `TURNSTILE_SECRET` is a Vercel env var read only by `notify.js`. Widgets render **explicitly**, not automatically: the signup form lives inside a collapsed panel and a widget rendered in a hidden container can't display an interactive challenge, so `tsRender('signupForm')` fires from the collapse toggle. Tokens are single-use and ~5 min TTL, hence `tsReset()` in both handlers' `finally`.
+2. **Honeypot** — a `companyFax` field positioned off-screen (not `display:none`, which visibility-checking bots skip). Any value at all is an instant silent drop.
+3. **Heuristic score** in `notify.js` — eight signals, spam at `SPAM_THRESHOLD` (4).
+
+**The rule that matters if you tune the heuristics:** they must never encode "looks English". Scoring names by vowel density blocks `Krzysztof Wrzeszcz` while missing vowel-balanced gibberish — it measures the wrong thing and rejects real people by ethnicity. The mitigation is `sharesRoot()`: when name, company and domain hang together it's a real identity, so the linguistic checks are suppressed wholesale. The strongest signal (`brand-domain-mismatch`, +3) is structural and language-neutral. Keep it that way, and keep every linguistic check *scored* rather than absolute.
+
+Only a genuine Turnstile failure returns an error (403 → "verification failed, try again"). Honeypot and heuristic hits return a normal **200** with no ping, so the operator can't tell which signal caught them. Suspected spam goes to `TELEGRAM_SPAM_CHAT_ID` when set, rather than being dropped blind — that's how you confirm real leads aren't being eaten.
+
+Two deliberate fail-open paths: if `TURNSTILE_SECRET` is unset, verification is skipped (so deploying can never take the forms down before the env var exists), and if Cloudflare is unreachable the request passes on the heuristics alone. Both log loudly — `[notify] TURNSTILE_SECRET is not set` in production means the main defence is off.
+
+The helper functions are exported from `notify.js` purely so the scoring can be calibrated offline against captured spam samples; the request path only ever uses the default export. Re-run that calibration after any weight change — check both directions, false positives matter more than false negatives here.
+
+**Local dev:** a Turnstile sitekey is bound to its hostname list, so `vercel dev` on localhost renders nothing and the forms look broken until you add `localhost` in the Cloudflare dashboard (same for `*.vercel.app` preview hosts).
 
 **Contact form** — single POST to `/api/notify` (the Vercel function at `api/notify.js`), which forwards to the internal Telegram bot (`@gen8r_notify_bot`) via the Telegram Bot API. Token and chat ID are Vercel env vars (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`).
 
@@ -44,7 +86,7 @@ The welcome email is sent by `app.gen8r.ai/api/signup`, NOT by this Vercel funct
 - **Telegram bot (internal notifications)**: `@gen8r_notify_bot` — receives form submission alerts via `api/notify.js`
 - **Calendly**: `https://calendly.com/gen8r/30min`
 - **Google Fonts**: Instrument Serif, DM Sans, JetBrains Mono
-- **SEO**: Open Graph, Twitter Card meta tags, and JSON-LD structured data (SoftwareApplication + FAQPage schemas) are in `<head>`
+- **SEO**: Open Graph, Twitter Card meta tags, and **four** JSON-LD blocks in `index.html` `<head>`, in order — `SoftwareApplication` (carries the `AggregateOffer`), `Organization` (`@id: .../#organization`, with the `sameAs` social profile list), `WebSite` (references that `@id` as `publisher`), and `FAQPage`. The `FAQPage` entries must stay verbatim-equivalent to the visible FAQ accordion copy, and `Organization.sameAs` duplicates `brand.social[]` in `seo/data.js` — update both.
 - **Parent company**: LiftLogic AI (`https://liftlogic.dev`, `hello@liftlogic.dev`)
 
 ## Design System
@@ -53,18 +95,20 @@ The welcome email is sent by `app.gen8r.ai/api/signup`, NOT by this Vercel funct
 - Typography: `--font-display` (Instrument Serif) for headings, `--font-body` (DM Sans) for text, `--font-mono` (JetBrains Mono) for code/labels
 - Gradient palette defined in `--gradient-1` and `--gradient-2`
 - Scroll-reveal animation system using `.reveal` class + IntersectionObserver (add `.reveal-delay-1` through `.reveal-delay-3` for staggered animations)
-- Pricing tiers: Starter ($29), Growth ($49), Pro ($99) — the JSON-LD `AggregateOffer` in `<head>` carries `lowPrice`/`highPrice`/`offerCount`, so keep it in sync when prices or tier count change
+- Pricing tiers: Starter ($29), Growth ($49), Pro ($99). A price change touches **four** places: the pricing cards in `index.html`, the JSON-LD `AggregateOffer` in `index.html` `<head>` (`lowPrice`/`highPrice`/`offerCount`), `brand.pricing.tiers` in `seo/data.js` (emitted as `AggregateOffer` on every `/c/` page — re-run the generator), and the pricing line in `llms.txt`
 
 ## Growth / SEO
 
-Three systems live here:
+Four systems live here:
 
 **Programmatic SEO (`seo/`)** — a Node generator that emits static pages into `/c/`: one national page per (vertical × contentType) combo, one geo-localized page per (city × vertical × geo-contentType), one local marketing landing page per city, plus a `/c/` link hub and a fresh `sitemap.xml`:
-- `seo/data.js` — the content source: `brand` (incl. `social[]` → Organization `sameAs`), `verticals`, `contentTypes`, and `cities`. **Adding a row here is how you add coverage** — no template edits needed. `art(word)` picks "a"/"an" so vowel-initial verticals (event venue → "an Event Venue") read correctly.
-- `seo/template.js` — `renderPage()` (national + city variants, keyed off an optional `city` arg), `renderLocalLanding()` (the per-city marketing page), and slug helpers `pageSlug()` / `landingSlug()`. Self-contained HTML/CSS mirroring the design system.
+- `seo/data.js` — the content source: `brand`, `verticals`, `contentTypes`, `cities`, and the shared `tenDayPlan` copy. **Adding a row here is how you add coverage** — no template edits needed. `art(word)` picks "a"/"an" so vowel-initial verticals (event venue → "an Event Venue") read correctly. Beyond the taxonomy, `brand` carries three authority (E-E-A-T) inputs that render on every `/c/` page: `social[]` → Organization `sameAs`, `authors[]` → a visible byline + `Article.author` Person schema, and `customers[]` → the case-study block. **Only add a `customers[]` entry after the owner has consented to being named**, and keep it observational — the value is verifiability via their live handles, so never invent engagement metrics.
+- `seo/template.js` — `renderPage()` (national + city variants, keyed off an optional `city` arg), `renderLocalLanding()` (the per-city marketing page), and slug helpers `pageSlug()` / `landingSlug()`. Self-contained HTML/CSS mirroring the design system. Guide pages emit `HowTo` + `Article` (with `author` + `dateModified`) + `BreadcrumbList` + `FAQPage` + `AggregateOffer`; the local landing emits `Service` with `areaServed` instead.
 - `seo/generate.js` — orchestrates: national combos → geo variants (limited to `GEO_CONTENT_TYPES`) → per-city landing pages → `/c/index.html` hub (with a "By location" section) → rebuilds `sitemap.xml` from `STATIC_URLS` + everything generated.
 
 Run `node seo/generate.js` after editing `data.js` or `template.js`. **Output is committed to the repo** — the deploy stays a plain static push, Vercel just serves the files (no runtime cost). Content is hand-authored (not yet wired to the app.gen8r.ai generation endpoint) so each page is substantive — thin/duplicated pages get demoted.
+
+`BUILD_DATE` is stamped from *today* into every page's `dateModified` and every `<lastmod>`, so **any** run rewrites all 26 `/c/` files plus `sitemap.xml` — expect a whole-tree diff even from a one-word change, and don't run it just to check whether it's a no-op. A moving `lastmod` is a legitimate recrawl signal only when content actually changed; don't regenerate purely to bump dates.
 
 **Geo expansion is live** (Sydney seeded). Each city in `cities` carries **genuine local signal per vertical** (a local `angle`, taggable `suburbs`, local `hashtags`) — this is deliberate: mass city-name-swapped clones get demoted as *doorway pages*, so keep `GEO_CONTENT_TYPES` narrow (currently just the 10-day plan) and every city entry genuinely local. The per-city landing page targets local commercial intent ("social media marketing for `<city>` small businesses") and answers "marketing agency in `<city>`" queries honestly via `Service` schema with `areaServed` — **never** fabricate a `LocalBusiness` address; gen8r is a SaaS, not a local agency. To add a city: add one object to `cities` (with a `byVertical` entry per vertical) and re-run.
 
@@ -75,4 +119,6 @@ Run `node seo/generate.js` after editing `data.js` or `template.js`. **Output is
 
 Because CTAs are matched by class (`.btn-primary`/`.btn-secondary`), `data-cta`, or href pattern, new buttons are tracked automatically — but a new *outbound* destination needs a branch added to the click listener to get an intent-named event. To surface events in GA4's "Key events" metric, mark them in Admin → Events.
 
-**Rank monitoring (`seo/monitor/`)** — an **advisory, read-only** agent workflow (no code, driven by `playbook.md`) that tracks how the site ranks and recommends next moves. It measures and reports; it never edits `index.html`/`/c/` or pushes site content. `keywords.json` is the hand-maintained tracked-keyword list (each entry: query, target page, intent) and is the thing to edit to change what's tracked. Each run appends a snapshot to `history.json`, rows to `rank_log.csv` / `sweep_log.csv`, and writes a dated report under `seo/monitor/reports/`. Read `playbook.md` before running it. Both `seo/` and `report/` are excluded from the Vercel deploy via `.vercelignore`, so this data is committed but never served.
+**Rank monitoring (`seo/monitor/`)** — an **advisory, read-only** agent workflow (no code, driven by `playbook.md`) that tracks how the site ranks and recommends next moves. It measures and reports; it never edits `index.html`/`/c/` or pushes site content. `keywords.json` is the hand-maintained tracked-keyword list (each entry: query, target page, intent) and is the thing to edit to change what's tracked. Each run appends a snapshot to `history.json`, rows to `rank_log.csv` / `sweep_log.csv`, and writes a dated report under `seo/monitor/reports/`. Read `playbook.md` before running it — it also sets hard guard-rails: advisory only, no automated Request-Indexing loops, no silent keyword-list edits, and IndexNow pings only when content genuinely changed. Both `seo/` and `report/` are excluded from the Vercel deploy via `.vercelignore`, so this data is committed but never served.
+
+**Backlink queue (`seo/backlinks.md`)** — a hand-worked checklist, one row a week, ordered easiest × highest-value first. Backlinks are the binding constraint on ranking (our own `/c/` pages and internal links don't count as votes), so this file is the highest-leverage growth artifact here even though it's just a table. Mark `[x]` with a date and paste the live URL as proof; work the top unchecked row rather than cherry-picking.
