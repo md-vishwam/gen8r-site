@@ -161,10 +161,16 @@ function scoreSubmission(data, req) {
     if (looksLikeMash(company)) add(2, 'company-gibberish');
     if (junkDomain(data.companyUrl)) add(2, 'website-gibberish');
 
-    // The single most reliable structural signal, and language-neutral: a real
-    // small business's domain resembles its name. Every observed spam signup
-    // paired an unrelated company with an unrelated domain.
-    if (company && label) add(3, 'brand-domain-mismatch');
+    // Language-neutral structural signal: a real small business's domain
+    // usually resembles its name, and every observed spam signup paired an
+    // unrelated company with an unrelated domain.
+    //
+    // Only +2, deliberately. Plenty of legitimate signups mismatch here — a
+    // personal domain that redirects, a parent-company domain, a Facebook page
+    // or Linktree URL, or simply trading under a different name to the legal
+    // entity. A real "Lift Logic AI" / vishwam.info signup scored 3 of 4 when
+    // this was +3, which is far too close for a signal this common.
+    if (company && label) add(2, 'brand-domain-mismatch');
   }
 
   // Vercel injects geo headers derived from the client IP. Every observed spam
