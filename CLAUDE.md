@@ -52,6 +52,24 @@ Work on a branch and open a PR — `main` is the deploy branch, so pushing strai
 
 Both forms tag their payload with a `source` field (`gen8r-website-signup` / `gen8r-website-contact`) so the serverless function can format the notification correctly.
 
+### Anti-spam pipeline (added Aug 2026 — read before touching either form)
+
+`/api/notify` was an unauthenticated public relay into the ops Telegram. A form-spam bot driving a real headless browser used it — and, through the signup form's second request, `app.gen8r.ai/api/signup` — to fire brand-activation emails at scraped third-party addresses. That's subscription bombing: the victims are the mailbox owners, and the cost to gen8r is sending-domain reputation. Three layers now guard both forms:
+
+1. **Cloudflare Turnstile** — the load-bearing one. Sitekey is inline in `<head>` (public by design); `TURNSTILE_SECRET` is a Vercel env var read only by `notify.js`. Widgets render **explicitly**, not automatically: the signup form lives inside a collapsed panel and a widget rendered in a hidden container can't display an interactive challenge, so `tsRender('signupForm')` fires from the collapse toggle. Tokens are single-use and ~5 min TTL, hence `tsReset()` in both handlers' `finally`.
+2. **Honeypot** — a `companyFax` field positioned off-screen (not `display:none`, which visibility-checking bots skip). Any value at all is an instant silent drop.
+3. **Heuristic score** in `notify.js` — eight signals, spam at `SPAM_THRESHOLD` (4).
+
+**The rule that matters if you tune the heuristics:** they must never encode "looks English". Scoring names by vowel density blocks `Krzysztof Wrzeszcz` while missing vowel-balanced gibberish — it measures the wrong thing and rejects real people by ethnicity. The mitigation is `sharesRoot()`: when name, company and domain hang together it's a real identity, so the linguistic checks are suppressed wholesale. The strongest signal (`brand-domain-mismatch`, +3) is structural and language-neutral. Keep it that way, and keep every linguistic check *scored* rather than absolute.
+
+Only a genuine Turnstile failure returns an error (403 → "verification failed, try again"). Honeypot and heuristic hits return a normal **200** with no ping, so the operator can't tell which signal caught them. Suspected spam goes to `TELEGRAM_SPAM_CHAT_ID` when set, rather than being dropped blind — that's how you confirm real leads aren't being eaten.
+
+Two deliberate fail-open paths: if `TURNSTILE_SECRET` is unset, verification is skipped (so deploying can never take the forms down before the env var exists), and if Cloudflare is unreachable the request passes on the heuristics alone. Both log loudly — `[notify] TURNSTILE_SECRET is not set` in production means the main defence is off.
+
+The helper functions are exported from `notify.js` purely so the scoring can be calibrated offline against captured spam samples; the request path only ever uses the default export. Re-run that calibration after any weight change — check both directions, false positives matter more than false negatives here.
+
+**Local dev:** a Turnstile sitekey is bound to its hostname list, so `vercel dev` on localhost renders nothing and the forms look broken until you add `localhost` in the Cloudflare dashboard (same for `*.vercel.app` preview hosts).
+
 **Contact form** — single POST to `/api/notify` (the Vercel function at `api/notify.js`), which forwards to the internal Telegram bot (`@gen8r_notify_bot`) via the Telegram Bot API. Token and chat ID are Vercel env vars (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`).
 
 **Signup form** — **dual-fires** two requests in parallel (`index.html`, `signupForm` handler):

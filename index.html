@@ -1499,8 +1499,30 @@ img { max-width: 100%; display: block; }
   .footer-inner { flex-direction: column; text-align: center; }
   .footer-bottom { flex-direction: column; gap: 8px; }
 }
+
+/* ── Anti-spam form fields ────────────────────────────────────────────────
+   Honeypot is positioned off-screen rather than display:none — bots that
+   bother to check visibility usually test display/visibility only, so an
+   off-screen field still catches them. Real users never see it or tab into
+   it (tabindex="-1" + aria-hidden on the wrapper). */
+.hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.cf-turnstile { margin: 4px 0 2px; min-height: 65px; }
 </style>
 
+<!-- ── Cloudflare Turnstile ──────────────────────────────────────────────────
+     Bot challenge on the signup + contact forms. The sitekey is public by
+     design; the secret lives in Vercel env as TURNSTILE_SECRET and is only
+     ever read server-side by api/notify.js.
+
+     Rendered explicitly rather than auto: the signup form sits inside a
+     collapsed panel, and an auto-rendered widget inside a hidden container
+     can't display an interactive challenge. __tsReady resolves on script
+     load so the form handlers never race it. -->
+<script>
+  window.TURNSTILE_SITEKEY = '0x4AAAAAAEcqJJlyANxBdxnF';
+  window.__tsReady = new Promise((resolve) => { window.onTurnstileLoad = resolve; });
+</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad" async defer></script>
 
 </head>
 <!-- Google tag (gtag.js) -->
@@ -2269,6 +2291,8 @@ img { max-width: 100%; display: block; }
             </div>
             <input type="text" name="companyName" placeholder="Company name (of which campaigns will run)" required>
             <input type="url" name="companyUrl" placeholder="Company website (optional, e.g. yourbrand.com)">
+            <div class="hp-field" aria-hidden="true"><input type="text" name="companyFax" tabindex="-1" autocomplete="off"></div>
+            <div class="cf-turnstile"></div>
             <button type="submit" class="btn-primary">Submit &rarr;</button>
             <div class="form-msg" id="signupMsg"></div>
             <div class="form-note">First month free on Starter &middot; Card validated, not charged</div>
@@ -2334,6 +2358,8 @@ img { max-width: 100%; display: block; }
         </div>
         <input type="tel" name="phone" placeholder="Phone (optional)">
         <textarea name="message" placeholder="How can we help?" required></textarea>
+        <div class="hp-field" aria-hidden="true"><input type="text" name="companyFax" tabindex="-1" autocomplete="off"></div>
+        <div class="cf-turnstile"></div>
         <button type="submit" class="btn-primary">Send Message &rarr;</button>
         <div class="form-msg" id="contactMsg"></div>
       </form>
@@ -2428,6 +2454,38 @@ document.querySelectorAll('.faq-question').forEach(btn => {
   });
 });
 
+// ── Turnstile widgets ────────────────────────────────────────────────────────
+// Explicit render (bootstrap lives in <head>). One widget per form. Tokens are
+// single-use and expire after ~5 min, so we reset after every submit —
+// otherwise a second attempt replays a spent token and the server rejects it.
+const tsWidgets = {};
+
+function tsRender(formId) {
+  if (tsWidgets[formId] !== undefined) return;          // already rendered
+  const host = document.querySelector('#' + formId + ' .cf-turnstile');
+  if (!host || !window.turnstile) return;
+  tsWidgets[formId] = window.turnstile.render(host, {
+    sitekey: window.TURNSTILE_SITEKEY,
+    theme: 'dark',
+  });
+}
+
+function tsToken(formId) {
+  const id = tsWidgets[formId];
+  if (id === undefined || !window.turnstile) return '';
+  return window.turnstile.getResponse(id) || '';
+}
+
+function tsReset(formId) {
+  const id = tsWidgets[formId];
+  if (id !== undefined && window.turnstile) window.turnstile.reset(id);
+}
+
+// Rough "how long was this page open before submit" signal. Trivially fakeable
+// by a determined bot, so the server only ever treats it as one weak input to a
+// score — never as a hard block. It costs nothing and catches lazy bots.
+const pageLoadedAt = Date.now();
+
 // ── Sign Up Toggle ───────────────────────────────────────────────────────────
 const signupToggle = document.getElementById('signupToggle');
 const signupCollapse = document.getElementById('signupCollapse');
@@ -2435,10 +2493,18 @@ signupToggle.addEventListener('click', () => {
   signupCollapse.classList.toggle('open');
   if (signupCollapse.classList.contains('open')) {
     signupToggle.style.display = 'none';
+    // Render the challenge only once the panel is actually visible — a widget
+    // rendered inside the collapsed (hidden) panel can't show an interactive
+    // challenge if Turnstile decides to escalate to one.
+    window.__tsReady.then(() => tsRender('signupForm'));
     // Focus first input after animation
     setTimeout(() => signupCollapse.querySelector('input')?.focus(), 300);
   }
 });
+
+// Contact form is always visible, so its widget can render as soon as the
+// Turnstile script is ready.
+window.__tsReady.then(() => tsRender('contactForm'));
 
 // ── Sign Up Form ─────────────────────────────────────────────────────────────
 document.getElementById('signupForm').addEventListener('submit', async (e) => {
@@ -2448,10 +2514,22 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
   const btn = form.querySelector('button[type="submit"]');
   const origText = btn.textContent;
 
-  btn.textContent = 'Submitting...';
-  btn.disabled = true;
   msg.textContent = '';
   msg.className = 'form-msg';
+
+  // Gate BOTH requests on a valid challenge token. This is what stops the
+  // form-spam bot: it drives a real browser through this handler, so with no
+  // token nothing reaches /api/notify *or* app.gen8r.ai/api/signup — which is
+  // the request that sends the activation email.
+  const tsTok = tsToken('signupForm');
+  if (!tsTok) {
+    msg.textContent = 'Please complete the verification check above, then submit again.';
+    msg.className = 'form-msg error';
+    return;
+  }
+
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
 
   // `country` is the ISO-2 code from the signup country dropdown (default AU).
   // The backend uses it to derive Brand.timezone via countryToTimezone() when
@@ -2466,7 +2544,10 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     phone: form.phone.value,
     companyName: form.companyName.value,
     companyUrl: form.companyUrl.value,
-    source: 'gen8r-website-signup'
+    source: 'gen8r-website-signup',
+    turnstileToken: tsTok,
+    companyFax: form.companyFax.value,   // honeypot — must stay empty
+    elapsedMs: Date.now() - pageLoadedAt,
   };
 
   // Dual-fire so we never lose the lead even if app.gen8r.ai is down:
@@ -2505,6 +2586,14 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
 
   try {
     const [notifyRes, signupRes] = await Promise.all([notifyP, signupP]);
+    // 403 = challenge rejected server-side (expired, replayed, or forged
+    // token). Distinct from a generic failure so the user knows to redo the
+    // check rather than assuming the site is broken.
+    if (notifyRes && notifyRes.status === 403) {
+      msg.textContent = 'Verification failed. Please complete the check and try again.';
+      msg.className = 'form-msg error';
+      return;
+    }
     if (!notifyRes || !notifyRes.ok) throw new Error('Request failed');
     form.reset();
     signupCollapse.classList.remove('open');
@@ -2538,6 +2627,8 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     msg.textContent = 'Something went wrong. Please try again.';
     msg.className = 'form-msg error';
   } finally {
+    // Always burn the token — it's single-use, so a retry needs a fresh one.
+    tsReset('signupForm');
     btn.textContent = origText;
     btn.disabled = false;
   }
@@ -2551,17 +2642,28 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
   const btn = form.querySelector('button[type="submit"]');
   const origText = btn.textContent;
 
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
   msg.textContent = '';
   msg.className = 'form-msg';
+
+  const tsTok = tsToken('contactForm');
+  if (!tsTok) {
+    msg.textContent = 'Please complete the verification check above, then send again.';
+    msg.className = 'form-msg error';
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
 
   const data = {
     name: form.name.value,
     email: form.email.value,
     phone: form.phone.value,
     message: form.message.value,
-    source: 'gen8r-website-contact'
+    source: 'gen8r-website-contact',
+    turnstileToken: tsTok,
+    companyFax: form.companyFax.value,   // honeypot — must stay empty
+    elapsedMs: Date.now() - pageLoadedAt,
   };
 
   try {
@@ -2570,6 +2672,11 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
+    if (resp.status === 403) {
+      msg.textContent = 'Verification failed. Please complete the check and try again.';
+      msg.className = 'form-msg error';
+      return;
+    }
     if (!resp.ok) throw new Error('Request failed');
     msg.textContent = "Message sent! We'll get back to you soon.";
     msg.className = 'form-msg success';
@@ -2579,6 +2686,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     msg.textContent = 'Something went wrong. Please try again.';
     msg.className = 'form-msg error';
   } finally {
+    tsReset('contactForm');
     btn.textContent = origText;
     btn.disabled = false;
   }
