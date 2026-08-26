@@ -27,6 +27,22 @@ const ALLOWED_ORIGINS = ['https://gen8r.ai', 'https://www.gen8r.ai'];
 // real lead scores 2 and passes. See scoreSubmission() for the weights.
 const SPAM_THRESHOLD = 4;
 
+// Backend signup endpoint. The browser must NOT call this directly — it only
+// accepts requests carrying X-Signup-Proxy-Secret (instagrammer#409).
+const SIGNUP_BACKEND_URL = process.env.SIGNUP_BACKEND_URL || 'https://app.gen8r.ai/api/signup';
+
+// The backend forward is on the customer's critical path, so it gets a real
+// timeout. The ops notification is not, so it gets a short one — ops visibility
+// is never worth making a customer wait.
+const BACKEND_TIMEOUT_MS = 10000;
+const TELEGRAM_TIMEOUT_MS = 5000;
+
+// Fallback channel when Telegram is unreachable. The from-address must be on a
+// domain verified in Resend — gen8r.ai is verified (DKIM selector `resend`,
+// with send.gen8r.ai as the return path).
+const SUPPORT_ALERT_TO = process.env.SUPPORT_ALERT_TO || 'support@gen8r.ai';
+const SUPPORT_ALERT_FROM = process.env.SUPPORT_ALERT_FROM || 'gen8r alerts <noreply@gen8r.ai>';
+
 // ── Detection helpers ────────────────────────────────────────────────────────
 
 // Crude detector for machine-generated strings: "Jkfcklcg Ynkqbhf",
@@ -237,16 +253,107 @@ async function verifyTurnstile(token, ip) {
   }
 }
 
-// ── Telegram ─────────────────────────────────────────────────────────────────
+// ── Signup forward (server-to-server) ────────────────────────────────────────
+
+// The browser no longer calls app.gen8r.ai/api/signup directly — this function
+// is the only caller, authenticated with a shared secret. That's what lets the
+// backend refuse anonymous POSTs (see md-vishwam/instagrammer#409). The spam
+// gates in the handler run BEFORE this, so nothing flagged ever creates a Brand
+// or triggers a confirmation email.
+async function forwardSignup(data, req, ip) {
+  const secret = process.env.SIGNUP_PROXY_SECRET;
+  if (!secret) {
+    console.error('[notify] SIGNUP_PROXY_SECRET is not set — cannot forward signup');
+    return { ok: false, status: 0, reason: 'proxy-secret-missing' };
+  }
+
+  const body = {
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    country: data.country,
+    companyName: data.companyName,
+    companyUrl: data.companyUrl,
+    industry: data.industry,
+    notificationPreference: data.notificationPreference,
+
+    // Trusted values only. These MUST come from Vercel's headers, never from
+    // the request body — echoing a client-supplied clientIp would let anyone
+    // calling this endpoint spoof it and defeat the backend's per-IP limit.
+    clientIp: ip,
+    xVercelIpTimezone: req.headers['x-vercel-ip-timezone'] || '',
+  };
+
+  // fetch() has no default timeout; without this a hung backend hangs the
+  // customer's form indefinitely.
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), BACKEND_TIMEOUT_MS);
+  try {
+    const res = await fetch(SIGNUP_BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Signup-Proxy-Secret': secret },
+      body: JSON.stringify(body),
+      signal: ctl.signal,
+    });
+    let payload = null;
+    try { payload = await res.json(); } catch { /* non-JSON body is fine */ }
+    return { ok: res.ok, status: res.status, payload };
+  } catch (err) {
+    const reason = err.name === 'AbortError' ? 'timeout' : String(err.message || err);
+    console.error('[notify] signup forward failed:', reason);
+    return { ok: false, status: 0, reason };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ── Ops notification (Telegram, with email fallback) ─────────────────────────
 
 async function sendTelegram(chatId, text) {
   const url = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
-  const res = await fetch(url, {
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), TELEGRAM_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' }),
+      signal: ctl.signal,
+    });
+    if (!res.ok) throw new Error(`Telegram API error: ${await res.text()}`);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function sendSupportEmail(subject, text) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) throw new Error('RESEND_API_KEY not set');
+  const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' }),
+    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from: SUPPORT_ALERT_FROM, to: [SUPPORT_ALERT_TO], subject, text }),
   });
-  if (!res.ok) throw new Error(`Telegram API error: ${await res.text()}`);
+  if (!res.ok) throw new Error(`Resend error ${res.status}: ${await res.text()}`);
+}
+
+// Best-effort by contract: this must never throw, because a failure to *tell
+// ops about* a signup is not a reason to fail the customer's signup. Telegram
+// first; on any failure the same content goes to support@ instead.
+async function notifyOps(subject, telegramHtml, plainText) {
+  try {
+    await sendTelegram(process.env.TELEGRAM_CHAT_ID, telegramHtml);
+    return 'telegram';
+  } catch (err) {
+    console.error('[notify] Telegram failed, falling back to support email:', err);
+    try {
+      await sendSupportEmail(subject, plainText);
+      return 'email';
+    } catch (err2) {
+      console.error('[notify] support email ALSO failed — ops alert lost:', err2);
+      return 'none';
+    }
+  }
 }
 
 // ── Handler ──────────────────────────────────────────────────────────────────
@@ -309,13 +416,47 @@ export default async function handler(req, res) {
 
     // 4. Genuine lead.
     console.log('[notify] PASS', score, JSON.stringify(ctx));
-    await sendTelegram(process.env.TELEGRAM_CHAT_ID, formatMessage(data));
 
-    // Welcome email is sent by the Gen8r backend (app.gen8r.ai/api/signup
-    // → sendWelcomeEmail with magic-link activation, brand portal, Telegram
-    // bridge token). This function only handles the Telegram lead-ping for ops
-    // visibility — and the contact form.
-    return res.status(200).json({ ok: true });
+    // Contact form has no backend leg — notify ops and we're done.
+    if (data.source !== 'gen8r-website-signup') {
+      await notifyOps(
+        `New Gen8r contact message: ${data.name || 'unknown'}`,
+        formatMessage(data),
+        plainSummary(data, null, ctx),
+      );
+      return res.status(200).json({ ok: true });
+    }
+
+    // Signup: forward to the backend FIRST. It is the customer's critical path,
+    // and doing it first is what lets the ops alert below report the outcome —
+    // otherwise a backend outage produces a cheerful "New Sign-Up" ping for a
+    // lead that was never created and will never receive an email.
+    const fwd = await forwardSignup(data, req, ip);
+    console.log('[notify] forward', fwd.status || fwd.reason, JSON.stringify(ctx));
+
+    // Rate-limited retries are noise, and validation errors are the caller's
+    // problem — neither is worth an ops alert.
+    const worthAlerting = fwd.status !== 429 && fwd.status !== 400;
+    if (worthAlerting) {
+      const failed = !fwd.ok;
+      const subject = failed
+        ? `⚠️ Gen8r signup FAILED — create manually: ${data.companyName || data.name || 'unknown'}`
+        : `New Gen8r signup: ${data.companyName || data.name || 'unknown'}`;
+      const banner = failed
+        ? `<b>⚠️ SIGNUP FAILED — create this Brand manually</b>\n<i>backend: ${esc(String(fwd.status || fwd.reason))}</i>\n\n`
+        : '';
+      await notifyOps(subject, banner + formatMessage(data), plainSummary(data, fwd, ctx));
+    }
+
+    // Relay the backend's verdict so the form can show the right message. On a
+    // backend failure we deliberately return ok:true — ops has been alerted and
+    // will create the Brand by hand, so showing the customer an error would
+    // lose a lead we have in fact captured.
+    if (fwd.ok) return res.status(200).json({ ok: true, signup: 'created' });
+    if (fwd.status === 409) return res.status(200).json({ ok: true, signup: 'exists' });
+    if (fwd.status === 429) return res.status(200).json({ ok: true, signup: 'rate_limited' });
+    if (fwd.status === 400) return res.status(400).json({ ok: false, signup: 'invalid' });
+    return res.status(200).json({ ok: true, signup: 'manual_followup' });
   } catch (err) {
     console.error('Handler error:', err);
     return res.status(500).json({ ok: false, error: 'Internal error' });
@@ -367,6 +508,38 @@ function formatMessage(data) {
 function esc(str) {
   if (!str) return '';
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Plain-text twin of formatMessage() for the support@ fallback. Carries the
+// same lead detail plus the backend outcome and origin context — this email
+// only ever gets sent when Telegram is down, so it has to stand alone as the
+// single record of the signup.
+function plainSummary(data, fwd, ctx) {
+  const lines = [
+    data.source === 'gen8r-website-signup' ? 'New Gen8r signup' : 'New Gen8r contact message',
+    '',
+    `Name:    ${data.name || '-'}`,
+    `Email:   ${data.email || '-'}`,
+  ];
+  if (data.phone) lines.push(`Phone:   ${formatPhone(data.country, data.phone)}`);
+  if (data.country) lines.push(`Country: ${data.country}`);
+  if (data.companyName) lines.push(`Company: ${data.companyName}`);
+  if (data.companyUrl) lines.push(`Website: ${data.companyUrl}`);
+  if (data.message) lines.push(`Message: ${data.message}`);
+
+  lines.push('', `Origin:  ip=${ctx.ip || '-'} country=${ctx.country || '-'} city=${ctx.city || '-'}`);
+
+  if (fwd) {
+    lines.push(
+      '',
+      fwd.ok
+        ? `Backend: OK (${fwd.status}) — Brand created, confirmation email sent.`
+        : `Backend: FAILED (${fwd.status || fwd.reason}) — NOT created. Create this Brand manually.`,
+    );
+  }
+
+  lines.push('', 'Sent to support@ because the ops Telegram notification failed.');
+  return lines.join('\n');
 }
 
 // Exported for offline calibration of the heuristics against captured samples.

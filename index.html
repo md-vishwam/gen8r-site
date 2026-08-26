@@ -2517,10 +2517,10 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
   msg.textContent = '';
   msg.className = 'form-msg';
 
-  // Gate BOTH requests on a valid challenge token. This is what stops the
+  // Gate the request on a valid challenge token. This is what stops the
   // form-spam bot: it drives a real browser through this handler, so with no
-  // token nothing reaches /api/notify *or* app.gen8r.ai/api/signup — which is
-  // the request that sends the activation email.
+  // token nothing reaches /api/notify — and since notify is now the only route
+  // to the backend, nothing creates a Brand or sends a confirmation email.
   const tsTok = tsToken('signupForm');
   if (!tsTok) {
     msg.textContent = 'Please complete the verification check above, then submit again.';
@@ -2550,42 +2550,21 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     elapsedMs: Date.now() - pageLoadedAt,
   };
 
-  // Dual-fire so we never lose the lead even if app.gen8r.ai is down:
-  //   - /api/notify (Vercel)   → Telegram ping to @gen8r_notify_bot. Always
-  //                              fires; preserves the lead if app is down.
-  //   - app.gen8r.ai/api/signup → real onboarding flow (creates Brand,
-  //                              mints Telegram bridge token, fires brand
-  //                              extraction if companyUrl, sends magic-link
-  //                              activation email). Best-effort.
+  // Single entry point. The browser no longer calls app.gen8r.ai/api/signup
+  // directly — /api/notify verifies the challenge, runs the spam gates, then
+  // forwards server-to-server with a shared secret, which is what lets the
+  // backend refuse anonymous POSTs (instagrammer#409). It relays the backend's
+  // verdict back to us as `signup`.
   //
   // companyName: Brand.name fallback when extraction can't find a name on
   // the URL (og:site_name / title / domain heuristic all empty). Extracted
   // name still wins if found — companyName is the safety net.
-  const notifyP = fetch('/api/notify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-
-  const signupP = fetch('https://app.gen8r.ai/api/signup', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      name:        data.name,
-      email:       data.email,
-      country:     data.country,
-      phone:       data.phone,
-      companyName: data.companyName,
-      companyUrl:  data.companyUrl,
-    }),
-  }).catch((err) => {
-    // Backend unreachable — notify still ran, lead is captured. Log for ops.
-    console.warn('Signup backend POST failed (lead still captured via notify):', err);
-    return null;
-  });
-
   try {
-    const [notifyRes, signupRes] = await Promise.all([notifyP, signupP]);
+    const notifyRes = await fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
     // 403 = challenge rejected server-side (expired, replayed, or forged
     // token). Distinct from a generic failure so the user knows to redo the
     // check rather than assuming the site is broken.
@@ -2594,28 +2573,42 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
       msg.className = 'form-msg error';
       return;
     }
-    if (!notifyRes || !notifyRes.ok) throw new Error('Request failed');
+    // 400 = the backend rejected the field values. The only case where the
+    // user can actually fix something, so keep the form open and populated.
+    if (notifyRes.status === 400) {
+      msg.textContent = 'Please check your details and try again.';
+      msg.className = 'form-msg error';
+      return;
+    }
+    if (!notifyRes.ok) throw new Error('Request failed');
+
+    const result = await notifyRes.json().catch(() => ({}));
     form.reset();
     signupCollapse.classList.remove('open');
     signupToggle.style.display = '';
 
-    // app.gen8r.ai/api/signup returns 409 when an account already exists
-    // for this email. The backend already fires:
-    //   (a) admin notify to ops
-    //   (b) a "someone tried to sign up with your email" alert to the
-    //       existing brand's contact
-    // so the legitimate owner is informed. Here we surface a useful
-    // message to whoever just filled the form — without it they'd see
-    // the generic "check your inbox" copy below and wait forever for a
-    // welcome email that will never arrive. Other backend statuses
-    // (network failure, 5xx, etc.) still fall through to the generic
-    // success message because the lead is captured via /api/notify.
-    if (signupRes && signupRes.status === 409) {
+    if (result.signup === 'exists') {
+      // Backend returned 409 — an account already exists for this email. It
+      // also alerts the real owner that someone tried to sign up as them.
+      // Without this message the user would sit waiting for a welcome email
+      // that is never coming.
       signupToggle.innerHTML = 'An account with this email already exists. <a href="https://app.gen8r.ai/login" style="color:inherit;text-decoration:underline">Log in instead &rarr;</a>';
       // Still a real conversion (a captured lead who intended to start), but an
       // existing account rather than a fresh one — tag it so the two are
       // distinguishable in GA.
       track('sign_up', { method: 'website_form', status: 'existing' });
+    } else if (result.signup === 'rate_limited') {
+      // Backend allows one confirmation per address per 90 min. "Try again
+      // shortly" would be actively misleading at that interval — point them at
+      // the email they already have instead.
+      signupToggle.textContent = "We've already sent a confirmation to that address — check your inbox and spam folder.";
+      track('sign_up', { method: 'website_form', status: 'rate_limited' });
+    } else if (result.signup === 'manual_followup') {
+      // Backend was unreachable. Ops has been alerted and will create the Brand
+      // by hand, so don't show an error and lose a lead we actually captured —
+      // but don't promise an inbox that nothing is heading to either.
+      signupToggle.textContent = "Thanks — we've got your details and we'll be in touch shortly.";
+      track('sign_up', { method: 'website_form', status: 'manual_followup' });
     } else {
       signupToggle.textContent = "Check your inbox — you'll hear from us soon.";
       track('sign_up', { method: 'website_form', status: 'new' });
