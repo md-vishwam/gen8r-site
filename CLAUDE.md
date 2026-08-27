@@ -74,11 +74,19 @@ The helper functions are exported from `notify.js` purely so the scoring can be 
 
 **Contact form** — single POST to `/api/notify` (the Vercel function at `api/notify.js`), which forwards to the internal Telegram bot (`@gen8r_notify_bot`) via the Telegram Bot API. Token and chat ID are Vercel env vars (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`).
 
-**Signup form** — **dual-fires** two requests in parallel (`index.html`, `signupForm` handler):
-1. `/api/notify` (Vercel → Telegram ops ping) — always fires; this is what guarantees the lead is captured even if the backend is down. The form's success/error state is driven by THIS response.
-2. `https://app.gen8r.ai/api/signup` (the real onboarding backend, separate repo) — best-effort, wrapped in `.catch()`. Creates the Brand, mints the Telegram bridge token, kicks off brand extraction when `companyUrl` is given, and sends the magic-link activation email. A `409` here means the email already has an account → the form swaps in a "Log in instead" message; all other backend outcomes fall through to the generic success copy because the lead is already captured via notify.
+**Signup form** — **single entry point**. The browser POSTs once to `/api/notify` and never calls the backend directly. `notify` runs honeypot → Turnstile → spam score, and only then forwards **server-to-server** to `https://app.gen8r.ai/api/signup` with an `X-Signup-Proxy-Secret` header (`SIGNUP_PROXY_SECRET`, same value on Vercel and the backend's OCI env). That header is what lets the backend refuse anonymous POSTs — see `md-vishwam/instagrammer#409`.
 
-The welcome email is sent by `app.gen8r.ai/api/signup`, NOT by this Vercel function — `api/notify.js` only does the ops Telegram ping and contact routing. The `RESEND_API_KEY` env var (historical duplicate welcome email) is now unused and can be removed from Vercel.
+**The spam gates run before the forward, deliberately.** Anything the honeypot or heuristics flag never reaches the backend, so it can't create a Brand or trigger a confirmation email. If you reorder this, you reopen the hole.
+
+`notify` forwards `clientIp` and `xVercelIpTimezone` explicitly, because server-to-server the backend would otherwise see Vercel's IP and lose the visitor's (it derives `Brand.timezone` from that, falling back to `countryToTimezone(country)`). **`clientIp` must be read from Vercel's headers, never echoed from the request body** — forwarding a client-supplied value would let a direct caller spoof it and defeat the backend's per-IP rate limit.
+
+The backend's verdict comes back to the browser as a `signup` field, which drives the form copy: `created` → "check your inbox"; `exists` (409) → "Log in instead"; `rate_limited` (429, one confirmation per address per 90 min) → "we've already sent a confirmation" — *not* "try again shortly", which is misleading at that interval; `manual_followup` (backend unreachable) → "we'll be in touch shortly", because ops was alerted to create the Brand by hand and showing an error would discard a captured lead.
+
+**Ordering rationale:** the backend forward happens *before* the ops notification so the alert can report the outcome. Reverse them and a backend outage produces a cheerful "New Sign-Up" ping for a lead that was never created.
+
+**Ops notification is best-effort and must never throw** — failing to tell ops about a signup is not a reason to fail the customer's signup. Telegram first with a short timeout; on any failure the identical content goes to `support@gen8r.ai` via Resend (`plainSummary()` is the plain-text twin of `formatMessage()`). So `RESEND_API_KEY` **is** required in Vercel — an earlier version of this file said it was unused and removable, which is no longer true. `SUPPORT_ALERT_TO` / `SUPPORT_ALERT_FROM` override the defaults; the from-address must be on a Resend-verified domain (`gen8r.ai`, DKIM selector `resend`).
+
+The welcome/confirmation email is sent by the backend, not by this function.
 
 **Keep in sync:** `notify.js` has a `DIAL_CODES` map that mirrors the 12 dialable countries in the signup dropdown (`#signupCountry`, which also carries a 13th `OTHER` option with no dial code). If you add/remove a dialable country option in `index.html`, update `DIAL_CODES` so the ops ping shows a fully-dialable phone number.
 
