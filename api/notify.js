@@ -22,9 +22,10 @@ const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/sit
 const ALLOWED_ORIGINS = ['https://gen8r.ai', 'https://www.gen8r.ai'];
 
 // Score at or above which a submission is treated as spam. Calibrated against
-// the observed attack, which scores 7 (gibberish name + company + website, plus
-// geo mismatch) — comfortably over. A single odd-looking signal on an otherwise
-// real lead scores 2 and passes. See scoreSubmission() for the weights.
+// 15 captured spam samples and 11 plausible leads: lowest spam 5, highest real
+// 2. A single odd-looking signal on an otherwise real lead scores 2 and passes.
+// Confirmed in production — a live spam replay scored 8, a real signup scored 0.
+// See scoreSubmission() for the weights.
 const SPAM_THRESHOLD = 4;
 
 // Backend signup endpoint. The browser must NOT call this directly — it only
@@ -189,10 +190,18 @@ function scoreSubmission(data, req) {
     if (company && label) add(2, 'brand-domain-mismatch');
   }
 
-  // Vercel injects geo headers derived from the client IP. Every observed spam
-  // submission claimed AU — the signup form's default option, which the bot
-  // never changes — while routing through a US edge region. VPNs and travelling
-  // customers make this weak on its own, hence only +1.
+  // Vercel injects geo headers derived from the client IP, so this compares the
+  // country the form claims against where the request actually came from.
+  //
+  // Honest caveat on the evidence: the original incident logs had no geo
+  // columns, so we never knew where the spam actually originated. An earlier
+  // version of this comment claimed it "routed through a US edge" based on the
+  // `region` field — but that is the *function's* execution region (always
+  // iad1), not the client's. A real Sydney signup logs iad1 too. So this signal
+  // is reasonable in principle rather than evidence-backed, which is another
+  // reason it stays at +1. The captured spam scores 8 without it.
+  //
+  // VPNs and travelling customers make it weak regardless.
   const ipCountry = String(req.headers['x-vercel-ip-country'] || '').toUpperCase();
   const claimed = String(data.country || '').toUpperCase();
   if (ipCountry && claimed && claimed !== 'OTHER' && ipCountry !== claimed) {
