@@ -1,5 +1,13 @@
 {
   "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/videos/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ],
   "redirects": [
     { "source": "/c/15-day-social-media-plan-for-a-yoga-studio", "destination": "/c/10-day-social-media-plan-for-a-yoga-studio", "permanent": true },
     { "source": "/c/15-day-social-media-plan-for-a-coffee-shop", "destination": "/c/10-day-social-media-plan-for-a-coffee-shop", "permanent": true },
