@@ -707,6 +707,7 @@ img { max-width: 100%; display: block; }
   perspective: 1600px;
 }
 .hero-mockup-frame {
+  display: block;
   background: linear-gradient(180deg, rgba(20,20,32,0.9) 0%, rgba(12,12,20,0.85) 100%);
   border: 1px solid var(--border-bright);
   border-radius: 16px;
@@ -716,9 +717,18 @@ img { max-width: 100%; display: block; }
     0 6px 22px rgba(0,229,255,0.12),
     inset 0 1px 0 rgba(255,255,255,0.06);
   transform: rotateY(-4deg) rotateX(2deg);
-  transition: transform 0.6s var(--ease);
+  transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
-.hero-mockup:hover .hero-mockup-frame { transform: rotateY(0) rotateX(0); }
+.hero-mockup:hover .hero-mockup-frame {
+  transform: rotateY(0) rotateX(0);
+  box-shadow:
+    0 40px 100px rgba(0,0,0,0.65),
+    0 8px 32px rgba(0,229,255,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
 .hero-mockup-titlebar {
   display: flex;
   align-items: center;
@@ -757,16 +767,25 @@ img { max-width: 100%; display: block; }
 .hero-post:hover { transform: translateY(-2px); border-color: var(--border-bright); }
 .hero-post-thumb {
   position: relative;
-  height: 82px;
+  height: 96px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background: var(--bg-raised); /* fallback shown before img loads */
 }
+.hero-post-thumb img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease);
+}
+.hero-post:hover .hero-post-thumb img { transform: scale(1.05); }
 .hero-post-thumb::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 45%, var(--bg) 100%);
+  background: linear-gradient(180deg, transparent 55%, rgba(6,6,11,0.72) 100%);
+  z-index: 1;
 }
 .hero-post-thumb-glyph {
   position: relative;
@@ -2005,51 +2024,60 @@ img { max-width: 100%; display: block; }
       </div>
     </div>
 
-    <!-- Product mockup: a stylised browser preview of a real 10-piece campaign -->
+    <!-- Product mockup: a stylised browser preview of a real 10-piece campaign.
+         Images hotlink to the live gen8r demo campaign at app.gen8r.ai/review/demo
+         (which the 'See a real campaign' CTA button also opens). Same content
+         everywhere — no manual asset management. -->
     <div class="hero-mockup reveal reveal-delay-2">
-      <div class="hero-mockup-frame">
+      <a class="hero-mockup-frame" href="https://app.gen8r.ai/review/demo" target="_blank" rel="noopener" aria-label="Open a full campaign preview">
         <div class="hero-mockup-titlebar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="titlebar-text">gen8r &middot; Campaign Review &middot; Bali Wellness Retreat</span>
+          <span class="titlebar-text">gen8r &middot; Campaign Review &middot; One Click Social Suite</span>
         </div>
         <div class="hero-mockup-body">
           <div class="hero-post">
-            <div class="hero-post-thumb"><span class="hero-post-thumb-glyph">&#128444;</span></div>
-            <div class="hero-post-info">
-              <div class="hero-post-tag">Day 1 &middot; Flyer &middot; IG</div>
-              <div class="hero-post-cap">Branded teaser: "Bali Wellness Retreat &mdash; Coming Soon"</div>
+            <div class="hero-post-thumb">
+              <img src="https://app.gen8r.ai/flyers/6a0ac58a7f840c937a9a9819/2bf4f0539c5dbb62.png" alt="" loading="eager">
             </div>
-          </div>
-          <div class="hero-post">
-            <div class="hero-post-thumb"><span class="hero-post-thumb-glyph">&#127796;</span></div>
             <div class="hero-post-info">
-              <div class="hero-post-tag">Day 2 &middot; Post &middot; IG</div>
-              <div class="hero-post-cap">Imagine waking up to waves and the scent of frangipani&hellip;</div>
+              <div class="hero-post-tag">Day 1 &middot; Flyer &middot; Facebook</div>
+              <div class="hero-post-cap">Unlock a complete campaign in minutes. No juggling required.</div>
             </div>
           </div>
           <div class="hero-post">
             <div class="hero-post-thumb">
-              <span class="hero-post-thumb-glyph">&#127916;</span>
-              <span class="hero-post-play"></span>
+              <img src="https://app.gen8r.ai/images/6a0eeaa91c604711448a8f51/full_2_1.jpg" alt="" loading="eager">
             </div>
             <div class="hero-post-info">
-              <div class="hero-post-tag">Day 4 &middot; Reel &middot; IG</div>
-              <div class="hero-post-cap">HOOK: "What if your next holiday actually healed you?"</div>
+              <div class="hero-post-tag">Day 2 &middot; Post &middot; Facebook</div>
+              <div class="hero-post-cap">Cut your social media time from hours to minutes with a full 10-piece campaign.</div>
             </div>
           </div>
           <div class="hero-post">
-            <div class="hero-post-thumb"><span class="hero-post-thumb-glyph">&#9989;</span></div>
+            <div class="hero-post-thumb">
+              <img src="https://app.gen8r.ai/images/6a0eeaa91c604711448a8f51/full_3_0.jpg" alt="" loading="eager">
+              <span class="hero-post-play"></span>
+            </div>
             <div class="hero-post-info">
-              <div class="hero-post-tag">Day 10 &middot; Flyer &middot; FB</div>
-              <div class="hero-post-cap">Last call: "Only 3 spots left &mdash; Nov 15 departure"</div>
+              <div class="hero-post-tag">Day 4 &middot; Reel &middot; Instagram</div>
+              <div class="hero-post-cap">HOOK: "Six tabs open. Zero posts published."</div>
+            </div>
+          </div>
+          <div class="hero-post">
+            <div class="hero-post-thumb">
+              <img src="https://app.gen8r.ai/flyers/6a0ac58a7f840c937a9a9819/ea5df0b667911dd6.png" alt="" loading="eager">
+            </div>
+            <div class="hero-post-info">
+              <div class="hero-post-tag">Day 10 &middot; Flyer &middot; Facebook</div>
+              <div class="hero-post-cap">Transform your marketing with gen8r. Secure your spot today.</div>
             </div>
           </div>
         </div>
         <div class="hero-mockup-footer">
           <span><span class="footer-check">&#10003;</span>Auto-scheduled to your event date</span>
-          <span class="footer-cta">10 pieces</span>
+          <span class="footer-cta">10 pieces &rarr;</span>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
