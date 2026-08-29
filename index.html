@@ -1171,6 +1171,16 @@ img { max-width: 100%; display: block; }
 .demo-post:nth-child(7) .demo-post-img { background: linear-gradient(135deg, #4a1a3a, #330d28); }
 .demo-post:nth-child(8) .demo-post-img { background: linear-gradient(135deg, #4a2a1a, #331d0d); }
 .demo-post:nth-child(9) .demo-post-img { background: linear-gradient(135deg, #1a4a4a, #0d3333); }
+.demo-post:nth-child(10) .demo-post-img { background: linear-gradient(135deg, #3a2a4a, #241833); }
+/* Real campaign thumbnails fill the tile; .demo-post-img::after is declared
+   after this rule so its scrim still paints over the photo. */
+.demo-post-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .demo-post-body {
   padding: 10px 12px;
 }
@@ -2189,13 +2199,35 @@ img { max-width: 100%; display: block; }
       <p class="section-subtitle">Start from the Web Portal, Slack, or Telegram &mdash; same 10-piece campaign, in your browser.</p>
     </div>
     <div class="demo-tabs reveal reveal-delay-1">
-      <button class="demo-tab active" data-demo="travel">Travel</button>
+      <button class="demo-tab active" data-demo="live">Live demo</button>
       <button class="demo-tab" data-demo="yoga">Yoga &amp; Wellness</button>
       <button class="demo-tab" data-demo="realestate">Real Estate</button>
     </div>
 
     <!-- Travel Demo -->
-    <div class="demo-panel active" id="demo-travel">
+    <!-- ── Live demo panel ──────────────────────────────────────────────────
+         This panel depicts a REAL campaign: "One Click Social Suite", the
+         gen8r launch campaign that is live at app.gen8r.ai/review/demo
+         (campaign 6a0eeaa91c604711448a8f51). Every day / content type /
+         channel / caption below is taken from that campaign's own data, and
+         each thumbnail is that piece's own approved image, downsized to
+         320x160 and committed under /images/demo/ with a content hash.
+
+         TO SWAP IN A DIFFERENT CAMPAIGN (e.g. the Bali travel one):
+           1. re-run the thumbnail build against the new campaign id, which
+              rewrites /images/demo/demo-NN.<hash>.jpg
+           2. replace the six <div class="chat-msg"> lines below with the new
+              brief + Q&A, and set data-brief on .demo-chat to exactly the
+              same text as .chat-user-first (they must match, or the bubble
+              visibly changes on the first Slack/Web tab click)
+           3. replace the ten .demo-post blocks — each is uniform: img src,
+              day/type/channel line, caption, two tags. Nothing is hand-tuned
+              per card, so this is a straight data swap.
+           4. if the new campaign is the Bali travel one, change this panel's
+              id suffix and its tab button's data-demo value from live back to
+              travel, and the tab label back to Travel.
+    -->
+    <div class="demo-panel active" id="demo-live">
     <div class="demo-window reveal reveal-delay-1">
       <div class="demo-titlebar">
         <div class="demo-dot"></div>
@@ -2204,89 +2236,97 @@ img { max-width: 100%; display: block; }
         <span class="demo-titlebar-text">gen8r &mdash; Campaign Review</span>
       </div>
       <div class="demo-body">
-        <div class="demo-chat" data-brief="Bali wellness retreat, 7 nights, luxury villas, yoga &amp; spa included">
+        <div class="demo-chat" data-brief="Sure, you could ask ChatGPT for the caption, Midjourney for the photo, Canva for the flyer, Runway for the reel. Six tools, a dozen tabs.">
           <div class="channel-tabs">
             <button class="channel-tab active" data-channel="web">Web Portal</button>
             <button class="channel-tab" data-channel="slack">Slack / Telegram</button>
           </div>
-          <div class="chat-msg chat-user chat-user-first">Bali wellness retreat, 7 nights, luxury villas, yoga &amp; spa included</div>
+          <div class="chat-msg chat-user chat-user-first">Sure, you could ask ChatGPT for the caption, Midjourney for the photo, Canva for the flyer, Runway for the reel. Six tools, a dozen tabs.</div>
           <div class="chat-msg chat-bot">Got it! A few quick questions to build the best campaign.</div>
-          <div class="chat-msg chat-bot">Question 1/6: Who is the ideal traveller?</div>
-          <div class="chat-msg chat-user">Couples 30-50, wellness enthusiasts, mid-high budget</div>
+          <div class="chat-msg chat-bot">Question 1/6: Who is this campaign for?</div>
+          <div class="chat-msg chat-user">Solo founders and small-business owners who don't have time for marketing</div>
           <div class="chat-msg chat-bot">Generating your 10-piece campaign... done! Review it here:</div>
-          <div class="chat-msg chat-bot" style="color:var(--accent);">gen8r.ai/review/a8f3c2</div>
+          <div class="chat-msg chat-bot" style="color:var(--accent);">gen8r.ai/review/demo</div>
         </div>
         <div class="demo-campaign">
           <div class="demo-post">
-            <div class="demo-post-img">&#128444;</div>
+            <div class="demo-post-img"><img src="/images/demo/demo-01.6dc23a10.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 1 &middot; Flyer &middot; Instagram</div>
-              <div class="demo-post-caption">Branded teaser flyer: "Bali Wellness Retreat &mdash; Coming Soon"</div>
-              <div class="demo-post-tags"><span class="demo-tag">Teaser</span><span class="demo-tag">AI Flyer</span></div>
+              <div class="demo-post-day">Day 1 &middot; Flyer &middot; Facebook</div>
+              <div class="demo-post-caption">Unlock a complete campaign in minutes. No juggling required.</div>
+              <div class="demo-post-tags"><span class="demo-tag">Aspirational</span><span class="demo-tag">AI Flyer</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#127796;</div>
+            <div class="demo-post-img"><img src="/images/demo/demo-02.fa081acb.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 2 &middot; Post &middot; Instagram</div>
-              <div class="demo-post-caption">Imagine waking up to the sound of waves and the scent of frangipani...</div>
-              <div class="demo-post-tags"><span class="demo-tag">#BaliRetreat</span><span class="demo-tag">#Wellness</span></div>
+              <div class="demo-post-day">Day 2 &middot; Post &middot; Facebook</div>
+              <div class="demo-post-caption">Imagine cutting your social media posting time from hours to minutes.</div>
+              <div class="demo-post-tags"><span class="demo-tag">#SocialMedia</span><span class="demo-tag">#MarketingMadeEasy</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#129496;</div>
+            <div class="demo-post-img"><img src="/images/demo/demo-03.6613cc39.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 3 &middot; Post &middot; LinkedIn</div>
-              <div class="demo-post-caption">The wellness leader's guide to true rest &mdash; why founders retreat here...</div>
-              <div class="demo-post-tags"><span class="demo-tag">#Leadership</span><span class="demo-tag">#Wellness</span></div>
+              <div class="demo-post-day">Day 3 &middot; Post &middot; Instagram</div>
+              <div class="demo-post-caption">Look, you could Frankenstein your next campaign: ChatGPT for captions, Midjourney for photos, Canva for flyers.</div>
+              <div class="demo-post-tags"><span class="demo-tag">#socialmediamarketing</span><span class="demo-tag">#ai</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#127916;</div>
+            <div class="demo-post-img"><img src="/images/demo/demo-04.38213e0b.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
             <div class="demo-post-body">
               <div class="demo-post-day">Day 4 &middot; Reel &middot; Instagram</div>
-              <div class="demo-post-caption">HOOK: "What if your next holiday actually healed you?" + AI video</div>
-              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#WellnessTravel</span></div>
+              <div class="demo-post-caption">HOOK: "Six tabs open. Zero posts published."</div>
+              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#MarketingMadeEasy</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#127801;</div>
+            <div class="demo-post-img"><img src="/images/demo/demo-05.d5bcbdf9.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 5 &middot; Pin &middot; Pinterest</div>
-              <div class="demo-post-caption">Bali packing list, sunrise yoga rituals, spa menu &mdash; a savable board</div>
-              <div class="demo-post-tags"><span class="demo-tag">Evergreen</span><span class="demo-tag">#BaliBucketList</span></div>
+              <div class="demo-post-day">Day 5 &middot; Post &middot; WhatsApp</div>
+              <div class="demo-post-caption">A full 10-piece campaign &mdash; 6 posts, 2 flyers, 2 reels &mdash; from one description.</div>
+              <div class="demo-post-tags"><span class="demo-tag">Social Proof</span><span class="demo-tag">Opt-in Broadcast</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#128150;</div>
+            <div class="demo-post-img"><img src="/images/demo/demo-06.4d6ba531.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
             <div class="demo-post-body">
               <div class="demo-post-day">Day 6 &middot; Post &middot; Facebook</div>
-              <div class="demo-post-caption">Couples spa day: his &amp; hers treatments with ocean views...</div>
-              <div class="demo-post-tags"><span class="demo-tag">#CouplesGoals</span><span class="demo-tag">#Bali</span></div>
+              <div class="demo-post-caption">Sure, you could spend hours cobbling together your campaigns. gen8r replaces all of that.</div>
+              <div class="demo-post-tags"><span class="demo-tag">#socialmarketing</span><span class="demo-tag">#AI</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#127916;</div>
+            <div class="demo-post-img"><img src="/images/demo/demo-07.818a7df1.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 7 &middot; Reel &middot; TikTok</div>
-              <div class="demo-post-caption">HOOK: "POV: your soul got a passport" &mdash; 12s vertical, trending audio</div>
-              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#TravelTok</span></div>
+              <div class="demo-post-day">Day 7 &middot; Reel &middot; Instagram</div>
+              <div class="demo-post-caption">HOOK: "My entire week's content took minutes."</div>
+              <div class="demo-post-tags"><span class="demo-tag">AI Reel Video</span><span class="demo-tag">#SocialMediaMarketing</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#128227;</div>
+            <div class="demo-post-img"><img src="/images/demo/demo-08.551a1b6c.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
             <div class="demo-post-body">
-              <div class="demo-post-day">Day 8 &middot; Broadcast &middot; WhatsApp</div>
-              <div class="demo-post-caption">"Only 5 rooms left &mdash; tap to hold yours." Sent to opted-in list.</div>
-              <div class="demo-post-tags"><span class="demo-tag">Approved Template</span><span class="demo-tag">CTA</span></div>
+              <div class="demo-post-day">Day 8 &middot; Post &middot; Instagram</div>
+              <div class="demo-post-caption">Tired of juggling a dozen tools just to get your next social post out?</div>
+              <div class="demo-post-tags"><span class="demo-tag">#SaaS</span><span class="demo-tag">#SocialMediaMarketing</span></div>
             </div>
           </div>
           <div class="demo-post">
-            <div class="demo-post-img">&#9989;</div>
+            <div class="demo-post-img"><img src="/images/demo/demo-09.33795f9c.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
+            <div class="demo-post-body">
+              <div class="demo-post-day">Day 9 &middot; Post &middot; Instagram</div>
+              <div class="demo-post-caption">Imagine cutting your campaign prep from hours to minutes.</div>
+              <div class="demo-post-tags"><span class="demo-tag">#SocialMediaMarketing</span><span class="demo-tag">#SaaS</span></div>
+            </div>
+          </div>
+          <div class="demo-post">
+            <div class="demo-post-img"><img src="/images/demo/demo-10.3c312f36.jpg" alt="" width="320" height="160" loading="lazy" decoding="async"></div>
             <div class="demo-post-body">
               <div class="demo-post-day">Day 10 &middot; Flyer &middot; Facebook</div>
-              <div class="demo-post-caption">Last call flyer: "Only 3 spots left &mdash; Nov 15 departure"</div>
-              <div class="demo-post-tags"><span class="demo-tag">Last Call</span><span class="demo-tag">AI Flyer</span></div>
+              <div class="demo-post-caption">Transform your marketing with gen8r. Secure your spot today!</div>
+              <div class="demo-post-tags"><span class="demo-tag">Urgency</span><span class="demo-tag">AI Flyer</span></div>
             </div>
           </div>
         </div>
